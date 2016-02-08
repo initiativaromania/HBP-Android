@@ -54,53 +54,69 @@
 
     </LinearLayout>
 
-    <TabHost
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/tabHost">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <TabHost
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/tabHost">
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#77cbd4"></TabWidget>
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#eaf4f7">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/tabMap"
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#77cbd4"></TabWidget>
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:background="#eaf4f7">
 
-                    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:map="http://schemas.android.com/apk/res-auto"
-                        xmlns:tools="http://schemas.android.com/tools"
-                        android:id="@+id/map"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                    <LinearLayout
+                        android:id="@+id/tabMap"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:context="com.example.claudiu.investitiipublice.MainActivity" />
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                            xmlns:map="http://schemas.android.com/apk/res-auto"
+                            xmlns:tools="http://schemas.android.com/tools"
+                            android:id="@+id/map"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:context="com.example.claudiu.investitiipublice.MainActivity" />
 
-                <LinearLayout
-                    android:id="@+id/tabStatistics"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"></LinearLayout>
+                    </LinearLayout>
 
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
+                    <LinearLayout
+                        android:id="@+id/tabStatistics"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"></LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+        </TabHost>
+
+        <SeekBar
+            android:layout_width="324dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBar"
+            android:layout_gravity="center_horizontal|bottom"
+            android:paddingBottom="30dp"
+            android:scrollIndicators="start|end"
+            android:progress="30"
+            android:focusableInTouchMode="true" />
+    </FrameLayout>
 
 </LinearLayout>

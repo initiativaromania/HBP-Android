@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -23,10 +24,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     /* UI consts */
     private static final String TAB_MAP             = "Harta";
     private static final String TAB_STATISTICS      = "Statistici";
-    private static final int CIRCLE_DEFAULT_RADIUS  = 250;
+    public static final int CIRCLE_DEFAULT_RADIUS   = 550;
+    public static final int CIRCLE_MIN_RADIUS       = 100;
+    public static final int CIRCLE_MAX_RADIUS       = 5000;
     private static final int CIRCLE_ALPHA           = 60;
     private static final int CIRCLE_MARGIN          = 2;
-    private static final int MAP_DEFAULT_ZOOM       = 16;
+    private static final int MAP_DEFAULT_ZOOM       = 14;
     private static final int DEFAULT_COLOR_RED      = 119;
     private static final int DEFAULT_COLOR_GREEN    = 203;
     private static final int DEFAULT_COLOR_BLUE     = 212;
@@ -35,10 +38,45 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     /* Setup Objects */
     private GoogleMap mMap;
     private IRLocationListener locationListener = null;
+    private IRSeekBarListener seekBarListener = null;
 
     /* UI objects */
     private Circle circle;
     private Marker currentPos;
+    private SeekBar seekBar;
+    private SupportMapFragment mapFragment;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.homescreen);
+        System.out.println("On create homescrewn");
+
+        /* Initialize UI components */
+        initUI();
+    }
+
+
+    /**
+     * Initialize UI components
+     */
+    private void initUI() {
+        /* Tab Bar */
+        tabSetup();
+
+        /* Seek bar */
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        seekBarListener = new IRSeekBarListener(circle);
+        seekBar.setOnSeekBarChangeListener(seekBarListener);
+        seekBar.setProgress(100 * (CIRCLE_DEFAULT_RADIUS - CIRCLE_MIN_RADIUS) / (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS));
+
+        /* Obtain the SupportMapFragment and get notified when the map is ready to be used. */
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
 
 
     /* Setup tab navigation bar */
@@ -65,19 +103,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.homescreen);
-        System.out.println("On create homescrewn");
-
-        tabSetup();
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-    }
 
     /**
      * Manipulates the map once available.
@@ -96,11 +121,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Bucharest and move the camera
         LatLng bucharest = new LatLng(44.435503, 26.102513);
-        this.circle = mMap.addCircle(new CircleOptions().center(bucharest)
+        circle = mMap.addCircle(new CircleOptions().center(bucharest)
                 .radius(CIRCLE_DEFAULT_RADIUS)
                 .fillColor(Color.argb(CIRCLE_ALPHA, DEFAULT_COLOR_RED, DEFAULT_COLOR_GREEN, DEFAULT_COLOR_BLUE))
                 .strokeColor(Color.rgb(DEFAULT_COLOR_RED, DEFAULT_COLOR_GREEN, DEFAULT_COLOR_BLUE)).strokeWidth(CIRCLE_MARGIN));
-        this.currentPos = mMap.addMarker(new MarkerOptions().position(bucharest).title("Marker in Bucharest"));
+        seekBarListener.setCircle(circle);
+
+        currentPos = mMap.addMarker(new MarkerOptions().position(bucharest).title("Marker in Bucharest"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bucharest));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bucharest, MAP_DEFAULT_ZOOM));
 

@@ -22,11 +22,8 @@ public class IRSeekBarListener implements SeekBar.OnSeekBarChangeListener {
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        System.out.println("Progressing");
         if (this.circle != null)
             this.circle.setRadius(MainActivity.CIRCLE_MIN_RADIUS + progress * (MainActivity.CIRCLE_MAX_RADIUS - MainActivity.CIRCLE_MIN_RADIUS) / 100);
-        else
-            System.out.println("Circle is null");
     }
 
     @Override

@@ -14,7 +14,8 @@ import android.support.v4.content.ContextCompat;
  * Created by claudiu on 2/8/16.
  */
 public class IRLocationListener implements LocationListener {
-    public static final int IR_PERMISSION_ACCESS_COURSE_LOCATION = 19;
+    public static final int IR_PERMISSION_ACCESS_COURSE_LOCATION    = 19;
+    private static final int LOCATION_UPDATES_LIMIT                 = 5;
 
     //The minimum distance to change updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
@@ -27,8 +28,7 @@ public class IRLocationListener implements LocationListener {
     private LocationManager locationManager;
     private MainActivity act;
     public Location location;
-    public double longitude;
-    public double latitude;
+    private int locationUpdates = 0;
 
 
     /**
@@ -115,10 +115,18 @@ public class IRLocationListener implements LocationListener {
 
 
 
-
     @Override
-    public void onLocationChanged(Location location)     {
-        // do stuff here with location object
+    public void onLocationChanged(Location location) {
+        locationUpdates++;
+
+        /* Set the camera and the UI objects on the current location
+        for the first couple of location updates */
+        if (locationUpdates < LOCATION_UPDATES_LIMIT) {
+            act.setInitialPosition(location);
+            return;
+        }
+
+        /* Update only the UI components for the rest of the location updates */
         act.updateLocationComponents(location);
     }
 

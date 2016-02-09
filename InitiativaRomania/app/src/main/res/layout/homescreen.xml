@@ -54,69 +54,47 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TabHost
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/tabHost">
 
-        <TabHost
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/tabHost">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#77cbd4"></TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:background="#eaf4f7">
 
-                <TabWidget
-                    android:id="@android:id/tabs"
+                <include
+                    android:id="@+id/tabMap"
+                    layout="@layout/map_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#77cbd4"></TabWidget>
+                    android:layout_height="match_parent"></include>
 
-                <FrameLayout
-                    android:id="@android:id/tabcontent"
+                <include
+                    android:id="@+id/tabStatistics"
+                    layout="@layout/statistics_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#eaf4f7">
+                    android:layout_height="match_parent"></include>
 
-                    <LinearLayout
-                        android:id="@+id/tabMap"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
 
-                        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                            xmlns:map="http://schemas.android.com/apk/res-auto"
-                            xmlns:tools="http://schemas.android.com/tools"
-                            android:id="@+id/map"
-                            android:name="com.google.android.gms.maps.SupportMapFragment"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            tools:context="com.example.claudiu.investitiipublice.MainActivity" />
 
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/tabStatistics"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"></LinearLayout>
 
-                </FrameLayout>
+            </FrameLayout>
 
-            </LinearLayout>
-        </TabHost>
-
-        <SeekBar
-            android:layout_width="324dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/seekBar"
-            android:layout_gravity="center_horizontal|bottom"
-            android:paddingBottom="30dp"
-            android:scrollIndicators="start|end"
-            android:progress="30"
-            android:focusableInTouchMode="true" />
-    </FrameLayout>
+        </LinearLayout>
+    </TabHost>
 
 </LinearLayout>

@@ -1,10 +1,13 @@
 package com.example.claudiu.investitiipublice;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -39,12 +42,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private IRLocationListener locationListener = null;
     private IRSeekBarListener seekBarListener = null;
+    private String tabtitles[] = new String[] {TAB_MAP, TAB_STATISTICS };
 
     /* UI objects */
     private Circle circle;
     private Marker currentPos;
     private SeekBar seekBar;
     private SupportMapFragment mapFragment;
+    private int currentTab = 0, lastTab = 0;
 
 
 
@@ -78,30 +83,41 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    private View createTabView(Context context, String tabText) {
+        View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
+        TextView tv = (TextView) view.findViewById(R.id.tabsText);
+        tv.setText(tabText);
+        return view;
+    }
 
     /* Setup tab navigation bar */
     private void tabSetup() {
+        int viewId;
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
 
         tabHost.setup();
 
-        TabHost.TabSpec tabSpec = tabHost.newTabSpec("map");
-        tabSpec.setContent(R.id.tabMap);
-        tabSpec.setIndicator(TAB_MAP);
-        tabHost.addTab(tabSpec);
+        View tabView = createTabView(this, TAB_MAP);
+        TabHost.TabSpec spec = tabHost.newTabSpec("tab1").setIndicator(tabView)
+                .setContent(R.id.tabMap);
+        tabHost.addTab(spec);
 
-        tabSpec = tabHost.newTabSpec("statistics");
-        tabSpec.setContent(R.id.tabStatistics);
-        tabSpec.setIndicator(TAB_STATISTICS);
-        tabHost.addTab(tabSpec);
+        tabView = createTabView(this, TAB_STATISTICS);
+        spec = tabHost.newTabSpec("tab2").setIndicator(tabView)
+                .setContent(R.id.tabStatistics);
+        tabHost.addTab(spec);
 
-        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
-            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
-            tv.setTextColor(Color.WHITE);
-            tv.setTextSize(18);
-        }
+
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            public void onTabChanged(String tabId) {
+                //currentTab = tabHost.getCurrentTab();
+
+                //tabHost.getTabWidget().
+
+                //lastTab = currentTab;
+            }
+        });
     }
-
 
 
     /**

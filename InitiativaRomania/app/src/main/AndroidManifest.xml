@@ -29,7 +29,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.example.claudiu.investitiipublice.MainActivity"
+            android:name="com.example.claudiu.investitiipublice.IRUserInterface.MainActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,6 +37,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.claudiu.investitiipublice.IRUserInterface.ContractActivity"
+            android:label="@string/title_activity_contract"
+            android:parentActivityName="com.example.claudiu.investitiipublice.IRUserInterface.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.claudiu.investitiipublice.IRUserInterface.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

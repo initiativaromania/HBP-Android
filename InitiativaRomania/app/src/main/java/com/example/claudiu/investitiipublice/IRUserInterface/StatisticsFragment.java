@@ -1,4 +1,4 @@
-package com.example.claudiu.investitiipublice;
+package com.example.claudiu.investitiipublice.IRUserInterface;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -1,6 +1,5 @@
-package com.example.claudiu.investitiipublice;
+package com.example.claudiu.investitiipublice.IRUserInterface;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,8 +10,6 @@ import java.util.List;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
-import android.widget.TextView;
 
 /**
  * Created by claudiu on 2/9/16.

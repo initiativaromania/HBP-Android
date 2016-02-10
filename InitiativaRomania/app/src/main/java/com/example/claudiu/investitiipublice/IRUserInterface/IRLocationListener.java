@@ -1,4 +1,4 @@
-package com.example.claudiu.investitiipublice;
+package com.example.claudiu.investitiipublice.IRUserInterface;
 
 import android.Manifest;
 import android.content.Context;

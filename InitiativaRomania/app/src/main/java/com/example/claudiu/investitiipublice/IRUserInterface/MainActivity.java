@@ -1,6 +1,7 @@
-package com.example.claudiu.investitiipublice;
+package com.example.claudiu.investitiipublice.IRUserInterface;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -11,8 +12,11 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.claudiu.initiativaromania.R;
+import com.example.claudiu.investitiipublice.IRObjects.Contract;
+import com.example.claudiu.investitiipublice.IRObjects.ContractManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,6 +27,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
     /* UI consts */
     private static final String TAB_MAP             = "Harta";
@@ -30,7 +37,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int CIRCLE_DEFAULT_RADIUS   = 550;
     public static final int CIRCLE_MIN_RADIUS       = 100;
     public static final int CIRCLE_MAX_RADIUS       = 5000;
-    private static final int CIRCLE_ALPHA           = 60;
+    private static final int CIRCLE_ALPHA           = 70;
     private static final int CIRCLE_MARGIN          = 2;
     private static final int MAP_DEFAULT_ZOOM       = 14;
     private static final int DEFAULT_COLOR_RED      = 119;
@@ -51,12 +58,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private SupportMapFragment mapFragment;
     private int currentTab = 0, lastTab = 0;
 
+    /* Data objects */
+    HashMap<Marker, Contract> markerContracts;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homescreen);
+        setContentView(R.layout.activity_homescreen);
         System.out.println("On create homescrewn");
 
         /* Initialize UI components */
@@ -83,12 +93,68 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+
+    /**
+     * Initiatlize data from the server on the UI
+     */
+    private void initData() {
+        System.out.println("Getting all the data from server");
+
+        /* Init the hashmap Marker - Contracts */
+        markerContracts = new HashMap<Marker, Contract>();
+
+        /* Add all the contracts on the google map and the hash map*/
+        LinkedList<Contract> contracts = ContractManager.getAllContracts();
+        for (Contract contract : contracts) {
+            LatLng location = new LatLng(contract.latitude, contract.longitude);
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(location).title(contract.valueEUR + ""));
+
+            markerContracts.put(marker, contract);
+        }
+
+        /* Set on click listener for each pin */
+        mMap.setOnMarkerClickListener(
+                new GoogleMap.OnMarkerClickListener() {
+
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        Contract contract = markerContracts.get(marker);
+
+
+                        if (contract != null) {
+                            /* Start a separate view for a contract */
+                            Intent intent = new Intent(getBaseContext(), ContractActivity.class);
+                            intent.putExtra("mama", contract);
+                            startActivity(intent);
+                        } else {
+                            /* Offer details about the user's position */
+                            Toast.makeText(getBaseContext(),
+                                    "Asta e pozitia ta. Modifica aria de interes si vezi statistici " +
+                                            "despre contractele din jurul tau",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                        return true;
+                    }
+                }
+        );
+    }
+
+
+    /**
+     * Create primary tab view
+     * @param context
+     * @param tabText
+     * @return
+     */
     private View createTabView(Context context, String tabText) {
         View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
         TextView tv = (TextView) view.findViewById(R.id.tabsText);
         tv.setText(tabText);
         return view;
     }
+
 
     /* Setup tab navigation bar */
     private void tabSetup() {
@@ -106,17 +172,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         spec = tabHost.newTabSpec("tab2").setIndicator(tabView)
                 .setContent(R.id.tabStatistics);
         tabHost.addTab(spec);
-
-
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            public void onTabChanged(String tabId) {
-                //currentTab = tabHost.getCurrentTab();
-
-                //tabHost.getTabWidget().
-
-                //lastTab = currentTab;
-            }
-        });
     }
 
 
@@ -143,12 +198,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .strokeColor(Color.rgb(DEFAULT_COLOR_RED, DEFAULT_COLOR_GREEN, DEFAULT_COLOR_BLUE)).strokeWidth(CIRCLE_MARGIN));
         seekBarListener.setCircle(circle);
 
-        currentPos = mMap.addMarker(new MarkerOptions().position(bucharest).title("Marker in Bucharest"));
+        currentPos = mMap.addMarker(new MarkerOptions().position(bucharest).title("Locatia ta"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bucharest));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bucharest, MAP_DEFAULT_ZOOM));
 
         /* Initialize GPS location */
         this.locationListener = IRLocationListener.getLocationManager(this);
+
+        /* Init data from server */
+        initData();
     }
 
 
@@ -163,7 +221,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case IRLocationListener.IR_PERMISSION_ACCESS_COURSE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     System.out.println("Permissions granted");
@@ -183,6 +240,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      * @param location
      */
     public void setInitialPosition(Location location) {
+
+        if (location == null)
+            return;
+
         updateLocationComponents(location);
 
         // Zoom to the current location
@@ -196,6 +257,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      * @param location
      */
     public void updateLocationComponents(Location location) {
+
+        if (location == null)
+            return;
+
         System.out.println("Location update lat " + location.getLatitude() + " long " + location.getLongitude());
 
         // Move the circle and the pin to the current location

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Investitii Publice</string>
     <string name="title_activity_maps">Investitii Publice</string>
+    <string name="title_activity_contract">Contract</string>
 </resources>

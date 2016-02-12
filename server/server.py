@@ -74,7 +74,6 @@ def getStatisticsArea():
         })
 
 
-    print ()
     return jsonify({
         'orders': orders,
         'categories': db.get_order(orders[0]['id'])['categories']
@@ -85,7 +84,7 @@ def getStatisticsArea():
 def getStatisticsName():
     areaName = request.args.get('areaName')
 
-    orders = db.get_orders_by_name(areaName)
+    orders = db.get_orders_by_areaName(areaName)
     if len(orders) == 0:
         return jsonify({
             'orders': orders
@@ -97,4 +96,4 @@ def getStatisticsName():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

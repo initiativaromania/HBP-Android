@@ -46,6 +46,11 @@
                 android:value="com.example.claudiu.investitiipublice.IRUserInterface.MainActivity" />
         </activity>
 
+        <activity
+            android:name="com.example.claudiu.investitiipublice.IRUserInterface.ContractListActivity"
+            android:label="@string/title_activity_contract_list">
+        </activity>
+
     </application>
 
 </manifest>

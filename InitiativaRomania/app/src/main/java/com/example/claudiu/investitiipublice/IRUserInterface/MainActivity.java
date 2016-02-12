@@ -125,7 +125,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         if (contract != null) {
                             /* Start a separate view for a contract */
                             Intent intent = new Intent(getBaseContext(), ContractActivity.class);
-                            intent.putExtra("mama", contract);
+                            intent.putExtra(ContractActivity.EXTRA_CONTRACT_ID, contract);
                             startActivity(intent);
                         } else {
                             /* Offer details about the user's position */

@@ -1,5 +1,6 @@
 package com.example.claudiu.investitiipublice.IRObjects;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -47,6 +48,8 @@ public class ContractManager {
         /* MOKUP Contract, replace with the actual contracts */
         Contract testContract = new Contract();
         testContract.description = "Contract de achizitie banci in Tineretului";
+        for (int i = 0; i < 50; i++)
+            testContract.description += " lorem ipsum sin dolet amet bla text de contract";
         testContract.id = 1;
         testContract.votes = 233;
         testContract.latitude = 44.444356;
@@ -64,9 +67,19 @@ public class ContractManager {
         testContract.addCategory(testCategory);
         testContract.company = testCompany;
 
+        Primarie primarie = new Primarie();
+        primarie.id = 1;
+        primarie.name = "Primarie Sector 1";
+        testContract.primarie = primarie;
+
         addMockContracts(testContract);
 
         contracts.add(testContract);
+        return contracts;
+    }
+
+    public static LinkedList<Contract> getContractList(Serializable entity, int entityType) {
+
         return contracts;
     }
 }

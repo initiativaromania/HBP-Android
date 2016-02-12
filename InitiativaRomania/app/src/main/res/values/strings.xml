@@ -2,4 +2,5 @@
     <string name="app_name">Investitii Publice</string>
     <string name="title_activity_maps">Investitii Publice</string>
     <string name="title_activity_contract">Contract</string>
+    <string name="title_activity_contract_list">Contract List</string>
 </resources>

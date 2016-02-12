@@ -17,6 +17,7 @@ public class Contract implements Serializable, Cloneable{
     public int votes;
     public LinkedList<Comment> comments = null;
     public Company company = null;
+    public Primarie primarie = null;
     public LinkedList<Category> categories = null;
 
     public Contract() {

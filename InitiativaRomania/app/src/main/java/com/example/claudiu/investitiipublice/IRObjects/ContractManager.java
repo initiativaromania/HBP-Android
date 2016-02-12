@@ -1,5 +1,24 @@
 package com.example.claudiu.investitiipublice.IRObjects;
 
+import android.app.DownloadManager;
+import android.app.VoiceInteractor;
+import android.content.Context;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.claudiu.investitiipublice.IRUserInterface.MainActivity;
+import com.google.android.gms.appdatasearch.GetRecentContextCall;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
@@ -8,9 +27,19 @@ import java.util.Random;
  * Created by claudiu on 2/9/16.
  */
 public class ContractManager {
-    private static final int MAX_MOCKUP_CONTRACTS = 30;
+    private static final String SERVER_IP = "http://192.168.0.104:5000";
+    private static final int MAX_MOCKUP_CONTRACTS = 50;
+    private static final String URL_GET_ORDERS = SERVER_IP + "/getOrders?lat=%s&lng=%s&zoom=%s";
+    private static final String URL_GET_ORDER = SERVER_IP + "/getOrder?id=%s";
+    private static final String URL_GET_COMPANY = SERVER_IP + "/getFirm?name=%s";
+    private static final String URL_GET_JUSTIFICA = SERVER_IP + "/justify?id=%s";
+    private static final String URL_GET_CATEGORY = SERVER_IP + "/categoryDetails?categoryName=%s";
+    private static final String URL_GET_TOP_COMPANIES = SERVER_IP + "/getTop10Firm";
+    private static final String URL_GET_STATISTICS = SERVER_IP + "/getStatisticsArea?lat=%s&lng=%s&zoom=%s";
 
-    private static LinkedList<Contract> contracts = new LinkedList<Contract>();
+
+
+    public static LinkedList<Contract> contracts = new LinkedList<Contract>();
 
     private static void addMockContracts(Contract test) {
         Contract newContract = null;
@@ -43,39 +72,32 @@ public class ContractManager {
         }
     }
 
-    public static LinkedList<Contract> getAllContracts() {
 
-        /* MOKUP Contract, replace with the actual contracts */
-        Contract testContract = new Contract();
-        testContract.description = "Contract de achizitie banci in Tineretului";
-        for (int i = 0; i < 50; i++)
-            testContract.description += " lorem ipsum sin dolet amet bla text de contract";
-        testContract.id = 1;
-        testContract.votes = 233;
-        testContract.latitude = 44.444356;
-        testContract.longitude = 26.098050;
-        testContract.valueEUR = 4400000;
+    public static void getAllContracts(final Context context) {
 
-        Category testCategory = new Category();
-        testCategory.id = 1;
-        testCategory.name = "Parcuri";
+        RequestQueue queue = Volley.newRequestQueue(context);
 
-        Company testCompany = new Company();
-        testCompany.id = 1;
-        testCompany.name = "SC Banci de parc SRL";
+        System.out.println("Getting all contracts");
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, String.format(URL_GET_ORDERS, 0, 0, 0),
+                        (String)null, new Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response: " + response.toString());
+                        MainActivity ma = (MainActivity)context;
+                        ma.storeAllContracts(response);
 
-        testContract.addCategory(testCategory);
-        testContract.company = testCompany;
+                    }
+                }, new ErrorListener() {
 
-        Primarie primarie = new Primarie();
-        primarie.id = 1;
-        primarie.name = "Primarie Sector 1";
-        testContract.primarie = primarie;
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Error connecting to server", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        addMockContracts(testContract);
-
-        contracts.add(testContract);
-        return contracts;
+        queue.add(jsObjRequest);
+        System.out.println("Request sent");
     }
 
     public static LinkedList<Contract> getContractList(Serializable entity, int entityType) {

@@ -14,6 +14,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.claudiu.initiativaromania.R;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
 import com.example.claudiu.investitiipublice.IRObjects.ContractManager;
@@ -26,6 +27,10 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -103,15 +108,44 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         /* Init the hashmap Marker - Contracts */
         markerContracts = new HashMap<Marker, Contract>();
 
-        /* Add all the contracts on the google map and the hash map*/
-        LinkedList<Contract> contracts = ContractManager.getAllContracts();
-        for (Contract contract : contracts) {
-            LatLng location = new LatLng(contract.latitude, contract.longitude);
-            Marker marker = mMap.addMarker(new MarkerOptions()
-                    .position(location).title(contract.valueEUR + ""));
+        /* Send a request to get all the cotnracts */
+        ContractManager.getAllContracts(this);
+    }
 
-            markerContracts.put(marker, contract);
+    public void storeAllContracts(JSONObject response) {
+        LinkedList<Contract> contractList = new LinkedList<Contract>();
+        Contract contract;
+
+        /* Parse the list of contracts */
+        try {
+            JSONArray jsonContractList = response.getJSONArray("orders");
+
+            for (int i = 0; i < jsonContractList.length(); i++) {
+                JSONObject obj = jsonContractList.getJSONObject(i);
+
+                contract = new Contract();
+                contract.id = obj.getInt("id");
+                contract.latitude = obj.getDouble("lat");
+                contract.longitude = obj.getDouble("lng");
+
+                contractList.add(contract);
+
+
+                /* Add pin to the map */
+                LatLng location = new LatLng(contract.latitude, contract.longitude);
+                Marker marker = mMap.addMarker(new MarkerOptions()
+                        .position(location));
+
+                markerContracts.put(marker, contract);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+        /* Store all the contracts */
+        ContractManager.contracts = contractList;
+
 
         /* Set on click listener for each pin */
         mMap.setOnMarkerClickListener(

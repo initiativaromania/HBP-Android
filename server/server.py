@@ -82,8 +82,14 @@ def getStatisticsArea():
         topCategories.extend(db.get_order(order['id'])['categories'])
     topCategories = list(set(topCategories))
 
+    # get total sum
+    totalSum = 0
+    for order in orders:
+        totalSum += long(order['price'])
+
     return jsonify({
         'orders': orders[:100],
+        'totalSum': str(totalSum),
         'categories': topCategories[:10]
     })
 

@@ -3,19 +3,15 @@ package com.example.claudiu.investitiipublice.IRUserInterface;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.claudiu.initiativaromania.R;
 import com.example.claudiu.investitiipublice.IRObjects.Company;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
-import com.example.claudiu.investitiipublice.IRObjects.ContractManager;
+import com.example.claudiu.investitiipublice.IRObjects.CommManager;
 import com.example.claudiu.investitiipublice.IRObjects.Primarie;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -85,7 +81,7 @@ public class ContractListActivity extends Activity {
 
 
         /* Get the contracts */
-        contracts = ContractManager.getContractList(company, CONTRACT_LIST_FOR_COMPANY);
+        contracts = CommManager.getEntityContractList(company, CONTRACT_LIST_FOR_COMPANY);
 
         setContracts();
     }

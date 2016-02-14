@@ -3,7 +3,10 @@ package com.example.claudiu.investitiipublice.IRUserInterface;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.LevelListDrawable;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -14,14 +17,14 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.claudiu.initiativaromania.R;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
-import com.example.claudiu.investitiipublice.IRObjects.ContractManager;
+import com.example.claudiu.investitiipublice.IRObjects.CommManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -48,6 +51,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int DEFAULT_COLOR_RED      = 119;
     private static final int DEFAULT_COLOR_GREEN    = 203;
     private static final int DEFAULT_COLOR_BLUE     = 212;
+    private static final int DEFAULT_COLOR_HUE      = 190;
 
 
     /* Setup Objects */
@@ -109,10 +113,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         markerContracts = new HashMap<Marker, Contract>();
 
         /* Send a request to get all the cotnracts */
-        ContractManager.getAllContracts(this);
+        CommManager.init(this);
+        CommManager.requestAllContracts(this);
     }
 
-    public void storeAllContracts(JSONObject response) {
+
+    /* Receive all the contracts from the server */
+    public void receiveAllContracts(JSONObject response) {
         LinkedList<Contract> contractList = new LinkedList<Contract>();
         Contract contract;
 
@@ -134,7 +141,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 /* Add pin to the map */
                 LatLng location = new LatLng(contract.latitude, contract.longitude);
                 Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(location));
+                        .position(location).icon(BitmapDescriptorFactory.defaultMarker(DEFAULT_COLOR_HUE)));
+
+
 
                 markerContracts.put(marker, contract);
             }
@@ -144,7 +153,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         /* Store all the contracts */
-        ContractManager.contracts = contractList;
+        CommManager.contracts = contractList;
 
 
         /* Set on click listener for each pin */

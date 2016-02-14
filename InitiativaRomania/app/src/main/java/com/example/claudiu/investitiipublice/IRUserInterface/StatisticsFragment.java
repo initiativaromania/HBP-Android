@@ -14,7 +14,7 @@ import com.example.claudiu.initiativaromania.R;
 public class StatisticsFragment extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
 
-    public static final StatisticsFragment newInstance(String message)
+    public static StatisticsFragment newInstance(String message)
     {
         StatisticsFragment f = new StatisticsFragment();
         Bundle bdl = new Bundle(1);

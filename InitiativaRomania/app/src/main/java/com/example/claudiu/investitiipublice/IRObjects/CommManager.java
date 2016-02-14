@@ -12,6 +12,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.claudiu.investitiipublice.IRUserInterface.ContractActivity;
 import com.example.claudiu.investitiipublice.IRUserInterface.MainActivity;
+import com.example.claudiu.investitiipublice.IRUserInterface.statistics.AroundStatisticsFragment;
+import com.google.android.gms.appdatasearch.GetRecentContextCall;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
@@ -97,5 +100,29 @@ public class CommManager {
         });
 
         queue.add(jsonObjectRequest);
+    }
+
+    public static void setStatisticsData(final AroundStatisticsFragment statisticsFragment, double lat, double lng, int zoom) {
+        RequestQueue queue = Volley.newRequestQueue(statisticsFragment.getActivity());
+
+        System.out.println("Getting statistics");
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, String.format(URL_GET_STATISTICS, 0, 0, 0),
+                        (String)null, new Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response: " + response.toString());
+                        statisticsFragment.dataUpdated(response);
+
+                    }
+                }, new ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(statisticsFragment.getContext(), "Error connecting to server", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        queue.add(jsObjRequest);
     }
 }

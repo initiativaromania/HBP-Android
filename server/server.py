@@ -75,6 +75,7 @@ def getStatisticsArea():
     topCategories = []
     for order in orders:
         topCategories.extend(db.get_order(order['id'])['categories'])
+    topCategories = list(set(topCategories))
 
     return jsonify({
         'orders': orders[:100],

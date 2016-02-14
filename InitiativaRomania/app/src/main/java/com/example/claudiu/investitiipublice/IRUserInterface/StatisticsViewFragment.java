@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import com.example.claudiu.initiativaromania.R;
+import com.example.claudiu.investitiipublice.IRUserInterface.statistics.AroundStatisticsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class StatisticsViewFragment extends Fragment {
 
     private List<Fragment> getFragments() {
         List<Fragment> fList = new ArrayList<Fragment>();
-        fList.add(StatisticsFragment.newInstance("Fragment 1"));
+        fList.add(AroundStatisticsFragment.newInstance());
         fList.add(StatisticsFragment.newInstance("Fragment 2"));
         fList.add(StatisticsFragment.newInstance("Fragment 3"));
         return fList;

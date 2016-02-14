@@ -67,32 +67,18 @@ def getStatisticsArea():
     lng = float(request.args.get('lng'))
     zoom = int(request.args.get('zoom'))
 
-    orders = db.get_orders(map.get_map_area(lat, lng, zoom))
+    orders = db.get_top_orders(map.get_map_area(lat, lng, zoom))
     if len(orders) == 0:
-        return jsonify({
-            'orders': orders
-        })
+        return jsonify({})
 
+    # obtain top 10 categories
+    topCategories = []
+    for order in orders:
+        topCategories.extend(db.get_order(order['id'])['categories'])
 
     return jsonify({
-        'orders': orders,
-        'categories': db.get_order(orders[0]['id'])['categories']
-    })
-
-
-@app.route('/getStatisticsName', methods=['GET'])
-def getStatisticsName():
-    areaName = request.args.get('areaName')
-
-    orders = db.get_orders_by_areaName(areaName)
-    if len(orders) == 0:
-        return jsonify({
-            'orders': orders
-        })
-
-    return jsonify({
-        'orders': orders,
-        'categories': db.get_order(orders[0]['id'])['categories']
+        'orders': orders[:100],
+        'categories': topCategories[:10]
     })
 
 if __name__ == '__main__':

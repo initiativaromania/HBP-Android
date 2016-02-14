@@ -48,7 +48,7 @@ def get_orders(area):
     query = ("SELECT id, location_lat, location_lng FROM contracte"
              " WHERE"
              " location_lat BETWEEN %s AND %s"
-             " AND location_lng BETWEEN %s AND %s")
+             " AND location_lng BETWEEN %s AND %s order by price desc")
 
     cursor.execute(query, area)
 
@@ -228,6 +228,31 @@ def get_orders_by_areaName(areaName):
         })
         if (len(result) > 100):
             break
+
+    cursor.close()
+    cnx.close()
+
+    return result
+
+
+def get_top_orders(area):
+    cnx = mysql.connector.connect(user='root', database='ir-investitii')
+    cursor = cnx.cursor()
+
+    query = ("SELECT id, contract_title, price FROM contracte"
+             " WHERE"
+             " location_lat BETWEEN %s AND %s"
+             " AND location_lng BETWEEN %s AND %s order by price desc")
+
+    cursor.execute(query, area)
+
+    result = []
+    for (id, contract_title, price) in cursor:
+        result.append({
+            'id': id,
+            'contract_title': contract_title,
+            'price': str(price)
+        })
 
     cursor.close()
     cnx.close()

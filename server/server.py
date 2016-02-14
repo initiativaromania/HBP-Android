@@ -61,6 +61,11 @@ def getTop10Firm():
     return jsonify({'all':db.getTop10Firm()})
 
 
+@app.route('/getTop10VotedContracts', methods=['GET'])
+def getTop10VotedContracts():
+    return jsonify({'all':db.getTop10VotedContracts()})
+
+
 @app.route('/getStatisticsArea', methods=['GET'])
 def getStatisticsArea():
     lat = float(request.args.get('lat'))

@@ -2,7 +2,8 @@ import mysql.connector
 
 
 def getFirstOrder(cursor):
-    for (id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency, CPVCodeID, CPVCode, contract_nr) in cursor:
+    for (id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency,
+         CPVCodeID, CPVCode, contract_nr) in cursor:
         return {
             'id': id,
             'contract_title': contract_title,
@@ -22,9 +23,10 @@ def getFirstOrder(cursor):
 
 def getAllOrder(cursor):
     results = []
-    for (id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency, CPVCodeID, CPVCode, contract_nr) in cursor:
+    for (id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency,
+         CPVCodeID, CPVCode, contract_nr) in cursor:
         results.append({
-           'id': id,
+            'id': id,
             'contract_title': contract_title,
             'address': address,
             'location_lat': location_lat,
@@ -133,7 +135,6 @@ def justify(orderId):
     cnx.commit()
     cnx.close()
     return None
-
 
 
 def categoryOrderNr(categoryName):
@@ -258,3 +259,24 @@ def get_top_orders(area):
     cnx.close()
 
     return result
+
+
+def getTop10VotedContracts():
+    cnx = mysql.connector.connect(user='root', database='ir-investitii')
+    cursor = cnx.cursor()
+
+    query = "SELECT id, contract_title, price, justify FROM contracte ORDER BY justify desc limit 10"
+    cursor.execute(query)
+
+    results = []
+    for (id, contract_title, price, justify) in cursor:
+        results.append({
+            'id': id,
+            'contract_title': str(contract_title),
+            'price': str(price),
+            'justify': int(justify)
+        })
+
+    cursor.close()
+    cnx.close()
+    return results

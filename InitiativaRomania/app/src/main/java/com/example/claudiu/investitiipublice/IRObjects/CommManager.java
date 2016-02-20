@@ -25,7 +25,7 @@ import java.util.LinkedList;
  * Created by claudiu on 2/9/16.
  */
 public class CommManager {
-    private static final String SERVER_IP = "http://192.168.0.104:5000";
+    private static final String SERVER_IP = "http://192.168.1.52:5000";
 
     /* Requests to server */
     private static final String URL_GET_ORDERS = SERVER_IP + "/getOrders?lat=%s&lng=%s&zoom=%s";
@@ -103,7 +103,6 @@ public class CommManager {
     }
 
     public static void setStatisticsData(final AroundStatisticsFragment statisticsFragment, double lat, double lng, int zoom) {
-        RequestQueue queue = Volley.newRequestQueue(statisticsFragment.getActivity());
 
         System.out.println("Getting statistics");
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -124,5 +123,28 @@ public class CommManager {
                 });
 
         queue.add(jsObjRequest);
+    }
+
+    public static void justifyContract(final Context context, Contract contract) {
+        System.out.println("Calling justify " + contract.id);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET, String.format(URL_GET_JUSTIFICA, contract.id),
+                (String) null, new Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("Response: " + response);
+                ContractActivity ca = (ContractActivity)context;
+                ca.ackJustify();
+            }
+        }, new ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error connection to server. Try again later", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(jsonObjectRequest);
     }
 }

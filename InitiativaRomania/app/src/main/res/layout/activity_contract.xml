@@ -54,6 +54,43 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:id="@+id/view101"
+            android:background="#9d9d9d"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Titlu"
+            android:id="@+id/textView11"
+            android:layout_gravity="center_vertical|top"
+            android:layout_weight="6"
+            android:textAlignment="center"
+            android:gravity="top" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:id="@+id/view102"
+            android:background="#9d9d9d"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4" />
+
+    </LinearLayout>
+
+
     <FrameLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -68,6 +105,31 @@
             android:text="Titlu contract"
             android:id="@+id/textViewTitluContract" />
     </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:id="@+id/view201"
+            android:background="#9d9d9d"
+            android:layout_weight="4"
+            android:layout_gravity="center_vertical" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:id="@+id/view202"
+            android:background="#9d9d9d"
+            android:layout_weight="4"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:orientation="horizontal"
@@ -92,52 +154,60 @@
             android:layout_gravity="right" />
     </FrameLayout>
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Companie"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2"
+            android:layout_weight="12" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="SC Mordor Companies SRL"
             android:id="@+id/textCompany"
+            android:textColor="#77cbd4"
+            android:layout_weight="4"
             android:layout_gravity="right"
-            android:textColor="#77cbd4" />
+            android:gravity="right" />
 
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Primarie"
-            android:id="@+id/textView8" />
+            android:text="Cumparator"
+            android:id="@+id/textView8"
+            android:layout_weight="10" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Primaria Municipiului Bucuresti"
             android:id="@+id/textPrimarie"
+            android:textColor="#77cbd4"
+            android:layout_weight="4"
             android:layout_gravity="right"
-            android:textColor="#77cbd4" />
-    </FrameLayout>
+            android:gravity="right" />
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -241,7 +311,7 @@
             android:layout_gravity="bottom">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:text="Justifica"
                 android:id="@+id/button"

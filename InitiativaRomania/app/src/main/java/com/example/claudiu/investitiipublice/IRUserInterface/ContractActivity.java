@@ -1,11 +1,15 @@
 package com.example.claudiu.investitiipublice.IRUserInterface;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.claudiu.initiativaromania.R;
 import com.example.claudiu.investitiipublice.IRObjects.Category;
@@ -19,17 +23,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by claudiu on 2/10/16.
  */
 public class ContractActivity extends Activity {
     public static final String EXTRA_CONTRACT_ID    = "com.example.claudiu.investitiipublice.IRObjects.Contract";
+    private static final String JUSTIFY_PREFFERENCE = "justify_prefference";
+
     private Contract contract;
+    private Context contractContext = this;
+    private SharedPreferences just_prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contract);
+
+        just_prefs = getApplicationContext().getSharedPreferences(JUSTIFY_PREFFERENCE, 0);
 
         /* Get the contract only with the id from the intent */
         Intent intent = getIntent();
@@ -99,8 +111,10 @@ public class ContractActivity extends Activity {
 
         /* Show the value of the contract */
         tv = (TextView)findViewById(R.id.textValue);
+        double price = Double.parseDouble(contract.valueEUR);
+        DecimalFormat dm = new DecimalFormat("###,###.###");
         if (tv != null)
-            tv.setText(String.valueOf(contract.valueEUR) + " EUR");
+            tv.setText(String.valueOf(dm.format(price)) + " EUR");
 
         /* Show the contract's CPV code */
         tv = (TextView)findViewById(R.id.textCPV);
@@ -111,6 +125,45 @@ public class ContractActivity extends Activity {
         tv = (TextView)findViewById(R.id.textCategory);
         if (tv != null)
             tv.setText(contract.categories.getFirst().name);
+
+
+        /* Setup the Justify button */
+        System.out.println("Contract votes " + contract.votes);
+        Button button = (Button)findViewById(R.id.button);
+        if (button != null) {
+            button.setText("Justifica (" + contract.votes + ")");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /* Check whether you have voted before */
+                    int votedBefore = just_prefs.getInt("Contract" + contract.id, -1);
+                    System.out.println("Saved prefference value for contract " + contract.id + " id " + votedBefore);
+
+                    if (votedBefore == -1) {
+                        System.out.println("Never voted. Calling justify from button");
+                        CommManager.justifyContract(contractContext, contract);
+                    } else
+                        Toast.makeText(contractContext, "Ai mai cerut o data justificarea acestui contract",
+                                Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    /* Update the Justify button when the justify succeeds */
+    public void ackJustify() {
+        contract.votes++;
+        Button button = (Button)findViewById(R.id.button);
+        if (button != null) {
+            button.setText("Justifica (" + contract.votes + ")");
+        }
+
+        /* Remember the fact that you voted for this contract */
+        SharedPreferences.Editor editor = just_prefs.edit();
+        editor.putInt("Contract" + contract.id, 1);
+        editor.commit();
+
+        Toast.makeText(this, "Cererea ta a fost inregistrata", Toast.LENGTH_SHORT).show();
     }
 
 

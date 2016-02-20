@@ -87,9 +87,9 @@ def get_firm_order_nr(firmName):
     cnx = mysql.connector.connect(user='root', database='ir-investitii')
     cursor = cnx.cursor()
 
-    # query =
+    query ="select count(1) as count from contracte where company = '%s'" % (firmName)
 
-    cursor.execute("select count(1) as count from contracte where company = '%s'", firmName)
+    cursor.execute(query)
     for count in cursor:
         cursor.close()
         cnx.close()

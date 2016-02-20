@@ -3,7 +3,7 @@ import mysql.connector
 
 def getFirstOrder(cursor):
     for (id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency,
-         CPVCodeID, CPVCode, contract_nr) in cursor:
+         CPVCodeID, CPVCode, contract_nr, justify) in cursor:
         return {
             'id': id,
             'contract_title': contract_title,
@@ -17,14 +17,15 @@ def getFirstOrder(cursor):
             'CPVCode': CPVCode,
             'contract_nr': contract_nr,
             'price': price,
-            'currency': currency
+            'currency': currency,
+            'justify': int(justify)
         }
 
 
 def getAllOrder(cursor):
     results = []
     for (id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency,
-         CPVCodeID, CPVCode, contract_nr) in cursor:
+         CPVCodeID, CPVCode, contract_nr, justify) in cursor:
         results.append({
             'id': id,
             'contract_title': contract_title,
@@ -38,7 +39,8 @@ def getAllOrder(cursor):
             'CPVCode': CPVCode,
             'contract_nr': contract_nr,
             'price': price,
-            'currency': currency
+            'currency': currency,
+            'justify': int(justify)
         })
     return results
 
@@ -72,7 +74,7 @@ def get_order(orderId):
     cnx = mysql.connector.connect(user='root', database='ir-investitii')
     cursor = cnx.cursor()
 
-    query = "SELECT id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency, CPVCodeID, CPVCode, contract_nr  \
+    query = "SELECT id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency, CPVCodeID, CPVCode, contract_nr, justify  \
              FROM contracte WHERE id = '%d'" % (orderId)
     cursor.execute(query)
 
@@ -113,7 +115,7 @@ def get_firm_top_orders(firmName):
     cnx = mysql.connector.connect(user='root', database='ir-investitii')
     cursor = cnx.cursor()
 
-    query = "SELECT id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency, CPVCodeID, CPVCode, contract_nr \
+    query = "SELECT id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency, CPVCodeID, CPVCode, contract_nr, justify \
              from contracte where company like '%s' order by price desc limit 10" % (firmName)
     cursor.execute(query)
 
@@ -167,7 +169,7 @@ def categoryOrders(categoryName):
     cnx = mysql.connector.connect(user='root', database='ir-investitii')
     cursor = cnx.cursor()
 
-    query = "SELECT id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency, CPVCodeID, CPVCode, contract_nr \
+    query = "SELECT id, contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency, CPVCodeID, CPVCode, contract_nr, justify \
              from contracte where categories like '%s%s%s' order by price desc limit 10" % ("%", categoryName, "%")
     cursor.execute(query)
 

@@ -93,5 +93,15 @@ def getStatisticsArea():
         'categories': topCategories[:10]
     })
 
+
+@app.route('/getOrdersForBuyer', methods=['GET'])
+def getOrdersForBuyer():
+    buyerName = request.args.get('name')
+
+    return jsonify({
+        "orders": db.getOrdersForBuyer(buyerName)
+    })
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

@@ -40,6 +40,7 @@ CREATE TABLE `contracte` (
   `CPVCodeID` varchar(200) DEFAULT NULL,
   `CPVCode` varchar(200) DEFAULT NULL,
   `contract_nr` varchar(200) DEFAULT NULL,
+  `buyer` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `lat/lng` (`location_lat`,`location_lng`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

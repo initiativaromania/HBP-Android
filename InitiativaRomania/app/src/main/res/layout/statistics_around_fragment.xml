@@ -12,41 +12,38 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
-        android:weightSum="1">
-
-        <com.example.claudiu.investitiipublice.IRUserInterface.statistics.FontFitTextView
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_weight="0.1"
-            android:gravity="center"
-            android:text="Contracte in jurul locatiei curente:"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold" />
+        android:weightSum="1"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="0dp"
             android:layout_weight="0.07"
-            android:paddingTop="10dp"
-            android:textSize="20sp"
+            android:paddingTop="7dp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:text="TOP contracte:"/>
+            android:text="Top contracte:"
+            android:paddingLeft="8dp" />
 
         <ListView
             android:id="@+id/statistics_around_order_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4">
+            android:layout_weight="0.4"
+            android:divider="#ffffff"
+            android:dividerHeight="1dp">
         </ListView>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="0dp"
             android:layout_weight="0.07"
-            android:paddingTop="10dp"
-            android:textSize="20sp"
+            android:paddingTop="7dp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:text="TOP categorii:"/>
+            android:text="Top categorii:"
+            android:paddingLeft="8dp"/>
         <ListView
             android:id="@+id/statistics_around_categories_list"
             android:layout_width="match_parent"

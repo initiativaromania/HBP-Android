@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#77cbd4"
+    android:divider="#ffffff"
+    android:dividerPadding="1dp">
 
     <TextView
         android:id="@+id/statistics_around_row_categoryName"
@@ -9,7 +12,9 @@
         android:layout_height="wrap_content"
         android:text="Category 1"
         android:textSize="20sp"
-        android:padding="8dp">
+        android:padding="8dp"
+
+        android:textColor="#ffffff">
     </TextView>
 
 </LinearLayout>

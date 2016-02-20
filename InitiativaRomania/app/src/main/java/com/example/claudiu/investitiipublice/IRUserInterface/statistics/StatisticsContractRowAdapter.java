@@ -19,9 +19,9 @@ import java.util.List;
 public class StatisticsContractRowAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
     private final Context context;
-    private List<AroundStatisticsFragment.StatisticsOrderDetails> orders;
+    private List<StatisticsOrderDetails> orders;
 
-    public StatisticsContractRowAdapter(Context context, List<AroundStatisticsFragment.StatisticsOrderDetails> orders) {
+    public StatisticsContractRowAdapter(Context context, List<StatisticsOrderDetails> orders) {
         this.context = context;
         this.orders = orders;
     }
@@ -34,7 +34,7 @@ public class StatisticsContractRowAdapter extends BaseAdapter implements Adapter
         }
 
         TextView contractName = (TextView) convertView.findViewById(R.id.statistics_around_row_contractName);
-        contractName.setText(orders.get(position).title);
+        contractName.setText((position + 1) +". " + orders.get(position).title);
         convertView.setTag(orders.get(position).id);
 
         return convertView;

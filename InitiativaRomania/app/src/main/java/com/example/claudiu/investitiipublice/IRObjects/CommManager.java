@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.claudiu.investitiipublice.IRUserInterface.ContractActivity;
+import com.example.claudiu.investitiipublice.IRUserInterface.ContractListActivity;
 import com.example.claudiu.investitiipublice.IRUserInterface.MainActivity;
 import com.example.claudiu.investitiipublice.IRUserInterface.statistics.AroundStatisticsFragment;
 import com.google.android.gms.appdatasearch.GetRecentContextCall;
@@ -43,6 +44,34 @@ public class CommManager {
 
     public static void init(Context context) {
         queue = Volley.newRequestQueue(context);
+    }
+
+
+    /* Send request to server to get company details */
+    public static void requestCompanyDetails(final Context context, String companyName) {
+        System.out.println("Getting company details for " + String.format(URL_GET_COMPANY, companyName.replaceAll(" ", "%20")));
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, String.format(URL_GET_COMPANY, companyName.replaceAll(" ", "%20")),
+                        (String) null, new Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response: " + response.toString());
+                        ContractListActivity cla = (ContractListActivity) context;
+                        cla.receiveCompanyDetails(response);
+
+                    }
+                }, new ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Error connecting to server for company details. Try again later",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        queue.add(jsObjRequest);
+        System.out.println("Request sent");
     }
 
 

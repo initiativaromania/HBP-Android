@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,12 +15,11 @@ import com.example.claudiu.investitiipublice.IRObjects.Category;
 import com.example.claudiu.investitiipublice.IRObjects.CommManager;
 import com.example.claudiu.investitiipublice.IRObjects.Company;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
-import com.example.claudiu.investitiipublice.IRObjects.Primarie;
+import com.example.claudiu.investitiipublice.IRObjects.Authority;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 
@@ -79,7 +77,7 @@ public class ContractActivity extends Activity {
                     /* Start a separate view for a company */
                     Intent intent = new Intent(getBaseContext(), ContractListActivity.class);
                     intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_COMPANY);
-                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.company);
+                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.company.name);
                     startActivity(intent);
                 }
             });
@@ -88,17 +86,17 @@ public class ContractActivity extends Activity {
         /* Show the mayor office */
         tv = (TextView)findViewById(R.id.textPrimarie);
         if (tv != null) {
-            contract.primarie.name = "Primaria Mun. Bucuresti";
-            tv.setText(contract.primarie.name);
+            contract.authority.name = "Primaria Mun. Bucuresti";
+            tv.setText(contract.authority.name);
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("Click on primarie");
+                    System.out.println("Click on authority");
 
                     /* Start a separate view for a company */
                     Intent intent = new Intent(getBaseContext(), ContractListActivity.class);
                     intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_MAYORY);
-                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.primarie);
+                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.authority.name);
                     startActivity(intent);
                 }
             });
@@ -174,7 +172,7 @@ public class ContractActivity extends Activity {
             contract.CPVCode = response.getString("CPVCode");
             contract.address = response.getString("address");
             contract.company = new Company();
-            contract.primarie = new Primarie();
+            contract.authority = new Authority();
             contract.company.name = response.getString("company");
             contract.number = response.getString("contract_nr");
             contract.title = response.getString("contract_title");

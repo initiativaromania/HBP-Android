@@ -10,66 +10,105 @@ import com.example.claudiu.initiativaromania.R;
 import com.example.claudiu.investitiipublice.IRObjects.Company;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
 import com.example.claudiu.investitiipublice.IRObjects.CommManager;
-import com.example.claudiu.investitiipublice.IRObjects.Primarie;
+import com.example.claudiu.investitiipublice.IRObjects.Authority;
+import com.example.claudiu.investitiipublice.IRUserInterface.statistics.AroundStatisticsFragment;
+import com.example.claudiu.investitiipublice.IRUserInterface.statistics.StatisticsContractRowAdapter;
+import com.example.claudiu.investitiipublice.IRUserInterface.statistics.StatisticsOrderDetails;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by claudiu on 2/12/16.
  */
 public class ContractListActivity extends Activity {
     public static final String COMPANY_ACTIVITY_NAME    = "Companie";
-    public static final String MAYOR_OFFICE_ACTIVITY_NAME = "Primarie";
+    public static final String AUTHORITY_ACTIVITY_NAME  = "Autoritate contractanta";
     public static final String CONTRACT_LIST_TYPE       = "contract list type";
     public static final String CONTRACT_LIST_EXTRA      = "contract list extra";
     public static final int CONTRACT_LIST_FOR_COMPANY   = 1;
     public static final int CONTRACT_LIST_FOR_MAYORY    = 2;
 
     private int type;
-    private Company company = null;
-    private Primarie primarie = null;
+    private String name;
     private LinkedList<Contract> contracts;
+    private double totalValue;
 
     private void setTextViews() {
         Intent intent = getIntent();
         this.type = intent.getIntExtra(CONTRACT_LIST_TYPE, -1);
 
         System.out.println("Type of Contract list is " + this.type);
+        name = intent.getStringExtra(CONTRACT_LIST_EXTRA);
 
 
         /* Determine if the activity is for a Company or for a Mayor Office */
         if (type == CONTRACT_LIST_FOR_COMPANY) {
-            company = (Company) intent.getSerializableExtra(CONTRACT_LIST_EXTRA);
 
             TextView tv = (TextView)findViewById(R.id.textViewContractList);
             if (tv != null)
                 tv.setText(COMPANY_ACTIVITY_NAME);
-
-            tv = (TextView)findViewById(R.id.textEntityName);
-            if (tv != null)
-                tv.setText(company.name);
-
         } else {
-            primarie = (Primarie) intent.getSerializableExtra(CONTRACT_LIST_EXTRA);
-
             TextView tv = (TextView)findViewById(R.id.textViewContractList);
             if (tv != null)
-                tv.setText(MAYOR_OFFICE_ACTIVITY_NAME);
+                tv.setText(AUTHORITY_ACTIVITY_NAME);
+        }
 
-            tv = (TextView)findViewById(R.id.textEntityName);
-            if (tv != null)
-                tv.setText(primarie.name);
+        TextView tv = (TextView)findViewById(R.id.textEntityName);
+        if (tv != null)
+            tv.setText(name);
+    }
+
+
+    /* Receive the list of contracts per company and display it */
+    public void receiveCompanyDetails(JSONObject response) {
+
+        /* Set total value of the contracts */
+        try {
+            totalValue = Double.parseDouble(response.getString("ordersSum"));
+            DecimalFormat dm = new DecimalFormat("###,###.###");
+            TextView tv = (TextView)findViewById(R.id.textTotalValue);
+            tv.setText(String.valueOf(dm.format(totalValue) + " EUR"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Set the contracts */
+        try {
+            List<StatisticsOrderDetails> orderDetailsList = new ArrayList<>();
+            JSONArray contractsJSON = response.getJSONArray("topOrders");
+            for (int i = 0; i < contractsJSON.length(); i++) {
+                JSONObject contractJSON = contractsJSON.getJSONObject(i);
+
+                final Contract contract = new Contract();
+                contract.id = Integer.parseInt(contractJSON.getString("id"));
+                contract.title = contractJSON.getString("contract_title");
+                contract.valueEUR = contractJSON.getString("price");
+
+                orderDetailsList.add(new StatisticsOrderDetails() {{
+                    id = contract.id;
+                    title = contract.title;
+                    price = contract.valueEUR;
+                }});
+
+                System.out.println("Contract " + contract.id + ", title " + contract.title);
+
+                ListView orderList = (ListView) findViewById(R.id.entityContractList);
+                StatisticsContractRowAdapter adapter = new StatisticsContractRowAdapter(this, orderDetailsList);
+                orderList.setAdapter(adapter);
+                orderList.setOnItemClickListener(adapter);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
-
-    /* Set the contracts on the list view */
-    private void setContracts() {
-        ListView listView = (ListView)findViewById(R.id.listViewContracte);
-        if (listView == null)
-            return;
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +118,8 @@ public class ContractListActivity extends Activity {
         /* Set header text views */
         setTextViews();
 
-
-        /* Get the contracts */
-        contracts = CommManager.getEntityContractList(company, CONTRACT_LIST_FOR_COMPANY);
-
-        setContracts();
+        /* Get Contract List */
+        if (type == CONTRACT_LIST_FOR_COMPANY)
+            CommManager.requestCompanyDetails(this, name);
     }
 }

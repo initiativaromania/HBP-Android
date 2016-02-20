@@ -78,10 +78,4 @@ public class AroundStatisticsFragment extends Fragment {
         }
 
     }
-
-    protected class StatisticsOrderDetails {
-        int id;
-        String title;
-        String price;
-    }
 }

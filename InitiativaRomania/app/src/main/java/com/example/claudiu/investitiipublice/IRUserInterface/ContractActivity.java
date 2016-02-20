@@ -15,7 +15,6 @@ import com.example.claudiu.investitiipublice.IRObjects.Category;
 import com.example.claudiu.investitiipublice.IRObjects.CommManager;
 import com.example.claudiu.investitiipublice.IRObjects.Company;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
-import com.example.claudiu.investitiipublice.IRObjects.Authority;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,11 +82,10 @@ public class ContractActivity extends Activity {
             });
         }
 
-        /* Show the mayor office */
+        /* Show the buyeer */
         tv = (TextView)findViewById(R.id.textPrimarie);
         if (tv != null) {
-            contract.authority.name = "Primaria Mun. Bucuresti";
-            tv.setText(contract.authority.name);
+            tv.setText(contract.authority);
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,8 +93,8 @@ public class ContractActivity extends Activity {
 
                     /* Start a separate view for a company */
                     Intent intent = new Intent(getBaseContext(), ContractListActivity.class);
-                    intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_MAYORY);
-                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.authority.name);
+                    intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_BUYER);
+                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.authority);
                     startActivity(intent);
                 }
             });
@@ -172,7 +170,8 @@ public class ContractActivity extends Activity {
             contract.CPVCode = response.getString("CPVCode");
             contract.address = response.getString("address");
             contract.company = new Company();
-            contract.authority = new Authority();
+            contract.authority = response.getString("buyer");
+            contract.votes = Integer.parseInt(response.getString("justify"));
             contract.company.name = response.getString("company");
             contract.number = response.getString("contract_nr");
             contract.title = response.getString("contract_title");

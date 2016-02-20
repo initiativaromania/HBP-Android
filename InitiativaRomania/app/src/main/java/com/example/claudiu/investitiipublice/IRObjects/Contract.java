@@ -23,7 +23,7 @@ public class Contract implements Serializable, Cloneable{
 
     public LinkedList<Comment> comments = null;
     public Company company = null;
-    public Authority authority = null;
+    public String authority;
     public LinkedList<Category> categories = null;
 
     public Contract() {

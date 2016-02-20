@@ -7,11 +7,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.claudiu.initiativaromania.R;
-import com.example.claudiu.investitiipublice.IRObjects.Company;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
 import com.example.claudiu.investitiipublice.IRObjects.CommManager;
-import com.example.claudiu.investitiipublice.IRObjects.Authority;
-import com.example.claudiu.investitiipublice.IRUserInterface.statistics.AroundStatisticsFragment;
 import com.example.claudiu.investitiipublice.IRUserInterface.statistics.StatisticsContractRowAdapter;
 import com.example.claudiu.investitiipublice.IRUserInterface.statistics.StatisticsOrderDetails;
 
@@ -29,16 +26,16 @@ import java.util.List;
  */
 public class ContractListActivity extends Activity {
     public static final String COMPANY_ACTIVITY_NAME    = "Companie";
-    public static final String AUTHORITY_ACTIVITY_NAME  = "Autoritate contractanta";
+    public static final String AUTHORITY_ACTIVITY_NAME  = "Cumparator";
     public static final String CONTRACT_LIST_TYPE       = "contract list type";
     public static final String CONTRACT_LIST_EXTRA      = "contract list extra";
     public static final int CONTRACT_LIST_FOR_COMPANY   = 1;
-    public static final int CONTRACT_LIST_FOR_MAYORY    = 2;
+    public static final int CONTRACT_LIST_FOR_BUYER     = 2;
 
     private int type;
     private String name;
     private LinkedList<Contract> contracts;
-    private double totalValue;
+    private double totalValue = 0;
 
     private void setTextViews() {
         Intent intent = getIntent();
@@ -66,23 +63,12 @@ public class ContractListActivity extends Activity {
     }
 
 
-    /* Receive the list of contracts per company and display it */
-    public void receiveCompanyDetails(JSONObject response) {
+    /* Show the contracts in a predefined list view */
+    private double displayContracts(JSONArray contractsJSON) {
+        List<StatisticsOrderDetails> orderDetailsList = new ArrayList<>();
+        double totalValue = 0;
 
-        /* Set total value of the contracts */
         try {
-            totalValue = Double.parseDouble(response.getString("ordersSum"));
-            DecimalFormat dm = new DecimalFormat("###,###.###");
-            TextView tv = (TextView)findViewById(R.id.textTotalValue);
-            tv.setText(String.valueOf(dm.format(totalValue) + " EUR"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        /* Set the contracts */
-        try {
-            List<StatisticsOrderDetails> orderDetailsList = new ArrayList<>();
-            JSONArray contractsJSON = response.getJSONArray("topOrders");
             for (int i = 0; i < contractsJSON.length(); i++) {
                 JSONObject contractJSON = contractsJSON.getJSONObject(i);
 
@@ -90,6 +76,8 @@ public class ContractListActivity extends Activity {
                 contract.id = Integer.parseInt(contractJSON.getString("id"));
                 contract.title = contractJSON.getString("contract_title");
                 contract.valueEUR = contractJSON.getString("price");
+
+                totalValue += Double.parseDouble(contract.valueEUR);
 
                 orderDetailsList.add(new StatisticsOrderDetails() {{
                     id = contract.id;
@@ -107,6 +95,51 @@ public class ContractListActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        return totalValue;
+    }
+
+
+    /* Receive the list of contracts per company and display it */
+    public void receiveCompanyDetails(JSONObject response) {
+
+        /* Set total value of the contracts */
+        try {
+            totalValue = Double.parseDouble(response.getString("ordersSum"));
+            DecimalFormat dm = new DecimalFormat("###,###.###");
+            TextView tv = (TextView)findViewById(R.id.textTotalValue);
+            tv.setText(String.valueOf(dm.format(totalValue) + " EUR"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Set the contracts */
+        try {
+            JSONArray contractsJSON = response.getJSONArray("topOrders");
+
+            displayContracts(contractsJSON);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /* Receive the list of contracts per buyer and display it */
+    public void receiveBuyerDetails(JSONObject response) {
+
+         /* Set the contracts */
+        try {
+            JSONArray contractsJSON = response.getJSONArray("orders");
+
+            totalValue = displayContracts(contractsJSON);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Fill in the total value of all the contracts */
+        DecimalFormat dm = new DecimalFormat("###,###.###");
+        TextView tv = (TextView)findViewById(R.id.textTotalValue);
+        tv.setText(String.valueOf(dm.format(totalValue) + " EUR"));
     }
 
 
@@ -121,5 +154,8 @@ public class ContractListActivity extends Activity {
         /* Get Contract List */
         if (type == CONTRACT_LIST_FOR_COMPANY)
             CommManager.requestCompanyDetails(this, name);
+        else
+            CommManager.requestBuyerDetails(this, name);
     }
+
 }

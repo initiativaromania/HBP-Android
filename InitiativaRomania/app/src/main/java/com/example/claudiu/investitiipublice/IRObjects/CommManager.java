@@ -14,6 +14,7 @@ import com.example.claudiu.investitiipublice.IRUserInterface.ContractActivity;
 import com.example.claudiu.investitiipublice.IRUserInterface.ContractListActivity;
 import com.example.claudiu.investitiipublice.IRUserInterface.MainActivity;
 import com.example.claudiu.investitiipublice.IRUserInterface.statistics.AroundStatisticsFragment;
+import com.example.claudiu.investitiipublice.IRUserInterface.statistics.TopVotedContractsFragment;
 import com.google.android.gms.appdatasearch.GetRecentContextCall;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -32,9 +33,11 @@ public class CommManager {
     private static final String URL_GET_ORDERS = SERVER_IP + "/getOrders?lat=%s&lng=%s&zoom=%s";
     private static final String URL_GET_ORDER = SERVER_IP + "/getOrder?id=%s";
     private static final String URL_GET_COMPANY = SERVER_IP + "/getFirm?name=%s";
+    private static final String URL_GET_BUYER = SERVER_IP + "/getOrdersForBuyer?name=%s";
     private static final String URL_GET_JUSTIFICA = SERVER_IP + "/justify?id=%s";
     private static final String URL_GET_CATEGORY = SERVER_IP + "/categoryDetails?categoryName=%s";
     private static final String URL_GET_TOP_COMPANIES = SERVER_IP + "/getTop10Firm";
+    private static final String URL_GET_TOP_VOTED_CONTRACTS = SERVER_IP + "/getTop10VotedContracts";
     private static final String URL_GET_STATISTICS = SERVER_IP + "/getStatisticsArea?lat=%s&lng=%s&zoom=%s";
 
 
@@ -66,6 +69,34 @@ public class CommManager {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(context, "Error connecting to server for company details. Try again later",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        queue.add(jsObjRequest);
+        System.out.println("Request sent");
+    }
+
+
+    /* Send request to server to get buyer details */
+    public static void requestBuyerDetails(final Context context, String buyerName) {
+        System.out.println("Getting buyer details for " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")),
+                        (String) null, new Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response: " + response.toString());
+                        ContractListActivity cla = (ContractListActivity) context;
+                        cla.receiveBuyerDetails(response);
+
+                    }
+                }, new ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Error connecting to server for buyer details. Try again later",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -154,6 +185,32 @@ public class CommManager {
         queue.add(jsObjRequest);
     }
 
+
+    /* Get top 10 most voted contracts */
+    public static void requestTop10Contracts(final TopVotedContractsFragment fragment) {
+        System.out.println("Getting top 10 voted contracts");
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, URL_GET_TOP_VOTED_CONTRACTS,
+                        (String)null, new Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response: " + response.toString());
+                        fragment.displayTop10Contracts(response);
+
+                    }
+                }, new ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(fragment.getContext(), "Error connecting to server", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        queue.add(jsObjRequest);
+    }
+
+
+    /* Call server to add a request to justify a contract */
     public static void justifyContract(final Context context, Contract contract) {
         System.out.println("Calling justify " + contract.id);
 

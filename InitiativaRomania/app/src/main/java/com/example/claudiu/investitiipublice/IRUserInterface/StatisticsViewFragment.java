@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import com.example.claudiu.initiativaromania.R;
 import com.example.claudiu.investitiipublice.IRUserInterface.statistics.AroundStatisticsFragment;
+import com.example.claudiu.investitiipublice.IRUserInterface.statistics.TopCompanyFragment;
 import com.example.claudiu.investitiipublice.IRUserInterface.statistics.TopVotedContractsFragment;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class StatisticsViewFragment extends Fragment {
         List<Fragment> fList = new ArrayList<Fragment>();
         fList.add(AroundStatisticsFragment.newInstance());
         fList.add(TopVotedContractsFragment.newInstance());
-        fList.add(StatisticsFragment.newInstance("Fragment 3"));
+        fList.add(TopCompanyFragment.newInstance());
         return fList;
     }
 }

@@ -42,11 +42,11 @@ public class AroundStatisticsFragment extends Fragment {
 
         // Update orders
         try {
-            List<StatisticsOrderDetails> orderDetailsList = new ArrayList<>();
+            List<StatisticsContractDetails> orderDetailsList = new ArrayList<>();
             JSONArray orders = response.getJSONArray("orders");
             for (int i = 0; i < orders.length(); ++i) {
                 final JSONObject order = orders.getJSONObject(i);
-                orderDetailsList.add(new StatisticsOrderDetails() {{
+                orderDetailsList.add(new StatisticsContractDetails() {{
                     id = order.getInt("id");
                     title = order.getString("contract_title");
                     price = order.getString("price");

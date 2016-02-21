@@ -10,7 +10,7 @@ import com.example.claudiu.initiativaromania.R;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
 import com.example.claudiu.investitiipublice.IRObjects.CommManager;
 import com.example.claudiu.investitiipublice.IRUserInterface.statistics.StatisticsContractRowAdapter;
-import com.example.claudiu.investitiipublice.IRUserInterface.statistics.StatisticsOrderDetails;
+import com.example.claudiu.investitiipublice.IRUserInterface.statistics.StatisticsContractDetails;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +65,7 @@ public class ContractListActivity extends Activity {
 
     /* Show the contracts in a predefined list view */
     private double displayContracts(JSONArray contractsJSON) {
-        List<StatisticsOrderDetails> orderDetailsList = new ArrayList<>();
+        List<StatisticsContractDetails> orderDetailsList = new ArrayList<>();
         double totalValue = 0;
 
         try {
@@ -79,7 +79,7 @@ public class ContractListActivity extends Activity {
 
                 totalValue += Double.parseDouble(contract.valueEUR);
 
-                orderDetailsList.add(new StatisticsOrderDetails() {{
+                orderDetailsList.add(new StatisticsContractDetails() {{
                     id = contract.id;
                     title = contract.title;
                     price = contract.valueEUR;

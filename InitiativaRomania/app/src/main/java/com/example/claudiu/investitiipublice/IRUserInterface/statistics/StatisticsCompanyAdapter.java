@@ -12,17 +12,18 @@ import android.widget.TextView;
 import com.example.claudiu.initiativaromania.R;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
 import com.example.claudiu.investitiipublice.IRUserInterface.ContractActivity;
+import com.example.claudiu.investitiipublice.IRUserInterface.ContractListActivity;
 
 import java.util.List;
 
-public class StatisticsContractRowAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
+public class StatisticsCompanyAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
     private final Context context;
-    private List<StatisticsContractDetails> orders;
+    private List<String> companyNames;
 
-    public StatisticsContractRowAdapter(Context context, List<StatisticsContractDetails> orders) {
+    public StatisticsCompanyAdapter(Context context, List<String> companyNames) {
         this.context = context;
-        this.orders = orders;
+        this.companyNames = companyNames;
     }
 
     @Override
@@ -32,16 +33,16 @@ public class StatisticsContractRowAdapter extends BaseAdapter implements Adapter
             convertView = inflater.inflate(R.layout.statistics_around_fragment_contract_list_row, null);
         }
 
-        TextView contractName = (TextView) convertView.findViewById(R.id.statistics_around_row_contractName);
-        contractName.setText((position + 1) +". " + orders.get(position).title);
-        convertView.setTag(orders.get(position).id);
+        TextView companyName = (TextView) convertView.findViewById(R.id.statistics_around_row_contractName);
+        companyName.setText((position + 1) + ". " + companyNames.get(position));
+        convertView.setTag(companyNames.get(position));
 
         return convertView;
     }
 
     @Override
     public int getCount() {
-        return orders.size();
+        return companyNames.size();
     }
 
     @Override
@@ -60,11 +61,11 @@ public class StatisticsContractRowAdapter extends BaseAdapter implements Adapter
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        Intent intent = new Intent(context, ContractActivity.class);
-        Contract contract = new Contract();
-        contract.id = (int) v.getTag();
+        Intent intent = new Intent(context, ContractListActivity.class);
+        String companyName = (String)v.getTag();
 
-        intent.putExtra(ContractActivity.EXTRA_CONTRACT_ID, contract);
+        intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_COMPANY);
+        intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, companyName);
         context.startActivity(intent);
     }
 }

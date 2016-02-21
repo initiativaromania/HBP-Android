@@ -14,6 +14,7 @@ import com.example.claudiu.investitiipublice.IRUserInterface.ContractActivity;
 import com.example.claudiu.investitiipublice.IRUserInterface.ContractListActivity;
 import com.example.claudiu.investitiipublice.IRUserInterface.MainActivity;
 import com.example.claudiu.investitiipublice.IRUserInterface.statistics.AroundStatisticsFragment;
+import com.example.claudiu.investitiipublice.IRUserInterface.statistics.TopCompanyFragment;
 import com.example.claudiu.investitiipublice.IRUserInterface.statistics.TopVotedContractsFragment;
 import com.google.android.gms.appdatasearch.GetRecentContextCall;
 import com.google.android.gms.maps.model.LatLng;
@@ -196,6 +197,31 @@ public class CommManager {
                     public void onResponse(JSONObject response) {
                         System.out.println("Response: " + response.toString());
                         fragment.displayTop10Contracts(response);
+
+                    }
+                }, new ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(fragment.getContext(), "Error connecting to server", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        queue.add(jsObjRequest);
+    }
+
+
+    /* Get top 10 companies */
+    public static void requestTop10Companies(final TopCompanyFragment fragment) {
+        System.out.println("Getting top 10 companies");
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, URL_GET_TOP_COMPANIES,
+                        (String)null, new Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response: " + response.toString());
+                        fragment.displayTop10Companies(response);
 
                     }
                 }, new ErrorListener() {

@@ -19,14 +19,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopVotedContractsFragment extends Fragment {
-    public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
-    private static final String TOP_VOTED_CONTRACTS = "Cele mai nejustificate contracte";
+/**
+ * Created by claudiu on 2/21/16.
+ */
+public class TopCompanyFragment extends Fragment {
 
-    public static TopVotedContractsFragment newInstance() {
-        TopVotedContractsFragment f = new TopVotedContractsFragment();
+    private static final String TOP_COMPANIES = "Companiile cu cele mai valoroase contracte:";
+    public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
+
+    public static TopCompanyFragment newInstance() {
+        TopCompanyFragment f = new TopCompanyFragment();
         Bundle bdl = new Bundle(1);
-        bdl.putString(EXTRA_MESSAGE, "TopVotedContractsFragment");
+        bdl.putString(EXTRA_MESSAGE, "TopCompanyFragment");
         f.setArguments(bdl);
         return f;
     }
@@ -36,36 +40,33 @@ public class TopVotedContractsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.statistics_voted_entities_fragment, container, false);
 
-        CommManager.requestTop10Contracts(this);
+        CommManager.requestTop10Companies(this);
         return v;
     }
 
 
     /* Receive and display top 10 contracts */
-    public void displayTop10Contracts(JSONObject response) {
+    public void displayTop10Companies(JSONObject response) {
 
         /* Set Top name */
         TextView tv = (TextView)getView().findViewById(R.id.textViewTopName);
         if (tv != null)
-            tv.setText(TOP_VOTED_CONTRACTS);
+            tv.setText(TOP_COMPANIES);
 
         // Update orders
         try {
-            List<StatisticsContractDetails> orderDetailsList = new ArrayList<>();
-            JSONArray orders = response.getJSONArray("all");
-            for (int i = 0; i < orders.length(); ++i) {
-                final JSONObject order = orders.getJSONObject(i);
-                orderDetailsList.add(new StatisticsContractDetails() {{
-                    id = order.getInt("id");
-                    title = order.getString("contract_title");
-                    price = order.getString("price");
-                }});
+            List<String> companiesList = new ArrayList<String>();
+            JSONArray companiesJSON = response.getJSONArray("all");
+            for (int i = 0; i < companiesJSON.length(); ++i) {
+                final JSONObject companyJSON = companiesJSON.getJSONObject(i);
+
+                companiesList.add(companyJSON.getString("company"));
             }
 
-            ListView orderList = (ListView) getView().findViewById(R.id.statistics_top_entities);
-            StatisticsContractRowAdapter adapter = new StatisticsContractRowAdapter(getActivity(), orderDetailsList);
-            orderList.setAdapter(adapter);
-            orderList.setOnItemClickListener(adapter);
+            ListView companyList = (ListView) getView().findViewById(R.id.statistics_top_entities);
+            StatisticsCompanyAdapter adapter = new StatisticsCompanyAdapter(getActivity(), companiesList);
+            companyList.setAdapter(adapter);
+            companyList.setOnItemClickListener(adapter);
         } catch (JSONException e) {
             ErrorManager.handleError(getContext(), e);
         }

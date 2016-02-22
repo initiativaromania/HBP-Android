@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.LevelListDrawable;
@@ -140,8 +141,19 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                 /* Add pin to the map */
                 LatLng location = new LatLng(contract.latitude, contract.longitude);
+//                Marker marker = mMap.addMarker(new MarkerOptions()
+//                        .position(location).icon(BitmapDescriptorFactory.defaultMarker(DEFAULT_COLOR_HUE)));
+
+                Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),
+                        getResources().getIdentifier("credit", "drawable", getPackageName()));
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, imageBitmap.getWidth() / 4,
+                        imageBitmap.getHeight() / 4, false);
+
                 Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(location).icon(BitmapDescriptorFactory.defaultMarker(DEFAULT_COLOR_HUE)));
+                        .position(location)
+                        .title("Melbourne")
+                        .snippet("Population: 4,137,400")
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
 
 
 

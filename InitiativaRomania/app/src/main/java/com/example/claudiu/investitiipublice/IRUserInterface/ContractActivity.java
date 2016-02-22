@@ -28,6 +28,7 @@ import java.text.DecimalFormat;
 public class ContractActivity extends Activity {
     public static final String EXTRA_CONTRACT_ID    = "com.example.claudiu.investitiipublice.IRObjects.Contract";
     private static final String JUSTIFY_PREFFERENCE = "justify_prefference";
+    private static final int MINIMUM_VOTES          = 300;
 
     private Contract contract;
     private Context contractContext = this;
@@ -159,7 +160,8 @@ public class ContractActivity extends Activity {
         editor.putInt("Contract" + contract.id, 1);
         editor.commit();
 
-        Toast.makeText(this, "Cererea ta a fost inregistrata", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Cererea ta a fost inregistrata. La " + MINIMUM_VOTES +
+                " de cereri Initiativa Romania va cerere detalii despre acest contract si anexele sale.", Toast.LENGTH_LONG).show();
     }
 
 

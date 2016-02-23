@@ -84,6 +84,26 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        /* Disable the GPS Listener */
+        this.locationListener.pauseGPSListener();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        /* Resume connection to GPS */
+        if (this.locationListener != null) {
+            this.locationListener.setupLocation();
+        }
+    }
+
+
     /**
      * Initialize UI components
      */

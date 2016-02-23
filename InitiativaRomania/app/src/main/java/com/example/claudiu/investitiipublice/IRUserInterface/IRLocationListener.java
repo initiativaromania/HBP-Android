@@ -53,7 +53,7 @@ public class IRLocationListener implements LocationListener {
     }
 
     /**
-     * Make sure permissions are granted
+     * Make sure permissions are granted and setup Location
      */
     private void initLocationService(MainActivity context) {
 
@@ -113,6 +113,15 @@ public class IRLocationListener implements LocationListener {
         }
     }
 
+
+    /* Pause the GPS Listener when the activity is paused */
+    public void pauseGPSListener() {
+        try {
+            this.locationManager.removeUpdates(this);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @Override

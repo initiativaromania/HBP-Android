@@ -161,7 +161,7 @@ public class ContractActivity extends Activity {
         editor.commit();
 
         Toast.makeText(this, "Cererea ta a fost inregistrata. La " + MINIMUM_VOTES +
-                " de cereri Initiativa Romania va cerere detalii despre acest contract si anexele sale.", Toast.LENGTH_LONG).show();
+                " de cereri Initiativa Romania va cere detalii despre acest contract si anexele sale.", Toast.LENGTH_LONG).show();
     }
 
 

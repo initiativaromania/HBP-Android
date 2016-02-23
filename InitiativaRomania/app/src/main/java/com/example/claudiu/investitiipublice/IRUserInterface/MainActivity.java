@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.claudiu.initiativaromania.R;
+import com.example.claudiu.investitiipublice.IRObjects.Company;
 import com.example.claudiu.investitiipublice.IRObjects.Contract;
 import com.example.claudiu.investitiipublice.IRObjects.CommManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -62,8 +63,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private String tabtitles[] = new String[] {TAB_MAP, TAB_STATISTICS };
 
     /* UI objects */
-    private Circle circle;
+    public static Circle circle;
     private Marker currentPos;
+    public static Location currentLocation;
     private SeekBar seekBar;
     private SupportMapFragment mapFragment;
     private int currentTab = 0, lastTab = 0;
@@ -155,14 +157,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 contract.id = obj.getInt("id");
                 contract.latitude = obj.getDouble("lat");
                 contract.longitude = obj.getDouble("lng");
+                contract.title = obj.getString("title");
+                contract.company = new Company();
+                contract.company.name = obj.getString("company");
 
                 contractList.add(contract);
 
 
                 /* Add pin to the map */
                 LatLng location = new LatLng(contract.latitude, contract.longitude);
-//                Marker marker = mMap.addMarker(new MarkerOptions()
-//                        .position(location).icon(BitmapDescriptorFactory.defaultMarker(DEFAULT_COLOR_HUE)));
 
                 Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),
                         getResources().getIdentifier("credit", "drawable", getPackageName()));
@@ -185,7 +188,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         /* Store all the contracts */
-        CommManager.contracts = contractList;
+        CommManager.contracts = new LinkedList<Contract>(contractList);
 
 
         /* Set on click listener for each pin */
@@ -335,6 +338,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (location == null)
             return;
+
+        this.currentLocation = location;
 
         System.out.println("Location update lat " + location.getLatitude() + " long " + location.getLongitude());
 

@@ -44,11 +44,6 @@ public class TopVotedContractsFragment extends Fragment {
     /* Receive and display top 10 contracts */
     public void displayTop10Contracts(JSONObject response) {
 
-        /* Set Top name */
-        TextView tv = (TextView)getView().findViewById(R.id.textViewTopName);
-        if (tv != null)
-            tv.setText(TOP_VOTED_CONTRACTS);
-
         // Update orders
         try {
             List<StatisticsContractDetails> orderDetailsList = new ArrayList<>();

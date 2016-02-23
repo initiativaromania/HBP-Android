@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Titlu contract"
+            android:text="-"
             android:id="@+id/textViewTitluContract" />
     </FrameLayout>
 
@@ -149,7 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="534231"
+            android:text="-"
             android:id="@+id/textContractNr"
             android:layout_gravity="right" />
     </FrameLayout>
@@ -173,7 +173,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="SC Mordor Companies SRL"
+            android:text="-"
             android:id="@+id/textCompany"
             android:textColor="#77cbd4"
             android:layout_weight="4"
@@ -201,7 +201,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Primaria Municipiului Bucuresti"
+            android:text="-"
             android:id="@+id/textPrimarie"
             android:textColor="#77cbd4"
             android:layout_weight="4"
@@ -226,7 +226,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="2016-03-19"
+            android:text="-"
             android:id="@+id/textData"
             android:layout_gravity="right" />
     </FrameLayout>
@@ -248,7 +248,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="1.2 mil EUR"
+            android:text="-"
             android:id="@+id/textValue"
             android:layout_gravity="right" />
     </FrameLayout>
@@ -271,7 +271,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="190390"
+            android:text="-"
             android:id="@+id/textCPV"
             android:layout_gravity="right" />
     </FrameLayout>
@@ -293,7 +293,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Salubritate"
+            android:text="-"
             android:id="@+id/textCategory"
             android:layout_gravity="right" />
     </FrameLayout>
@@ -316,7 +316,7 @@
                 android:text="Justifica"
                 android:id="@+id/button"
                 android:layout_gravity="center_horizontal|top"
-                android:background="#77cbd4"
+                android:background="@drawable/rounded_corner"
                 android:textColor="#ffffff" />
         </FrameLayout>
 

@@ -28,7 +28,8 @@ import java.util.LinkedList;
  * Created by claudiu on 2/9/16.
  */
 public class CommManager {
-    private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
+    //private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
+    private static final String SERVER_IP = "http://192.168.0.104:5000";
     
     /* Requests to server */
     private static final String URL_GET_ORDERS = SERVER_IP + "/getOrders?lat=%s&lng=%s&zoom=%s";
@@ -69,7 +70,7 @@ public class CommManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Error connecting to server for company details. Try again later",
+                        Toast.makeText(context, "Eroare conectare la server",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -97,7 +98,7 @@ public class CommManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Error connecting to server for buyer details. Try again later",
+                        Toast.makeText(context, "Eroare conectare la server",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -126,7 +127,7 @@ public class CommManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Error connecting to server. Try again later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Eroare conectare la server. Incearca mai tarziu", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -156,30 +157,31 @@ public class CommManager {
         }, new ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Error connection to server. Try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Eroare conectare la server. Incearca mai tarziu", Toast.LENGTH_SHORT).show();
             }
         });
 
         queue.add(jsonObjectRequest);
     }
 
-    public static void setStatisticsData(final AroundStatisticsFragment statisticsFragment, double lat, double lng, int zoom) {
+    public static void requestStatsAround(final AroundStatisticsFragment statisticsFragment, double lat, double lng, int zoom) {
 
-        System.out.println("Getting statistics");
+        System.out.println("Getting statistics around you");
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, String.format(URL_GET_STATISTICS, 0, 0, 0),
+                (Request.Method.GET, String.format(URL_GET_STATISTICS, lat, lng, zoom),
                         (String)null, new Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         System.out.println("Response: " + response.toString());
-                        statisticsFragment.dataUpdated(response);
+                        //statisticsFragment.dataUpdated(response);
+                        statisticsFragment.displayStatsInArea();
 
                     }
                 }, new ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(statisticsFragment.getContext(), "Error connecting to server", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(statisticsFragment.getContext(), "Eroare conectare la server", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -203,7 +205,7 @@ public class CommManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(fragment.getContext(), "Error connecting to server", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(fragment.getContext(), "Eroare conectare la server", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -228,7 +230,7 @@ public class CommManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(fragment.getContext(), "Error connecting to server", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(fragment.getContext(), "Eroare conectare la server", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -253,7 +255,7 @@ public class CommManager {
         }, new ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Error connection to server. Try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Eroare conectare la server. Incearca mai tarziu", Toast.LENGTH_SHORT).show();
             }
         });
 

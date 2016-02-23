@@ -48,11 +48,6 @@ public class TopCompanyFragment extends Fragment {
     /* Receive and display top 10 contracts */
     public void displayTop10Companies(JSONObject response) {
 
-        /* Set Top name */
-        TextView tv = (TextView)getView().findViewById(R.id.textViewTopName);
-        if (tv != null)
-            tv.setText(TOP_COMPANIES);
-
         // Update orders
         try {
             List<String> companiesList = new ArrayList<String>();

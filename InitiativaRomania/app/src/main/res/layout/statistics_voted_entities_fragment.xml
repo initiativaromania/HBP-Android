@@ -16,23 +16,17 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.07"
-            android:paddingTop="7dp"
-            android:textSize="16sp"
-            android:id="@+id/textViewTopName"
-            android:text="Cele mai nejustificate contracte:"
-            android:paddingLeft="8dp" />
+
 
         <ListView
             android:id="@+id/statistics_top_entities"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
             android:divider="#ffffff"
-            android:dividerHeight="1dp">
+            android:dividerHeight="1dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
         </ListView>
     </LinearLayout>
 </RelativeLayout>

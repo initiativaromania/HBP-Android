@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class StatisticsPageAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragments;
-    private String tabtitles[] = new String[] { "In jurul tau", "Top contracte", "Top companii" };
+    private String tabtitles[] = new String[] { "In jurul tau", "Top contracte nejustificate", "Top companii" };
 
     public StatisticsPageAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);

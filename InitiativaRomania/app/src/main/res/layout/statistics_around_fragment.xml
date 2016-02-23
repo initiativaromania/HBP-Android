@@ -16,39 +16,41 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.07"
-            android:paddingTop="7dp"
-            android:textSize="16sp"
-            android:text="Top contracte:"
-            android:paddingLeft="8dp" />
 
         <ListView
             android:id="@+id/statistics_around_order_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="1"
             android:divider="#ffffff"
-            android:dividerHeight="1dp">
+            android:dividerHeight="1dp"
+            android:paddingTop="10dp">
         </ListView>
 
-        <TextView
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.07"
-            android:paddingTop="7dp"
-            android:textSize="16sp"
-            android:text="Top categorii:"
-            android:paddingLeft="8dp"/>
-        <ListView
-            android:id="@+id/statistics_around_categories_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.4"
-            android:divider="#ffffff"
-            android:dividerHeight="1dp">
-        </ListView>
+            android:layout_height="70dp"
+            android:paddingBottom="10dp">
+
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:paddingBottom="0dp"
+                android:layout_gravity="bottom">
+
+                <Button
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Actualizeaza"
+                    android:id="@+id/buttonActualizeaza"
+                    android:layout_gravity="center_horizontal|top"
+                    android:background="@drawable/rounded_corner"
+                    android:textColor="#ffffff" />
+            </FrameLayout>
+
+        </FrameLayout>
+
     </LinearLayout>
 </RelativeLayout>

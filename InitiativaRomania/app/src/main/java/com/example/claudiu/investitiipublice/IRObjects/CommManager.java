@@ -28,8 +28,9 @@ import java.util.LinkedList;
  * Created by claudiu on 2/9/16.
  */
 public class CommManager {
-    //private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
-    private static final String SERVER_IP = "http://192.168.0.104:5000";
+    private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
+    //private static final String SERVER_IP = "http://192.168.1.157:5000";
+    //private static final String SERVER_IP = "http://10.64.132.221:5000";
     
     /* Requests to server */
     private static final String URL_GET_ORDERS = SERVER_IP + "/getOrders?lat=%s&lng=%s&zoom=%s";

@@ -51,7 +51,7 @@ def get_orders(area):
     cnx = mysql.connector.connect(user='root', database='ir-investitii')
     cursor = cnx.cursor()
 
-    query = ("SELECT id, location_lat, location_lng, contract_title, company FROM contracte"
+    query = ("SELECT id, location_lat, location_lng, contract_title, company, buyer FROM contracte"
              " WHERE"
              " location_lat BETWEEN %s AND %s"
              " AND location_lng BETWEEN %s AND %s order by price desc")
@@ -59,13 +59,14 @@ def get_orders(area):
     cursor.execute(query, area)
 
     result = []
-    for (id, location_lat, location_lng, contract_title, company) in cursor:
+    for (id, location_lat, location_lng, contract_title, company, buyer) in cursor:
         result.append({
             'id': id,
             'lat': location_lat,
             'lng': location_lng,
             'title': contract_title,
-            'company': company
+            'company': company,
+            'buyer': buyer
         })
 
     cursor.close()

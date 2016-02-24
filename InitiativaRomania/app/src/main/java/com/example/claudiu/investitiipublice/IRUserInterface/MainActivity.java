@@ -160,6 +160,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 contract.title = obj.getString("title");
                 contract.company = new Company();
                 contract.company.name = obj.getString("company");
+                contract.authority = obj.getString("buyer");
 
                 contractList.add(contract);
 
@@ -201,9 +202,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                         if (contract != null) {
-                            /* Start a separate view for a contract */
-                            Intent intent = new Intent(getBaseContext(), ContractActivity.class);
-                            intent.putExtra(ContractActivity.EXTRA_CONTRACT_ID, contract);
+                             /* Start a separate view for a company */
+                            Intent intent = new Intent(getBaseContext(), ContractListActivity.class);
+                            intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_BUYER);
+                            intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.authority);
                             startActivity(intent);
                         } else {
                             /* Offer details about the user's position */

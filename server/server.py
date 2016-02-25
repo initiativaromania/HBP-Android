@@ -85,7 +85,7 @@ def getStatisticsArea():
     # get total sum
     totalSum = 0
     for order in orders:
-        totalSum += long(order['price'])
+        totalSum += float(order['price'])
 
     return jsonify({
         'orders': orders[:100],

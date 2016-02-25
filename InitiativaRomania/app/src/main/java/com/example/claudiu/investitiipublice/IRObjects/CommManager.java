@@ -55,14 +55,16 @@ public class CommManager {
 
     /* Send request to server to get company details */
     public static void requestCompanyDetails(final Context context, String companyName) {
-        System.out.println("Getting company details for " + String.format(URL_GET_COMPANY, companyName.replaceAll(" ", "%20")));
+        System.out.println("Getting company details for " + String.format(URL_GET_COMPANY,
+                companyName.replaceAll(" ", "%20").replaceAll("'", "%27%27")));
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, String.format(URL_GET_COMPANY, companyName.replaceAll(" ", "%20")),
+                (Request.Method.GET, String.format(URL_GET_COMPANY,
+                        companyName.replaceAll(" ", "%20").replaceAll("'", "%27%27")),
                         (String) null, new Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response: " + response.toString());
+                        //System.out.println("Response: " + response.toString());
                         ContractListActivity cla = (ContractListActivity) context;
                         cla.receiveCompanyDetails(response);
 
@@ -85,12 +87,13 @@ public class CommManager {
     public static void requestBuyerDetails(final Context context, String buyerName) {
         System.out.println("Getting buyer details for " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")),
+                (Request.Method.GET, String.format(URL_GET_BUYER,
+                        buyerName.replaceAll(" ", "%20").replaceAll("'", "%27%27")),
                         (String) null, new Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response: " + response.toString());
+                        //System.out.println("Response: " + response.toString());
                         ContractListActivity cla = (ContractListActivity) context;
                         cla.receiveBuyerDetails(response);
 
@@ -119,7 +122,7 @@ public class CommManager {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response: " + response.toString());
+                        //System.out.println("Response: " + response.toString());
                         MainActivity ma = (MainActivity) context;
                         ma.receiveAllContracts(response);
 
@@ -151,7 +154,7 @@ public class CommManager {
 
             @Override
             public void onResponse(JSONObject response) {
-                System.out.println("Response: " + response);
+                //System.out.println("Response: " + response);
                 ContractActivity ca = (ContractActivity) context;
                 ca.receiveContract(response);
             }
@@ -173,7 +176,7 @@ public class CommManager {
                         (String)null, new Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response: " + response.toString());
+                        //System.out.println("Response: " + response.toString());
                         //statisticsFragment.dataUpdated(response);
                         statisticsFragment.displayStatsInArea();
 
@@ -198,7 +201,7 @@ public class CommManager {
                         (String)null, new Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response: " + response.toString());
+                        //System.out.println("Response: " + response.toString());
                         fragment.displayTop10Contracts(response);
 
                     }
@@ -223,7 +226,7 @@ public class CommManager {
                         (String)null, new Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response: " + response.toString());
+                        //System.out.println("Response: " + response.toString());
                         fragment.displayTop10Companies(response);
 
                     }
@@ -249,7 +252,7 @@ public class CommManager {
 
             @Override
             public void onResponse(JSONObject response) {
-                System.out.println("Response: " + response);
+                //System.out.println("Response: " + response);
                 ContractActivity ca = (ContractActivity)context;
                 ca.ackJustify();
             }

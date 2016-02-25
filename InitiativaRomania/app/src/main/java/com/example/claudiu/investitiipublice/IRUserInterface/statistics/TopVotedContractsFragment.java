@@ -57,7 +57,12 @@ public class TopVotedContractsFragment extends Fragment {
                 }});
             }
 
-            ListView orderList = (ListView) getView().findViewById(R.id.statistics_top_entities);
+            /* Pretty nasty hack, view can be null */
+            View view = getView();
+            if (view == null)
+                return;
+
+            ListView orderList = (ListView) view.findViewById(R.id.statistics_top_entities);
             StatisticsContractRowAdapter adapter = new StatisticsContractRowAdapter(getActivity(), orderDetailsList);
             orderList.setAdapter(adapter);
             orderList.setOnItemClickListener(adapter);

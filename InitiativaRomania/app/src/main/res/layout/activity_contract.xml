@@ -167,7 +167,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Companie"
             android:id="@+id/textView2"
-            android:layout_weight="12" />
+            android:layout_weight="10" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -195,7 +195,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Cumparator"
             android:id="@+id/textView8"
-            android:layout_weight="10" />
+            android:layout_weight="8" />
 
         <TextView
             android:layout_width="fill_parent"

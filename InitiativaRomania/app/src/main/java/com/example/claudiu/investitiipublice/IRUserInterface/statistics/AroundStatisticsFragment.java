@@ -81,7 +81,7 @@ public class AroundStatisticsFragment extends Fragment {
             Location.distanceBetween(l.getLatitude(), l.getLongitude(), contract.latitude,
                     contract.longitude, distance);
             if (distance[0] < MainActivity.circle.getRadius()) {
-                System.out.println("contract " + contract.title + " is in the circle " + distance[0]);
+                //System.out.println("contract " + contract.title + " is in the circle " + distance[0]);
                 orderDetailsList.add(new StatisticsContractDetails() {{
                     id = contract.id;
                     title = contract.title;
@@ -92,7 +92,14 @@ public class AroundStatisticsFragment extends Fragment {
             }
         }
 
-        ListView orderList = (ListView) getView().findViewById(R.id.statistics_around_order_list);
+        /* Pretty nasty hack */
+        View view = getView();
+        if (view == null) {
+            System.out.println("Should have died here");
+            return;
+        }
+
+        ListView orderList = (ListView) view.findViewById(R.id.statistics_around_order_list);
         StatisticsContractRowAdapter adapter = new StatisticsContractRowAdapter(getActivity(), orderDetailsList);
         orderList.setAdapter(adapter);
         orderList.setOnItemClickListener(adapter);

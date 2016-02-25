@@ -137,7 +137,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         /* Send a request to get all the cotnracts */
         CommManager.init(this);
-        CommManager.requestAllContracts(this);
+
+        if (CommManager.contracts.isEmpty())
+            CommManager.requestAllContracts(this);
     }
 
 
@@ -175,8 +177,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(location)
-                        .title("Melbourne")
-                        .snippet("Population: 4,137,400")
+                        .title("Autoritate contractanta")
                         .icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
 
 

@@ -58,7 +58,12 @@ public class TopCompanyFragment extends Fragment {
                 companiesList.add(companyJSON.getString("company"));
             }
 
-            ListView companyList = (ListView) getView().findViewById(R.id.statistics_top_entities);
+            /* Pretty nasty hack, view can be null */
+            View view = getView();
+            if (view == null)
+                return;
+
+            ListView companyList = (ListView) view.findViewById(R.id.statistics_top_entities);
             StatisticsCompanyAdapter adapter = new StatisticsCompanyAdapter(getActivity(), companiesList);
             companyList.setAdapter(adapter);
             companyList.setOnItemClickListener(adapter);

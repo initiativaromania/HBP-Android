@@ -15,7 +15,7 @@ import android.support.v4.content.ContextCompat;
  */
 public class IRLocationListener implements LocationListener {
     public static final int IR_PERMISSION_ACCESS_COURSE_LOCATION    = 19;
-    private static final int LOCATION_UPDATES_LIMIT                 = 5;
+    private static final int LOCATION_UPDATES_LIMIT                 = 3;
 
     //The minimum distance to change updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
@@ -64,14 +64,13 @@ public class IRLocationListener implements LocationListener {
             return;
         }
 
-        setupLocation();
+        setupLocation(false);
     }
 
     /**
      * Resume location setup after permissions have been granted
      */
-    public void setupLocation() {
-        System.out.println("Setup location resume");
+    public void setupLocation(boolean onResume) {
         this.locationManager = (LocationManager) act.getSystemService(Context.LOCATION_SERVICE);
 
         // Get GPS and network status
@@ -92,7 +91,7 @@ public class IRLocationListener implements LocationListener {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                if (locationManager != null) {
+                if (onResume == false && locationManager != null) {
                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     act.setInitialPosition(location);
                 }
@@ -103,7 +102,7 @@ public class IRLocationListener implements LocationListener {
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-                if (locationManager != null) {
+                if (onResume == false && locationManager != null) {
                     location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     act.setInitialPosition(location);
                 }

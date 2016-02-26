@@ -13,6 +13,10 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -43,7 +47,7 @@ import java.util.LinkedList;
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
     /* UI consts */
     private static final String TAB_MAP             = "Harta";
-    private static final String TAB_STATISTICS      = "Statistici";
+    private static final String TAB_STATISTICS      = "Informatii";
     public static final int CIRCLE_DEFAULT_RADIUS   = 550;
     public static final int CIRCLE_MIN_RADIUS       = 100;
     public static final int CIRCLE_MAX_RADIUS       = 5000;
@@ -69,6 +73,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private SeekBar seekBar;
     private SupportMapFragment mapFragment;
     private int currentTab = 0, lastTab = 0;
+    private Context context;
 
     /* Data objects */
     HashMap<Marker, Contract> markerContracts;
@@ -81,6 +86,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_homescreen);
         System.out.println("On create homescrewn");
 
+        context = this;
+
         /* Initialize UI components */
         initUI();
     }
@@ -91,7 +98,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onPause();
 
         /* Disable the GPS Listener */
-        this.locationListener.pauseGPSListener();
+        if (this.locationListener != null)
+            this.locationListener.pauseGPSListener();
     }
 
 
@@ -101,7 +109,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         /* Resume connection to GPS */
         if (this.locationListener != null) {
-            this.locationListener.setupLocation();
+            this.locationListener.setupLocation(true);
         }
     }
 
@@ -118,6 +126,28 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         seekBarListener = new IRSeekBarListener(circle);
         seekBar.setOnSeekBarChangeListener(seekBarListener);
         seekBar.setProgress(100 * (CIRCLE_DEFAULT_RADIUS - CIRCLE_MIN_RADIUS) / (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS));
+
+        /* Transparent layer with information */
+
+
+        Button okButton = (Button) findViewById(R.id.okButton);
+        if (okButton != null) {
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("OK button pushed");
+
+                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+                    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.transparentLayer);
+                    if (frameLayout == null)
+                        System.out.println("Frame layout is null");
+                    else
+                        System.out.println("Frame layout ok");
+                    frameLayout.startAnimation(animation);
+                    frameLayout.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
 
         /* Obtain the SupportMapFragment and get notified when the map is ready to be used. */
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -138,7 +168,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         /* Send a request to get all the cotnracts */
         CommManager.init(this);
 
-        if (CommManager.contracts.isEmpty())
+        /* TODO: solve this */
+        if (CommManager.contracts != null)
             CommManager.requestAllContracts(this);
     }
 
@@ -171,7 +202,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng location = new LatLng(contract.latitude, contract.longitude);
 
                 Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),
-                        getResources().getIdentifier("credit", "drawable", getPackageName()));
+                        getResources().getIdentifier("euro", "drawable", getPackageName()));
                 Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, imageBitmap.getWidth() / 4,
                         imageBitmap.getHeight() / 4, false);
 
@@ -305,7 +336,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     System.out.println("Permissions granted");
-                    locationListener.setupLocation();
+                    locationListener.setupLocation(false);
 
                 } else {
                     System.out.println("Permissions were not granted");
@@ -321,6 +352,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      * @param location
      */
     public void setInitialPosition(Location location) {
+        System.out.println("Set initial position");
 
         if (location == null)
             return;

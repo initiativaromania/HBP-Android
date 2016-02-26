@@ -59,7 +59,7 @@ public class CommManager {
                 companyName.replaceAll(" ", "%20").replaceAll("'", "%27%27")));
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, String.format(URL_GET_COMPANY,
-                        companyName.replaceAll(" ", "%20").replaceAll("'", "%27%27")),
+                        companyName.replaceAll(" ", "%20").replaceAll("'", "%27%27")).replaceAll("&", "%26"),
                         (String) null, new Listener<JSONObject>() {
 
                     @Override
@@ -88,7 +88,7 @@ public class CommManager {
         System.out.println("Getting buyer details for " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, String.format(URL_GET_BUYER,
-                        buyerName.replaceAll(" ", "%20").replaceAll("'", "%27%27")),
+                        buyerName.replaceAll(" ", "%20").replaceAll("'", "%27%27")).replaceAll("&", "%26"),
                         (String) null, new Listener<JSONObject>() {
 
                     @Override

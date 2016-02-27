@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,20 @@ public class ContractActivity extends Activity {
         contract = (Contract)intent.getSerializableExtra(EXTRA_CONTRACT_ID);
 
         System.out.println("Got contract " + contract.id);
+
+        /* Information button */
+        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButtonContract);
+        if (imageButton != null) {
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     /* Start the info activity */
+                    Intent intent = new Intent(getBaseContext(), InfoActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
 
         /* Send request to server to get all the contract details */
         CommManager.requestContract(this,contract.id);

@@ -3,6 +3,8 @@ package com.example.claudiu.investitiipublice.IRUserInterface;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -55,6 +57,19 @@ public class ContractListActivity extends Activity {
             TextView tv = (TextView)findViewById(R.id.textViewContractList);
             if (tv != null)
                 tv.setText(AUTHORITY_ACTIVITY_NAME);
+        }
+
+         /* Information button */
+        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButtonContractList);
+        if (imageButton != null) {
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     /* Start the info activity */
+                    Intent intent = new Intent(getBaseContext(), InfoActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         TextView tv = (TextView)findViewById(R.id.textEntityName);

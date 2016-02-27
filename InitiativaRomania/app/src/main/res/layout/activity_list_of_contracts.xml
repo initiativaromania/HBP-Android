@@ -44,10 +44,10 @@
         </LinearLayout>
 
         <ImageButton
-            android:layout_width="41dp"
-            android:layout_height="35dp"
-            android:id="@+id/imageButtonContract"
-            android:src="@drawable/settings2"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:id="@+id/imageButtonContractList"
+            android:src="@drawable/info"
             android:background="#ffffff"
             android:scaleType="fitCenter"
             android:layout_gravity="center" />
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="1.2 mil EUR"
+            android:text="-"
             android:id="@+id/textTotalValue"
             android:layout_gravity="right" />
     </FrameLayout>

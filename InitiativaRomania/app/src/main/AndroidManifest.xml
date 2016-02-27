@@ -51,6 +51,11 @@
             android:label="@string/title_activity_contract_list">
         </activity>
 
+        <activity
+            android:name="com.example.claudiu.investitiipublice.IRUserInterface.InfoActivity"
+            android:label="@string/title_activity_info">
+        </activity>
+
     </application>
 
 </manifest>

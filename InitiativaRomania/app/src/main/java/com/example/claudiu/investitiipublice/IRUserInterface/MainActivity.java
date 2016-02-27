@@ -17,6 +17,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -47,7 +50,7 @@ import java.util.LinkedList;
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
     /* UI consts */
     private static final String TAB_MAP             = "Harta";
-    private static final String TAB_STATISTICS      = "Informatii";
+    private static final String TAB_STATISTICS      = "Contracte";
     public static final int CIRCLE_DEFAULT_RADIUS   = 550;
     public static final int CIRCLE_MIN_RADIUS       = 100;
     public static final int CIRCLE_MAX_RADIUS       = 5000;
@@ -74,6 +77,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private SupportMapFragment mapFragment;
     private int currentTab = 0, lastTab = 0;
     private Context context;
+    private BitmapDescriptor bitmapIcon = null;
 
     /* Data objects */
     HashMap<Marker, Contract> markerContracts;
@@ -127,9 +131,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         seekBar.setOnSeekBarChangeListener(seekBarListener);
         seekBar.setProgress(100 * (CIRCLE_DEFAULT_RADIUS - CIRCLE_MIN_RADIUS) / (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS));
 
+
         /* Transparent layer with information */
-
-
         Button okButton = (Button) findViewById(R.id.okButton);
         if (okButton != null) {
             okButton.setOnClickListener(new View.OnClickListener() {
@@ -138,13 +141,32 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     System.out.println("OK button pushed");
 
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-                    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.transparentLayer);
-                    if (frameLayout == null)
+                    LinearLayout linear = (LinearLayout) findViewById(R.id.transparentLayer);
+                    if (linear == null)
                         System.out.println("Frame layout is null");
                     else
                         System.out.println("Frame layout ok");
-                    frameLayout.startAnimation(animation);
-                    frameLayout.setVisibility(View.INVISIBLE);
+                    linear.startAnimation(animation);
+                    linear.setVisibility(View.INVISIBLE);
+
+                    Toast.makeText(getBaseContext(),
+                            "Apasa pe € din jurul tau",
+                            Toast.LENGTH_LONG).show();
+
+
+                }
+            });
+        }
+
+        /* Information button */
+        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
+        if (imageButton != null) {
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     /* Start the info activity */
+                    Intent intent = new Intent(getBaseContext(), InfoActivity.class);
+                    startActivity(intent);
                 }
             });
         }
@@ -168,15 +190,19 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         /* Send a request to get all the cotnracts */
         CommManager.init(this);
 
-        /* TODO: solve this */
-        if (CommManager.contracts != null)
+        if (CommManager.contracts.isEmpty())
+            /* Get all the contracts if not available */
             CommManager.requestAllContracts(this);
+        else
+            /* Show all the contracts on the map */
+            displayContracts();
     }
 
 
     /* Receive all the contracts from the server */
     public void receiveAllContracts(JSONObject response) {
-        LinkedList<Contract> contractList = new LinkedList<Contract>();
+        System.out.println("Received new contracts");
+        CommManager.contracts = new LinkedList<Contract>();
         Contract contract;
 
         /* Parse the list of contracts */
@@ -195,36 +221,47 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 contract.company.name = obj.getString("company");
                 contract.authority = obj.getString("buyer");
 
-                contractList.add(contract);
-
-
-                /* Add pin to the map */
-                LatLng location = new LatLng(contract.latitude, contract.longitude);
-
-                Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),
-                        getResources().getIdentifier("euro", "drawable", getPackageName()));
-                Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, imageBitmap.getWidth() / 4,
-                        imageBitmap.getHeight() / 4, false);
-
-                Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(location)
-                        .title("Autoritate contractanta")
-                        .icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
-
-
-
-                markerContracts.put(marker, contract);
+                CommManager.contracts.add(contract);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        /* Store all the contracts */
-        CommManager.contracts = new LinkedList<Contract>(contractList);
+        /* Show the received contracts */
+        displayContracts();
+    }
 
 
-        /* Set on click listener for each pin */
+    /* Display each contract from the list in CommManager */
+    public void displayContracts() {
+
+        System.out.println("Displaying the available contracts");
+
+        /* Prepare the bitmap image */
+        if (bitmapIcon == null) {
+            Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),
+                    getResources().getIdentifier("euro", "drawable", getPackageName()));
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, imageBitmap.getWidth() / 4,
+                    imageBitmap.getHeight() / 4, false);
+            bitmapIcon = BitmapDescriptorFactory.fromBitmap(resizedBitmap);
+        }
+
+        /* Set a pin for each contract */
+        for (Contract contract: CommManager.contracts) {
+            /* Add pin to the map */
+            LatLng location = new LatLng(contract.latitude, contract.longitude);
+
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(location)
+                    .title("Autoritate contractanta")
+                    .icon(bitmapIcon));
+
+
+            markerContracts.put(marker, contract);
+        }
+
+         /* Set on click listener for each pin */
         mMap.setOnMarkerClickListener(
                 new GoogleMap.OnMarkerClickListener() {
 

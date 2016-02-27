@@ -3,10 +3,9 @@
     <string name="title_activity_maps">Investitii Publice</string>
     <string name="title_activity_contract">Contract</string>
     <string name="title_activity_contract_list">Contract List</string>
+    <string name="title_activity_info">Info</string>
 
     <string name="info1">Navigheaza pe harta pentru a vedea contracte</string>
-    <string name="info2">Fiecare marcaj contine informatii despre autoritati contractante</string>
-    <string name="info3">Sectiunea \"Informatii\" contine ceva</string>
     <string name="info4">Foloseste bara de jos pentru a modifica zona de interes</string>
 
     <string-array name="list">

@@ -6,8 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.LevelListDrawable;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -43,6 +40,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -92,6 +90,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         context = this;
 
+        /* Initialize communication with the server */
+        CommManager.init(this);
+
         /* Initialize UI components */
         initUI();
     }
@@ -118,21 +119,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    /**
-     * Initialize UI components
-     */
-    private void initUI() {
-        /* Tab Bar */
-        tabSetup();
+    /* Initialize transparent view */
+    private void initTransparentView() {
 
-        /* Seek bar */
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
-        seekBarListener = new IRSeekBarListener(circle);
-        seekBar.setOnSeekBarChangeListener(seekBarListener);
-        seekBar.setProgress(100 * (CIRCLE_DEFAULT_RADIUS - CIRCLE_MIN_RADIUS) / (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS));
-
-
-        /* Transparent layer with information */
+        /* Setup the OK button */
         Button okButton = (Button) findViewById(R.id.okButton);
         if (okButton != null) {
             okButton.setOnClickListener(new View.OnClickListener() {
@@ -150,13 +140,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     linear.setVisibility(View.INVISIBLE);
 
                     Toast.makeText(getBaseContext(),
-                            "Apasa pe simbolul € din jurul tau",
+                            "Apasa pe simbolurile € din jurul tau",
                             Toast.LENGTH_LONG).show();
 
 
                 }
             });
         }
+
+        /* Send request to get the init data */
+        CommManager.requestInitData(this);
+    }
+
+
+    /**
+     * Initialize UI components
+     */
+    private void initUI() {
+        /* Tab Bar */
+        tabSetup();
+
+        /* Seek bar */
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        seekBarListener = new IRSeekBarListener(circle);
+        seekBar.setOnSeekBarChangeListener(seekBarListener);
+        seekBar.setProgress(100 * (CIRCLE_DEFAULT_RADIUS - CIRCLE_MIN_RADIUS) / (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS));
+
+        /* Transparent layer with information */
+        initTransparentView();
 
         /* Information button */
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
@@ -178,6 +189,39 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    /* Receive and display init data in the infographic */
+    public void receiveInitData(JSONObject response) {
+        System.out.println("Receiving init data");
+
+        try {
+            TextView tv = (TextView) findViewById(R.id.textViewNrBuyers);
+            if (tv != null)
+                tv.setText(response.getString("buyers"));
+
+            tv = (TextView) findViewById(R.id.textViewNrCompanies);
+            if (tv != null)
+                tv.setText(response.getString("companies"));
+
+            tv = (TextView) findViewById(R.id.textViewNrContracts);
+            if (tv != null)
+                tv.setText(response.getString("contracts"));
+
+            tv = (TextView) findViewById(R.id.textViewValueContracts);
+            if (tv != null) {
+                double totalValue = Double.parseDouble(response.getString("sumprice"));
+                totalValue /= 1000000;
+                tv.setText(String.format("%.2f", totalValue));
+            }
+
+            tv = (TextView) findViewById(R.id.textViewNrJustifies);
+            if (tv != null)
+                tv.setText(response.getString("justifies"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Initiatlize data from the server on the UI
      */
@@ -188,8 +232,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         markerContracts = new HashMap<Marker, Contract>();
 
         /* Send a request to get all the cotnracts */
-        CommManager.init(this);
-
         if (CommManager.contracts.isEmpty())
             /* Get all the contracts if not available */
             CommManager.requestAllContracts(this);

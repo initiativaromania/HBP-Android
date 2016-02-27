@@ -29,7 +29,7 @@ import java.util.LinkedList;
  */
 public class CommManager {
     private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
-    //private static final String SERVER_IP = "http://192.168.1.157:5000";
+    //private static final String SERVER_IP = "http://192.168.0.104:5000";
     //private static final String SERVER_IP = "http://10.64.132.221:5000";
     
     /* Requests to server */
@@ -40,6 +40,7 @@ public class CommManager {
     private static final String URL_GET_JUSTIFICA = SERVER_IP + "/justify?id=%s";
     private static final String URL_GET_CATEGORY = SERVER_IP + "/categoryDetails?categoryName=%s";
     private static final String URL_GET_TOP_COMPANIES = SERVER_IP + "/getTop10Firm";
+    private static final String URL_GET_INIT_DATA = SERVER_IP + "/getInitData";
     private static final String URL_GET_TOP_VOTED_CONTRACTS = SERVER_IP + "/getTop10VotedContracts";
     private static final String URL_GET_STATISTICS = SERVER_IP + "/getStatisticsArea?lat=%s&lng=%s&zoom=%s";
 
@@ -50,6 +51,33 @@ public class CommManager {
 
     public static void init(Context context) {
         queue = Volley.newRequestQueue(context);
+    }
+
+
+    /* Send request to server to get init data for the infographic */
+    public static void requestInitData(final Context context) {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, URL_GET_INIT_DATA,
+                        (String) null, new Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response: " + response.toString());
+                        MainActivity ma = (MainActivity) context;
+                        ma.receiveInitData(response);
+
+                    }
+                }, new ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Eroare conectare la server",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        queue.add(jsObjRequest);
+        System.out.println("Init Request sent");
     }
 
 

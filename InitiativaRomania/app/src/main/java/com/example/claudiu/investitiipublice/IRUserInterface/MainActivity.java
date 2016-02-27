@@ -51,12 +51,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     /* UI consts */
     private static final String TAB_MAP             = "Harta";
     private static final String TAB_STATISTICS      = "Contracte";
-    public static final int CIRCLE_DEFAULT_RADIUS   = 550;
+    public static final int CIRCLE_DEFAULT_RADIUS   = 1100;
     public static final int CIRCLE_MIN_RADIUS       = 100;
     public static final int CIRCLE_MAX_RADIUS       = 5000;
     private static final int CIRCLE_ALPHA           = 70;
     private static final int CIRCLE_MARGIN          = 2;
-    private static final int MAP_DEFAULT_ZOOM       = 14;
+    private static final int MAP_DEFAULT_ZOOM       = 13;
     private static final int DEFAULT_COLOR_RED      = 119;
     private static final int DEFAULT_COLOR_GREEN    = 203;
     private static final int DEFAULT_COLOR_BLUE     = 212;
@@ -150,7 +150,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     linear.setVisibility(View.INVISIBLE);
 
                     Toast.makeText(getBaseContext(),
-                            "Apasa pe € din jurul tau",
+                            "Apasa pe simbolul € din jurul tau",
                             Toast.LENGTH_LONG).show();
 
 

@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Investitii Publice</string>
-    <string name="title_activity_maps">Investitii Publice</string>
+    <string name="title_activity_maps">Urmărește banii</string>
     <string name="title_activity_contract">Contract</string>
     <string name="title_activity_contract_list">Contract List</string>
     <string name="title_activity_info">Info</string>
 
-    <string name="info1">Navigheaza pe harta pentru a vedea contracte</string>
-    <string name="info4">Foloseste bara de jos pentru a modifica zona de interes</string>
+    <string name="info1">Navigheaza pe harta pentru a vedea contracte.</string>
+    <string name="info4">Foloseste bara de jos pentru a modifica zona de interes.</string>
 
     <string-array name="list">
         <item>Item 1</item>

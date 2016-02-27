@@ -133,17 +133,12 @@ public class ContractActivity extends Activity {
         if (tv != null)
             tv.setText(contract.CPVCode);
 
-        /* Show the contract's categories */
-        tv = (TextView)findViewById(R.id.textCategory);
-        if (tv != null)
-            tv.setText(contract.categories.getFirst().name);
-
 
         /* Setup the Justify button */
         System.out.println("Contract votes " + contract.votes);
         Button button = (Button)findViewById(R.id.button);
         if (button != null) {
-            button.setText("Justifica (" + contract.votes + ")");
+            button.setText("Cere justificare (" + contract.votes + ")");
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -60,6 +60,11 @@ def getCategorydetails():
 def getTop10Firm():
     return jsonify({'all':db.getTop10Firm()})
 
+@app.route('/getInitData', methods=['GET'])
+def getInitData():
+    return jsonify(db.getInitData())
+
+
 
 @app.route('/getTop10VotedContracts', methods=['GET'])
 def getTop10VotedContracts():

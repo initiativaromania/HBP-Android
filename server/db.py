@@ -75,6 +75,30 @@ def get_orders(area):
     return result
 
 
+def getInitData():
+    cnx = mysql.connector.connect(user='root', database='ir-investitii')
+    cursor = cnx.cursor()
+
+    query = ("SELECT count(DISTINCT(buyer)) as buyers, count(DISTINCT(company)) as companies,"
+            " count(1) as contracts, sum(price) as sumprice, sum(justify) as justifies"
+            " FROM contracte")
+
+    cursor.execute(query)
+
+    for (buyers, companies, contracts, sumprice, justifies) in cursor:
+        cursor.close()
+        cnx.close()
+
+        return {
+                'buyers': str(buyers),
+                'companies': str(companies),
+                'contracts': str(contracts),
+                'sumprice': str(sumprice),
+                'justifies': str(justifies)
+               }
+
+
+
 def get_order(orderId):
     cnx = mysql.connector.connect(user='root', database='ir-investitii')
     cursor = cnx.cursor()

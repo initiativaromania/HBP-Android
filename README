@@ -1,3 +1,36 @@
 Initiativa Romania
-Investitii Publice
+Harta Banilor Publici
 Aplicatie mobila
+
+Motivație
+Inițiativa România consideră că cetățenii au dreptul să beneficieze de informații de interes public, în mod gratuit, în timp real, într-un format accesibil, lesne de ințeles și de utilizat, prelucrabil, care să permită cetățenilor să aibă o cunoaștere corectă și să poată participa la luarea de decizii informate în interesul comunității din care fac parte.  
+
+Descriere
+Aplicația Harta Banilor Publici destinată în primă fază telefoanelor cu sistem de operare Android își propune să pună la dispoziția cetățeanului aflat pe suprafața municipiului București date, în format mobil, despre achizițiile publice directe făcute de autorități contractante din București. 
+Aplicația utilizează o hartă Google cu pin-uri de localizare a autorităților contractante din perioada analizată. Utilizatorul poate folosi funcția de geolocație a telefonului pentru a afla ce contracte a atribuit în mod direct o autoritate contractantă aflată în raza sa de interes.
+Alte informații puse la dispoziție prin intermediul aplicației mobile sunt: valoarea contractului atribuit de autoritatea contractantă și numele companiei căreia a fost atribuit contractul. În plus, o dată ajuns pe detaliile contractului (numele companiei care a primit achiziția, valoarea totală a contractului, data contractului), utilizatorul poate accesa și toate celelalte contracte primite de o companie de la orice autoritate contractantă din Bucuresti, în perioada analizată. Utilizatorul are la dispoziție un buton de „justifică”. Echipa Inițiativa România își propune ca la 300 de cereri de justificare per contract atribuit să ceară mai multe informații (lipsesc informatii despre valoarea per produs/serviciu/element din contract) autorității contractante despre contractul în cauză, în baza legii 544/2011 de acces la informații de interes public.
+
+Disclaimer/ Limitări
+Datele sunt preluate din setul de date „Achiziții publice 2007-2015 (Contracte)” de pe data.gov.ro, din perioada iulie - septembrie 2015. Contractele selectate sunt cele care conțin în numele autorității contractante cuvintele „București” și „sector” din care au fost extrase, aleatoriu, pentru varianta pilot, 727 de contracte.
+Echipa își propune ca în perioada următoare să extindă aplicația astfel încât să încarce toate contractele în mod đinamic în fiecare trimestru. Aplicația poate fi scalată la nivel național pentru a acoperi contractele de achiziție publică din toate localitățile țării, așa cum apar pe data.gov.ro. De asemenea ne propunem să dezvoltăm o versiune web și o versiune pentru sistemele iOS.
+
+Echipa:
+Claudiu Ghioc - aplicație Android
+Mihai Ciorobea - server, baza de date
+Cristian Bălulescu - hosting, prelucrare date
+Elena Ghioc - prelucrare date, design
+
+Metodologie:
+333747 achiziții directe în t3 2015;
+Din 333747, 16494 conțin “bucurești” sau “sector” în numele autorității contractante;
+Din cele 16494, am selectat primele 727 în ordinea în care erau in CSV-ul inițial.
+
+
+Versiune curentă: 1.0.0
+
+Inițiativa România
+Inițiativa România este o mișcare civică având ca misiune promovarea interacțiunii deschise și participative între instituțiile statului și cetăteni, dar și identificarea și promovarea unei noi clase politice care să reprezinte competent și integru interesele alegătorilor.
+http://initiativaromania.ro/
+https://www.facebook.com/initiativaromania2016 
+
+

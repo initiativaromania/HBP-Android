@@ -1,3 +1,20 @@
+/**
+ This file is part of "Harta Banilor Publici".
+
+ "Harta Banilor Publici" is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ "Harta Banilor Publici" is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.example.claudiu.investitiipublice.IRObjects;
 
 import android.content.Context;
@@ -29,9 +46,7 @@ import java.util.LinkedList;
  */
 public class CommManager {
     private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
-    //private static final String SERVER_IP = "http://192.168.0.104:5000";
-    //private static final String SERVER_IP = "http://10.64.132.221:5000";
-    
+
     /* Requests to server */
     private static final String URL_GET_ORDERS = SERVER_IP + "/getOrders?lat=%s&lng=%s&zoom=%s";
     private static final String URL_GET_ORDER = SERVER_IP + "/getOrder?id=%s";

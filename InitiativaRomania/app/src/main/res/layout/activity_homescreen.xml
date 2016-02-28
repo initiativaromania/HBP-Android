@@ -30,7 +30,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Urmărește banii"
+                android:text="@string/app_name"
                 android:id="@+id/textView"
                 android:textColor="#77cbd4"
                 android:textColorHighlight="#953232"

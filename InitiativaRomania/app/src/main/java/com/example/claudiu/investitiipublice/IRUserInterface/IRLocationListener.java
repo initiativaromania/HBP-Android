@@ -133,7 +133,8 @@ public class IRLocationListener implements LocationListener {
     /* Pause the GPS Listener when the activity is paused */
     public void pauseGPSListener() {
         try {
-            this.locationManager.removeUpdates(this);
+            if (this.locationManager != null)
+                this.locationManager.removeUpdates(this);
         } catch (SecurityException e) {
             e.printStackTrace();
         }

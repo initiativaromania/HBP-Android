@@ -83,7 +83,14 @@ public class AroundStatisticsFragment extends Fragment {
     /* Show statistics from your area */
     public void displayStatsInArea() {
         float distance[] = {0};
+
+        /* Ask again for location */
         Location l = MainActivity.currentLocation;
+        if (l == null) {
+            MainActivity.locationListener.initLocationService((MainActivity) MainActivity.context);
+            return;
+        }
+
         LinkedList<Contract> areaContracts = new LinkedList<Contract>();
 
         /* Show contracts in area */

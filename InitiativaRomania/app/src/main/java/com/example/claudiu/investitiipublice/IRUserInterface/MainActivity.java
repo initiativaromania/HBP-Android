@@ -24,6 +24,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -80,7 +81,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     /* Setup Objects */
     private GoogleMap mMap;
-    private IRLocationListener locationListener = null;
+    public static IRLocationListener locationListener = null;
     private IRSeekBarListener seekBarListener = null;
     private String tabtitles[] = new String[] {TAB_MAP, TAB_STATISTICS };
 
@@ -91,7 +92,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private SeekBar seekBar;
     private SupportMapFragment mapFragment;
     private int currentTab = 0, lastTab = 0;
-    private Context context;
+    public static Context context;
     private BitmapDescriptor bitmapIcon = null;
 
     /* Data objects */
@@ -479,4 +480,5 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         this.circle.setCenter(current);
         this.currentPos.setPosition(current);
     }
+
 }

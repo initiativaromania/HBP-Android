@@ -72,7 +72,7 @@ public class IRLocationListener implements LocationListener {
     /**
      * Make sure permissions are granted and setup Location
      */
-    private void initLocationService(MainActivity context) {
+    public void initLocationService(MainActivity context) {
 
         if ( ContextCompat.checkSelfPermission( context, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             System.out.println("Insufficient permissions, asking for permission");

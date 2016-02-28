@@ -1,5 +1,0 @@
- LOAD DATA LOCAL INFILE '/home/claudiu/personal/investitiipublice/server/contracts_final.csv'
- INTO TABLE contracte
- LINES TERMINATED BY '\n'
-(contract_title, address, location_lat, location_lng, company, start_date, categories, price, currency,
-justify, CPVCodeID, CPVCode, contract_nr, buyer);

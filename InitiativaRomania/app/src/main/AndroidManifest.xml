@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.claudiu.initiativaromania">
+    package="com.initiativaromania.hartabanilorpublici">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -29,7 +29,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.example.claudiu.investitiipublice.IRUserInterface.MainActivity"
+            android:name="com.initiativaromania.hartabanilorpublici.IRUserInterface.MainActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,21 +38,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.claudiu.investitiipublice.IRUserInterface.ContractActivity"
+            android:name="com.initiativaromania.hartabanilorpublici.IRUserInterface.ContractActivity"
             android:label="@string/title_activity_contract"
-            android:parentActivityName="com.example.claudiu.investitiipublice.IRUserInterface.MainActivity">
+            android:parentActivityName="com.initiativaromania.hartabanilorpublici.IRUserInterface.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.claudiu.investitiipublice.IRUserInterface.MainActivity" />
+                android:value="com.initiativaromania.hartabanilorpublici.IRUserInterface.MainActivity" />
         </activity>
 
         <activity
-            android:name="com.example.claudiu.investitiipublice.IRUserInterface.ContractListActivity"
+            android:name="com.initiativaromania.hartabanilorpublici.IRUserInterface.ContractListActivity"
             android:label="@string/title_activity_contract_list">
         </activity>
 
         <activity
-            android:name="com.example.claudiu.investitiipublice.IRUserInterface.InfoActivity"
+            android:name="com.initiativaromania.hartabanilorpublici.IRUserInterface.InfoActivity"
             android:label="@string/title_activity_info">
         </activity>
 

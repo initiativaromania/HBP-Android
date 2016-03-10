@@ -5,6 +5,8 @@
     <string name="title_activity_contract_list">Contract List</string>
     <string name="title_activity_info">Info</string>
 
+    <string name="facebook_app_id">195358604166337</string>
+
     <string name="info1">Navigheaza pe harta pentru a vedea contracte.</string>
     <string name="info4">Foloseste bara de jos pentru a modifica zona de interes.</string>
     <string name="descriere1">Cetățenii au dreptul
@@ -31,7 +33,7 @@
         de pe data.gov.ro, din perioada iulie - septembrie 2015. Contractele selectate sunt cele care
         conțin în numele autorității contractante cuvintele „București” și „sector” din care au fost
         extrase, aleatoriu, pentru varianta pilot, 727 de contracte.</string>
-    <string name="versiune">1.0.0</string>
+    <string name="versiune">1.0.2</string>
     <string name="initiativaromania">
         Inițiativa România este o mișcare civică având ca misiune promovarea interacțiunii deschise
         și participative între instituțiile statului și cetăteni, dar și identificarea și promovarea

@@ -21,13 +21,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareButton;
+import com.facebook.share.widget.ShareDialog;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Category;
 import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;
@@ -40,6 +50,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 
+
 /**
  * Created by claudiu on 2/10/16.
  */
@@ -47,10 +58,15 @@ public class ContractActivity extends Activity {
     public static final String EXTRA_CONTRACT_ID    = "com.example.claudiu.investitiipublice.IRObjects.Contract";
     private static final String JUSTIFY_PREFFERENCE = "justify_prefference";
     private static final int MINIMUM_VOTES          = 300;
+    private static final String URL_HBP             = "http://initiativaromania.ro/proiecte/harta-banilor-publici/";
+    private static final String URL_HBP_BANNER      = "http://initiativaromania.ro/wp-content/uploads/2015/11/1280x720.png";
 
     private Contract contract;
     private Context contractContext = this;
     private SharedPreferences just_prefs;
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
+    ShareButton shareButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +96,44 @@ public class ContractActivity extends Activity {
 
 
         /* Send request to server to get all the contract details */
-        CommManager.requestContract(this,contract.id);
+        CommManager.requestContract(this, contract.id);
+    }
+
+
+    /* Initia Facebook share dialog */
+    private void initFacebook() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        shareDialog = new ShareDialog(this);
+        callbackManager = CallbackManager.Factory.create();
+
+        /* Init button */
+        shareButton = (ShareButton)findViewById(R.id.fb_share_button);
+        ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse(URL_HBP))
+                .setContentTitle(contract.authority + " a cheltuit " + contract.valueEUR +
+                        " EURO pentru " + contract.title)
+                .setImageUrl(Uri.parse(URL_HBP_BANNER))
+                .build();
+        shareButton.setShareContent(linkContent);
+
+
+        shareButton.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.i("FB Share button", "success");
+            }
+
+            @Override
+            public void onCancel() {
+                Log.i("FB Share button", "cancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.i("FB Share button", "error");
+            }
+        });
     }
 
 
@@ -179,7 +232,7 @@ public class ContractActivity extends Activity {
         contract.votes++;
         Button button = (Button)findViewById(R.id.button);
         if (button != null) {
-            button.setText("Justifica (" + contract.votes + ")");
+            button.setText("Cere justificare (" + contract.votes + ")");
         }
 
         /* Remember the fact that you voted for this contract */
@@ -220,5 +273,9 @@ public class ContractActivity extends Activity {
         }
 
         displayContract();
+
+         /* Initiatilize Facebook share dialog */
+        initFacebook();
+
     }
 }

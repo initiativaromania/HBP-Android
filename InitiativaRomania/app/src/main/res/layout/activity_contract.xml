@@ -280,7 +280,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp">
 
 
         <FrameLayout
@@ -298,6 +300,16 @@
                 android:background="@drawable/rounded_corner"
                 android:textColor="#ffffff" />
         </FrameLayout>
+
+
+        <com.facebook.share.widget.ShareButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fb_share_button"
+            android:background="@drawable/facebook_rounded_corner"
+            android:text="Share"
+            android:layout_gravity="right|top"
+            android:textColor="#FFFFFF" />
 
     </FrameLayout>
 

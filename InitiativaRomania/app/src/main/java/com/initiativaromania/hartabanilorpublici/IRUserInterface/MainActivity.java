@@ -38,6 +38,9 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.share.widget.ShareDialog;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Company;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Contract;
@@ -95,6 +98,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     /* Data objects */
     HashMap<Marker, Contract> markerContracts;
+
 
 
 
@@ -173,6 +177,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      * Initialize UI components
      */
     private void initUI() {
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         /* Tab Bar */
         tabSetup();
 

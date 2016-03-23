@@ -17,6 +17,9 @@
 
 package com.initiativaromania.hartabanilorpublici.IRUserInterface;
 
+import android.graphics.Rect;
+import android.provider.SyncStateContract;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.google.android.gms.maps.model.Circle;
@@ -39,8 +42,15 @@ public class IRSeekBarListener implements SeekBar.OnSeekBarChangeListener {
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (this.circle != null)
-            this.circle.setRadius(MainActivity.CIRCLE_MIN_RADIUS + progress * (MainActivity.CIRCLE_MAX_RADIUS - MainActivity.CIRCLE_MIN_RADIUS) / 100);
+        if (this.circle == null)
+            return;
+
+        this.circle.setRadius(MainActivity.CIRCLE_MIN_RADIUS + progress * (MainActivity.CIRCLE_MAX_RADIUS - MainActivity.CIRCLE_MIN_RADIUS) / 100);
+
+        Rect thumbRect = seekBar.getThumb().getBounds();
+        MainActivity.seekBarValue.setX(thumbRect.exactCenterX());
+        MainActivity.seekBarValue.setText(" " + String.valueOf(progress) + " EURO ");
+        MainActivity.seekBarValue.startAnimation(MainActivity.animationFadeIn);
     }
 
     @Override

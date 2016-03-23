@@ -383,14 +383,34 @@
 
     </LinearLayout>
 
-    <SeekBar
-        android:layout_width="324dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
-        android:layout_gravity="center_horizontal|bottom"
-        android:paddingBottom="30dp"
-        android:scrollIndicators="start|end"
-        android:progress="30"
-        android:focusableInTouchMode="true" />
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_gravity="center_horizontal|bottom">
+
+        <TextView android:text="0 RON"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:id="@+id/seekBarValue"
+            android:textColor="#FFFFFFFF"
+            android:background="@drawable/rounded_seekbarvalue_button"
+            android:visibility = "invisible">
+        </TextView>
+
+        <SeekBar
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBar"
+                android:layout_gravity="center_horizontal|bottom"
+                android:paddingBottom="30dp"
+                android:scrollIndicators="start|end"
+                android:focusableInTouchMode="true" />
+
+
+    </LinearLayout>
+
 
 </FrameLayout>

@@ -17,15 +17,19 @@
 
 package com.initiativaromania.hartabanilorpublici.IRUserInterface;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -91,10 +95,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker currentPos;
     public static Location currentLocation;
     private SeekBar seekBar;
+    public static TextView seekBarValue;
     private SupportMapFragment mapFragment;
     private int currentTab = 0, lastTab = 0;
     public static Context context;
     private BitmapDescriptor bitmapIcon = null;
+    public static Animation animationFadeIn;
+    public static Animation animationFadeOut;
+
 
     /* Data objects */
     HashMap<Marker, Contract> markerContracts;
@@ -106,7 +114,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homescreen);
-        System.out.println("On create homescrewn");
+        System.out.println("On create homescreen");
 
         context = this;
 
@@ -115,6 +123,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         /* Initialize UI components */
         initUI();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        System.out.println(" MainActivity: On start()");
     }
 
 
@@ -132,12 +147,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onResume() {
         super.onResume();
 
+        System.out.println(" MainActivity: On Resume()");
+
         /* Resume connection to GPS */
         if (this.locationListener != null) {
             this.locationListener.setupLocation(true);
         }
     }
-
 
     /* Initialize transparent view */
     private void initTransparentView() {
@@ -159,11 +175,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     linear.startAnimation(animation);
                     linear.setVisibility(View.INVISIBLE);
 
-                    Toast.makeText(getBaseContext(),
+                    Toast toast = Toast.makeText(getBaseContext(),
                             "Apasa pe simbolurile € din jurul tau",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER|Gravity.CENTER_HORIZONTAL, 0, 0);
+                    toast.show();
 
-
+                    /* Display initial seek bar value */
+                    Rect thumbRect = seekBar.getThumb().getBounds();
+                    seekBarValue.setX(thumbRect.exactCenterX());
+                    seekBarValue.setText(" " + String.valueOf(seekBar.getProgress()) + " EURO ");
+                    seekBarValue.setVisibility(View.VISIBLE);
+                    seekBarValue.startAnimation(animationFadeIn);
                 }
             });
         }
@@ -183,11 +206,48 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         /* Tab Bar */
         tabSetup();
 
+
         /* Seek bar */
+        seekBarValue = (TextView) findViewById(R.id.seekBarValue);
+
+        /* SeekBar value animations */
+        animationFadeIn = AnimationUtils.loadAnimation(context, R.anim.fadein);
+        animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                seekBarValue.startAnimation(animationFadeOut);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        animationFadeOut = AnimationUtils.loadAnimation(context, R.anim.fadeout);
+        animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                seekBarValue.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBarListener = new IRSeekBarListener(circle);
         seekBar.setOnSeekBarChangeListener(seekBarListener);
         seekBar.setProgress(100 * (CIRCLE_DEFAULT_RADIUS - CIRCLE_MIN_RADIUS) / (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS));
+
 
         /* Transparent layer with information */
         initTransparentView();

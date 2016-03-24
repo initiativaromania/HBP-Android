@@ -46,20 +46,25 @@ public class CommManager {
     private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
 
     /* Requests to server */
-    private static final String URL_GET_ORDERS = SERVER_IP + "/getOrders?lat=%s&lng=%s&zoom=%s";
-    private static final String URL_GET_ORDER = SERVER_IP + "/getOrder?id=%s";
-    private static final String URL_GET_COMPANY = SERVER_IP + "/getFirm?name=%s";
-    private static final String URL_GET_BUYER = SERVER_IP + "/getOrdersForBuyer?name=%s";
-    private static final String URL_GET_JUSTIFICA = SERVER_IP + "/justify?id=%s";
-    private static final String URL_GET_CATEGORY = SERVER_IP + "/categoryDetails?categoryName=%s";
-    private static final String URL_GET_TOP_COMPANIES = SERVER_IP + "/getTop10Firm";
-    private static final String URL_GET_INIT_DATA = SERVER_IP + "/getInitData";
+    private static final String URL_GET_ORDERS              = SERVER_IP + "/getOrders?lat=%s&lng=%s&zoom=%s";
+    private static final String URL_GET_ORDER               = SERVER_IP + "/getOrder?id=%s";
+    private static final String URL_GET_COMPANY             = SERVER_IP + "/getFirm?name=%s";
+    private static final String URL_GET_BUYER               = SERVER_IP + "/getOrdersForBuyer?name=%s";
+    private static final String URL_GET_JUSTIFICA           = SERVER_IP + "/justify?id=%s";
+    private static final String URL_GET_CATEGORY            = SERVER_IP + "/categoryDetails?categoryName=%s";
+    private static final String URL_GET_TOP_COMPANIES       = SERVER_IP + "/getTop10Firm";
+    private static final String URL_GET_INIT_DATA           = SERVER_IP + "/getInitData";
     private static final String URL_GET_TOP_VOTED_CONTRACTS = SERVER_IP + "/getTop10VotedContracts";
-    private static final String URL_GET_STATISTICS = SERVER_IP + "/getStatisticsArea?lat=%s&lng=%s&zoom=%s";
+    private static final String URL_GET_STATISTICS          = SERVER_IP + "/getStatisticsArea?lat=%s&lng=%s&zoom=%s";
+    private static final String URL_GET_ALL_BUYERS          = SERVER_IP + "/getBuyers";
 
 
-    /* All the contracts */
-    public static LinkedList<Contract> contracts = new LinkedList<Contract>();
+    /* All the buyers */
+    public static LinkedList<Buyer> buyers = new LinkedList<Buyer>();
+
+    /* All the contracts in your area */
+    public static LinkedList<Contract> localContracts = new LinkedList<Contract>();
+
     public static RequestQueue queue;
 
     public static void init(Context context) {
@@ -124,6 +129,34 @@ public class CommManager {
     }
 
 
+    /* Send request to server to get all the buyers */
+    public static void requestAllBuyers(final Context context) {
+        System.out.println("Getting all buyers");
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, URL_GET_ALL_BUYERS,
+                        (String) null, new Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response: " + response.toString());
+                        MainActivity ma = (MainActivity) context;
+                        ma.receiveAllBuyers(response);
+
+                    }
+                }, new ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Eroare conectare la server",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        queue.add(jsObjRequest);
+        System.out.println("Request sent");
+    }
+
+
     /* Send request to server to get buyer details */
     public static void requestBuyerDetails(final Context context, String buyerName) {
         System.out.println("Getting buyer details for " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
@@ -150,38 +183,6 @@ public class CommManager {
 
         queue.add(jsObjRequest);
         System.out.println("Request sent");
-    }
-
-
-    /* Send request to server to get all the contracts */
-    public static void requestAllContracts(final Context context) {
-
-        System.out.println("Getting all contracts");
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, String.format(URL_GET_ORDERS, 0, 0, 0),
-                        (String) null, new Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //System.out.println("Response: " + response.toString());
-                        MainActivity ma = (MainActivity) context;
-                        ma.receiveAllContracts(response);
-
-                    }
-                }, new ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Eroare conectare la server. Incearca mai tarziu", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        queue.add(jsObjRequest);
-        System.out.println("Request sent");
-    }
-
-    public static LinkedList<Contract> getEntityContractList(Serializable entity, int entityType) {
-        return contracts;
     }
 
 

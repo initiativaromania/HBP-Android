@@ -92,7 +92,7 @@ public class AroundStatisticsFragment extends Fragment {
         List<StatisticsContractDetails> orderDetailsList = new ArrayList<>();
 
         /* Walk through all the contracts */
-        for (final Contract contract : CommManager.contracts) {
+        for (final Contract contract : CommManager.localContracts) {
 
             distance[0] = Float.MAX_VALUE;
 

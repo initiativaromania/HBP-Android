@@ -39,6 +39,7 @@ import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 import com.facebook.share.widget.ShareDialog;
+import com.initiativaromania.hartabanilorpublici.IRObjects.Buyer;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Category;
 import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;
@@ -112,7 +113,7 @@ public class ContractActivity extends Activity {
         shareButton = (ShareButton)findViewById(R.id.fb_share_button);
         ShareLinkContent linkContent = new ShareLinkContent.Builder()
                 .setContentUrl(Uri.parse(URL_HBP))
-                .setContentTitle(contract.authority + " a cheltuit " + contract.valueEUR +
+                .setContentTitle(contract.buyer.name + " a cheltuit " + contract.valueEUR +
                         " EURO pentru " + contract.title)
                 .setImageUrl(Uri.parse(URL_HBP_BANNER))
                 .build();
@@ -188,7 +189,7 @@ public class ContractActivity extends Activity {
         /* Show the buyeer */
         tv = (TextView)findViewById(R.id.textPrimarie);
         if (tv != null) {
-            tv.setText(contract.authority);
+            tv.setText(contract.buyer.name);
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -197,7 +198,7 @@ public class ContractActivity extends Activity {
                     /* Start a separate view for a company */
                     Intent intent = new Intent(getBaseContext(), ContractListActivity.class);
                     intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_BUYER);
-                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.authority);
+                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.buyer.name);
                     startActivity(intent);
                 }
             });
@@ -269,7 +270,8 @@ public class ContractActivity extends Activity {
             contract.CPVCode = response.getString("CPVCode");
             contract.address = response.getString("address");
             contract.company = new Company();
-            contract.authority = response.getString("buyer");
+            contract.buyer = new Buyer();
+            contract.buyer.name = response.getString("buyer");
             contract.votes = Integer.parseInt(response.getString("justify"));
             contract.company.name = response.getString("company");
             contract.number = response.getString("contract_nr");

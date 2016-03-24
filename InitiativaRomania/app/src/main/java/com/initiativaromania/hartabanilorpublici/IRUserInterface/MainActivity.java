@@ -17,8 +17,6 @@
 
 package com.initiativaromania.hartabanilorpublici.IRUserInterface;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,9 +40,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
-import com.facebook.share.widget.ShareDialog;
+import com.initiativaromania.hartabanilorpublici.IRObjects.Buyer;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Company;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Contract;
@@ -107,7 +104,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     /* Data objects */
-    HashMap<Marker, Contract> markerContracts;
+    HashMap<Marker, Buyer> markerBuyers;
 
 
 
@@ -156,6 +153,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             this.locationListener.setupLocation(true);
         }
     }
+
 
     /* Initialize transparent view */
     private void initTransparentView() {
@@ -320,56 +318,52 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println("Getting all the data from server");
 
         /* Init the hashmap Marker - Contracts */
-        markerContracts = new HashMap<Marker, Contract>();
+        markerBuyers = new HashMap<Marker, Buyer>();
 
         /* Send a request to get all the cotnracts */
-        if (CommManager.contracts.isEmpty())
-            /* Get all the contracts if not available */
-            CommManager.requestAllContracts(this);
+        if (CommManager.buyers.isEmpty())
+            /* Get all the buyers if not already available */
+            CommManager.requestAllBuyers(this);
         else
             /* Show all the contracts on the map */
-            displayContracts();
+            displayBuyers();
     }
 
 
-    /* Receive all the contracts from the server */
-    public void receiveAllContracts(JSONObject response) {
-        System.out.println("Received new contracts");
-        CommManager.contracts = new LinkedList<Contract>();
-        Contract contract;
+    /* Receive all the buyers from the server */
+    public void receiveAllBuyers(JSONObject response) {
+        System.out.println("Receiving all the buyers");
+        CommManager.buyers = new LinkedList<Buyer>();
+        Buyer buyer;
 
-        /* Parse the list of contracts */
+        /* Parse the list of buyers */
         try {
-            JSONArray jsonContractList = response.getJSONArray("orders");
+            JSONArray jsonBuyersList = response.getJSONArray("buyers");
 
-            for (int i = 0; i < jsonContractList.length(); i++) {
-                JSONObject obj = jsonContractList.getJSONObject(i);
+            for (int i = 0; i < jsonBuyersList.length(); i++) {
+                JSONObject obj = jsonBuyersList.getJSONObject(i);
 
-                contract = new Contract();
-                contract.id = obj.getInt("id");
-                contract.latitude = obj.getDouble("lat");
-                contract.longitude = obj.getDouble("lng");
-                contract.title = obj.getString("title");
-                contract.company = new Company();
-                contract.company.name = obj.getString("company");
-                contract.authority = obj.getString("buyer");
+                buyer = new Buyer();
+                buyer.latitude = obj.getDouble("lat");
+                buyer.longitude = obj.getDouble("lng");
+                buyer.name = obj.getString("buyer");
 
-                CommManager.contracts.add(contract);
+                CommManager.buyers.add(buyer);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        /* Show the received contracts */
-        displayContracts();
+        /* Show the received buyers */
+        displayBuyers();
     }
 
 
-    /* Display each contract from the list in CommManager */
-    public void displayContracts() {
+    /* Display each buyer from the list in CommManager */
+    public void displayBuyers() {
 
-        System.out.println("Displaying the available contracts");
+        System.out.println("Displaying the available buyers");
 
         /* Prepare the bitmap image */
         if (bitmapIcon == null) {
@@ -380,10 +374,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             bitmapIcon = BitmapDescriptorFactory.fromBitmap(resizedBitmap);
         }
 
-        /* Set a pin for each contract */
-        for (Contract contract: CommManager.contracts) {
+        /* Set a pin for each buyer */
+        for (Buyer buyer: CommManager.buyers) {
             /* Add pin to the map */
-            LatLng location = new LatLng(contract.latitude, contract.longitude);
+            LatLng location = new LatLng(buyer.latitude, buyer.longitude);
 
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(location)
@@ -391,7 +385,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     .icon(bitmapIcon));
 
 
-            markerContracts.put(marker, contract);
+            markerBuyers.put(marker, buyer);
         }
 
          /* Set on click listener for each pin */
@@ -400,14 +394,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                        Contract contract = markerContracts.get(marker);
+                        Buyer buyer = markerBuyers.get(marker);
 
 
-                        if (contract != null) {
-                             /* Start a separate view for a company */
+                        if (buyer != null) {
+                             /* Start a separate view for a buyer */
                             Intent intent = new Intent(getBaseContext(), ContractListActivity.class);
                             intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_BUYER);
-                            intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.authority);
+                            intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, buyer.name);
                             startActivity(intent);
                         } else {
                             /* Offer details about the user's position */

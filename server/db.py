@@ -94,6 +94,28 @@ def get_orders(area):
     return result
 
 
+def get_buyers():
+    cnx = mysql.connector.connect(user='root', database='ir-investitii')
+    cursor = cnx.cursor()
+    result = []
+
+    query = ("SELECT buyer, location_lat, location_lng FROM contracte"
+             " GROUP BY buyer")
+    cursor.execute(query)
+
+    for (buyer, location_lat, location_lng) in cursor:
+        result.append({
+            'buyer': buyer,
+            'lat': location_lat,
+            'lng': location_lng
+        })
+
+    cursor.close()
+    cnx.close()
+
+    return result
+
+
 def getInitData():
     cnx = mysql.connector.connect(user='root', database='ir-investitii')
     cursor = cnx.cursor()

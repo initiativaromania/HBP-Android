@@ -38,6 +38,11 @@ def getOrders():
         'orders': db.get_orders(map.get_map_area(lat, lng, zoom))
     })
 
+@app.route('/getBuyers', methods=['GET'])
+def getBuyers():
+    return jsonify({
+        'buyers': db.get_buyers()
+    })
 
 @app.route('/getOrder', methods=['GET'])
 def getOrderDetails():

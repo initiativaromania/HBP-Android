@@ -56,7 +56,7 @@ public class ContractListActivity extends Activity {
     private LinkedList<Contract> contracts;
     private double totalValue = 0;
 
-    private void setTextViews() {
+    private void initUI() {
         Intent intent = getIntent();
         this.type = intent.getIntExtra(CONTRACT_LIST_TYPE, -1);
 
@@ -84,6 +84,22 @@ public class ContractListActivity extends Activity {
                 public void onClick(View v) {
                      /* Start the info activity */
                     Intent intent = new Intent(getBaseContext(), InfoActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        /* IR home button */
+        ImageButton ir = (ImageButton)findViewById(R.id.imageViewContract);
+        if (ir != null) {
+            ir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("Click IR");
+
+                     /* Go to the homepage */
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    intent.putExtra(MainActivity.EXTRA_DISPLAY_INFOGRAPHIC, false);
                     startActivity(intent);
                 }
             });
@@ -181,7 +197,7 @@ public class ContractListActivity extends Activity {
         setContentView(R.layout.activity_list_of_contracts);
 
         /* Set header text views */
-        setTextViews();
+        initUI();
 
         /* Get Contract List */
         if (type == CONTRACT_LIST_FOR_COMPANY)

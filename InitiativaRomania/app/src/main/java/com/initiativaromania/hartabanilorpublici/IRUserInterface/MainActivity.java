@@ -82,6 +82,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int DEFAULT_COLOR_GREEN    = 203;
     private static final int DEFAULT_COLOR_BLUE     = 212;
     private static final int DEFAULT_COLOR_HUE      = 190;
+    public static final String EXTRA_DISPLAY_INFOGRAPHIC = "Display infographic";
 
 
     /* Setup Objects */
@@ -89,6 +90,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public static IRLocationListener locationListener = null;
     private IRSeekBarListener seekBarListener = null;
     private String tabtitles[] = new String[] {TAB_MAP, TAB_STATISTICS };
+    private boolean displayInfographic = true;
 
     /* UI objects */
     public static Circle circle;
@@ -158,6 +160,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     /* Initialize transparent view */
     private void initTransparentView() {
 
+        /* Avoid displaying infographic if the home button has been pushed */
+        Intent intent = getIntent();
+        displayInfographic = intent.getBooleanExtra(EXTRA_DISPLAY_INFOGRAPHIC, true);
+        System.out.println("Display info " + displayInfographic);
+        if (!displayInfographic) {
+            LinearLayout linear = (LinearLayout) findViewById(R.id.transparentLayer);;
+            linear.setVisibility(View.INVISIBLE);
+            return;
+        }
+
         /* Setup the OK button */
         Button okButton = (Button) findViewById(R.id.okButton);
         if (okButton != null) {
@@ -167,11 +179,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     System.out.println("OK button pushed");
 
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-                    LinearLayout linear = (LinearLayout) findViewById(R.id.transparentLayer);
-                    if (linear == null)
-                        System.out.println("Frame layout is null");
-                    else
-                        System.out.println("Frame layout ok");
+                    LinearLayout linear = (LinearLayout) findViewById(R.id.transparentLayer);;
                     linear.startAnimation(animation);
                     linear.setVisibility(View.INVISIBLE);
 

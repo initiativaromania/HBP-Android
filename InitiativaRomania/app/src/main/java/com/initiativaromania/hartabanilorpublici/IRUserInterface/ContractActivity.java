@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -139,6 +140,22 @@ public class ContractActivity extends Activity {
 
     /* Show contract details in the contract view */
     private void displayContract() {
+
+        /* IR home button */
+        ImageButton ir = (ImageButton)findViewById(R.id.imageViewContract);
+        if (ir != null) {
+            ir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("Click IR");
+
+                     /* Go to the homepage */
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    intent.putExtra(MainActivity.EXTRA_DISPLAY_INFOGRAPHIC, false);
+                    startActivity(intent);
+                }
+            });
+        }
 
         /* Show contract title */
         TextView tv = (TextView)findViewById(R.id.textViewTitluContract);

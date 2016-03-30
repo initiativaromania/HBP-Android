@@ -27,16 +27,15 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.ContractActivity;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.ContractListActivity;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.MainActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.MainActivity;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.AroundStatisticsFragment;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.TopCompanyFragment;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.TopVotedContractsFragment;
 
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 
 /**

@@ -15,7 +15,7 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,6 +25,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.InfoActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.MainActivity;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Contract;
 import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;

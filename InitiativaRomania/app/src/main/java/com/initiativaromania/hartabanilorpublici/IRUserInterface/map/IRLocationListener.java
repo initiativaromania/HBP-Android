@@ -15,7 +15,7 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.map;
 
 import android.Manifest;
 import android.content.Context;

@@ -15,13 +15,12 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +39,8 @@ import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 import com.facebook.share.widget.ShareDialog;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Buyer;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.InfoActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.MainActivity;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Category;
 import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;

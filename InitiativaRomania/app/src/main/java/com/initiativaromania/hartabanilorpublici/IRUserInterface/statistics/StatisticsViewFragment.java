@@ -14,11 +14,13 @@
  You should have received a copy of the GNU General Public License
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.initiativaromania.hartabanilorpublici.IRUserInterface;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.StatisticsPageAdapter;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.AroundStatisticsFragment;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.TopCompanyFragment;

@@ -1,3 +1,4 @@
+
 /**
  This file is part of "Harta Banilor Publici".
 
@@ -14,7 +15,8 @@
  You should have received a copy of the GNU General Public License
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.initiativaromania.hartabanilorpublici.IRUserInterface;
+
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,15 +25,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.List;
 
 /**
- * Created by claudiu on 2/9/16.
+ * Created by claudiu on 3/30/16.
  */
-public class StatisticsPageAdapter extends FragmentPagerAdapter {
+public class ContractListPageAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragments;
-    private String tabtitles[] = new String[] { "In jurul tau", "Top contracte nejustificate", "Top companii" };
+    private String tabTitles[];
 
-    public StatisticsPageAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public ContractListPageAdapter(FragmentManager fm, List<Fragment> fragments, String tabTitles[]) {
         super(fm);
         this.fragments = fragments;
+        this.tabTitles = tabTitles;
     }
     @Override
     public Fragment getItem(int position) {
@@ -45,6 +48,6 @@ public class StatisticsPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabtitles[position];
+        return tabTitles[position];
     }
 }

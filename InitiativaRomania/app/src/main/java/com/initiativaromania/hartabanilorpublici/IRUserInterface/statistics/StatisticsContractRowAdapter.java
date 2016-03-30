@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Contract;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.ContractActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractActivity;
 
 import java.util.List;
 

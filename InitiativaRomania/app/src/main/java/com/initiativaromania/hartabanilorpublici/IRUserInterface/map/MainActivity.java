@@ -15,7 +15,7 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.map;
 
 import android.content.Context;
 import android.content.Intent;
@@ -42,9 +42,11 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Buyer;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.IRLocationListener;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.IRSeekBarListener;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.InfoActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListActivity;
 import com.initiativaromania.hartabanilorpublici.R;
-import com.initiativaromania.hartabanilorpublici.IRObjects.Company;
-import com.initiativaromania.hartabanilorpublici.IRObjects.Contract;
 import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

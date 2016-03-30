@@ -8,9 +8,9 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/statistics_frag"
-        android:name="com.initiativaromania.hartabanilorpublici.IRUserInterface.StatisticsViewFragment"
+        android:name="com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.StatisticsViewFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        tools:context="com.initiativaromania.hartabanilorpublici.IRUserInterface.MainActivity" />
+        tools:context="com.initiativaromania.hartabanilorpublici.IRUserInterface.map.MainActivity" />
 
 </FrameLayout>

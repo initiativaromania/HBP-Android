@@ -15,11 +15,9 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.map;
 
 import android.graphics.Rect;
-import android.provider.SyncStateContract;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.google.android.gms.maps.model.Circle;

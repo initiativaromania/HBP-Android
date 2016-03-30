@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;
 import com.initiativaromania.hartabanilorpublici.IRObjects.Contract;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.MainActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.MainActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

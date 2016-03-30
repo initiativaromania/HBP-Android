@@ -15,7 +15,7 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,38 +26,39 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.ContractActivity;
 import com.initiativaromania.hartabanilorpublici.R;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListActivity;
+import com.initiativaromania.hartabanilorpublici.IRData.Contract;
 
 import java.util.List;
 
-public class StatisticsCompanyAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
+public class ContractListAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
     private final Context context;
-    private List<String> companyNames;
+    private List<ContractListItem> orders;
 
-    public StatisticsCompanyAdapter(Context context, List<String> companyNames) {
+    public ContractListAdapter(Context context, List<ContractListItem> orders) {
         this.context = context;
-        this.companyNames = companyNames;
+        this.orders = orders;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.statistics_around_fragment_contract_list_row, null);
+            convertView = inflater.inflate(R.layout.contract_list_item, null);
         }
 
-        TextView companyName = (TextView) convertView.findViewById(R.id.statistics_around_row_contractName);
-        companyName.setText((position + 1) + ". " + companyNames.get(position));
-        convertView.setTag(companyNames.get(position));
+        TextView contractName = (TextView) convertView.findViewById(R.id.statistics_around_row_contractName);
+        contractName.setText((position + 1) +". " + orders.get(position).title);
+        convertView.setTag(orders.get(position).id);
 
         return convertView;
     }
 
     @Override
     public int getCount() {
-        return companyNames.size();
+        return orders.size();
     }
 
     @Override
@@ -76,11 +77,11 @@ public class StatisticsCompanyAdapter extends BaseAdapter implements AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        Intent intent = new Intent(context, ContractListActivity.class);
-        String companyName = (String)v.getTag();
+        Intent intent = new Intent(context, ContractActivity.class);
+        Contract contract = new Contract();
+        contract.id = (int) v.getTag();
 
-        intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_COMPANY);
-        intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, companyName);
+        intent.putExtra(ContractActivity.EXTRA_CONTRACT_ID, contract);
         context.startActivity(intent);
     }
 }

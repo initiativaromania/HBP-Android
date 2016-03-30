@@ -15,12 +15,12 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
 
 /**
  * Created by claudiu on 2/20/16.
  */
-public class StatisticsContractDetails {
+public class ContractListItem {
     public int id;
     public String title;
     public String price;

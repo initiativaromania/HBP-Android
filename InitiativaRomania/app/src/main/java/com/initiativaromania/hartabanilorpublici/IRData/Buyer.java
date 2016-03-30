@@ -1,4 +1,4 @@
-package com.initiativaromania.hartabanilorpublici.IRObjects;
+package com.initiativaromania.hartabanilorpublici.IRData;
 
 import java.io.Serializable;
 

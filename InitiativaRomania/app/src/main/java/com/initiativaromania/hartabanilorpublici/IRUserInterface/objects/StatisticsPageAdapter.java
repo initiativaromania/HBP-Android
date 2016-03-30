@@ -14,7 +14,7 @@
  You should have received a copy of the GNU General Public License
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -15,7 +15,7 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRObjects;
+package com.initiativaromania.hartabanilorpublici.IRData;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -27,12 +27,12 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractActivity;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListActivity;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.MainActivity;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.AroundStatisticsFragment;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.TopCompanyFragment;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.TopVotedContractsFragment;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.ContractActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.ParticipantActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.MainActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.AroundStatisticsFragment;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.TopCompanyFragment;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.TopVotedContractsFragment;
 
 import org.json.JSONObject;
 
@@ -110,7 +110,7 @@ public class CommManager {
                     @Override
                     public void onResponse(JSONObject response) {
                         //System.out.println("Response: " + response.toString());
-                        ContractListActivity cla = (ContractListActivity) context;
+                        ParticipantActivity cla = (ParticipantActivity) context;
                         cla.receiveCompanyDetails(response);
 
                     }
@@ -167,7 +167,7 @@ public class CommManager {
                     @Override
                     public void onResponse(JSONObject response) {
                         //System.out.println("Response: " + response.toString());
-                        ContractListActivity cla = (ContractListActivity) context;
+                        ParticipantActivity cla = (ParticipantActivity) context;
                         cla.receiveBuyerDetails(response);
 
                     }

@@ -15,14 +15,14 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRObjects;
+package com.initiativaromania.hartabanilorpublici.IRData;
 
 import java.io.Serializable;
 
 /**
  * Created by claudiu on 2/9/16.
  */
-public class Company implements Serializable {
+public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
     public int id;
     public String name;

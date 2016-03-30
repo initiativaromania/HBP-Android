@@ -15,7 +15,7 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface.map;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -41,13 +41,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
-import com.initiativaromania.hartabanilorpublici.IRObjects.Buyer;
+import com.initiativaromania.hartabanilorpublici.IRData.Buyer;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.IRLocationListener;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.IRSeekBarListener;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.InfoActivity;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListActivity;
 import com.initiativaromania.hartabanilorpublici.R;
-import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;
+import com.initiativaromania.hartabanilorpublici.IRData.CommManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -401,9 +399,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                         if (buyer != null) {
                              /* Start a separate view for a buyer */
-                            Intent intent = new Intent(getBaseContext(), ContractListActivity.class);
-                            intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_BUYER);
-                            intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, buyer.name);
+                            Intent intent = new Intent(getBaseContext(), ParticipantActivity.class);
+                            intent.putExtra(ParticipantActivity.CONTRACT_LIST_TYPE, ParticipantActivity.CONTRACT_LIST_FOR_BUYER);
+                            intent.putExtra(ParticipantActivity.CONTRACT_LIST_EXTRA, buyer.name);
                             startActivity(intent);
                         } else {
                             /* Offer details about the user's position */

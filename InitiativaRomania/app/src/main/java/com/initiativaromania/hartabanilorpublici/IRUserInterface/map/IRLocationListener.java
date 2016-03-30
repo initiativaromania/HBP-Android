@@ -27,6 +27,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.MainActivity;
+
 /**
  * Created by claudiu on 2/8/16.
  */

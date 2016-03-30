@@ -15,7 +15,7 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -27,10 +27,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListAdapter;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListItem;
 import com.initiativaromania.hartabanilorpublici.R;
-import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;
-import com.initiativaromania.hartabanilorpublici.IRObjects.Contract;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.MainActivity;
+import com.initiativaromania.hartabanilorpublici.IRData.CommManager;
+import com.initiativaromania.hartabanilorpublici.IRData.Contract;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -89,7 +91,7 @@ public class AroundStatisticsFragment extends Fragment {
         LinkedList<Contract> areaContracts = new LinkedList<Contract>();
 
         /* Show contracts in area */
-        List<StatisticsContractDetails> orderDetailsList = new ArrayList<>();
+        List<ContractListItem> orderDetailsList = new ArrayList<>();
 
         /* Walk through all the contracts */
         for (final Contract contract : CommManager.localContracts) {
@@ -101,7 +103,7 @@ public class AroundStatisticsFragment extends Fragment {
                     contract.longitude, distance);
             if (distance[0] < MainActivity.circle.getRadius()) {
                 //System.out.println("contract " + contract.title + " is in the circle " + distance[0]);
-                orderDetailsList.add(new StatisticsContractDetails() {{
+                orderDetailsList.add(new ContractListItem() {{
                     id = contract.id;
                     title = contract.title;
                     price = "";
@@ -119,7 +121,7 @@ public class AroundStatisticsFragment extends Fragment {
         }
 
         ListView orderList = (ListView) view.findViewById(R.id.statistics_around_order_list);
-        StatisticsContractRowAdapter adapter = new StatisticsContractRowAdapter(getActivity(), orderDetailsList);
+        ContractListAdapter adapter = new ContractListAdapter(getActivity(), orderDetailsList);
         orderList.setAdapter(adapter);
         orderList.setOnItemClickListener(adapter);
 

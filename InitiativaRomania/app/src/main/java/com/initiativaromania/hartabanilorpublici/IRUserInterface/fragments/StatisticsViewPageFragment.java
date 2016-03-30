@@ -14,17 +14,14 @@
  You should have received a copy of the GNU General Public License
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.StatisticsPageAdapter;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.StatisticsPageAdapter;
 import com.initiativaromania.hartabanilorpublici.R;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.AroundStatisticsFragment;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.TopCompanyFragment;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.TopVotedContractsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +32,7 @@ import android.view.ViewGroup;
 /**
  * Created by claudiu on 2/9/16.
  */
-public class StatisticsViewFragment extends Fragment {
+public class StatisticsViewPageFragment extends Fragment {
 
     private StatisticsPageAdapter pageAdapter;
 
@@ -43,7 +40,7 @@ public class StatisticsViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         System.out.println("On create view statistics");
-        return inflater.inflate(R.layout.statistics_tab_layout, container, false);
+        return inflater.inflate(R.layout.viewpager_fragment, container, false);
     }
 
     @Override

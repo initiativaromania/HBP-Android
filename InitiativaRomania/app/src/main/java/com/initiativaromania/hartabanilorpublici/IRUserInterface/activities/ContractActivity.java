@@ -15,7 +15,7 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -38,14 +38,12 @@ import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 import com.facebook.share.widget.ShareDialog;
-import com.initiativaromania.hartabanilorpublici.IRObjects.Buyer;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.InfoActivity;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.MainActivity;
+import com.initiativaromania.hartabanilorpublici.IRData.Buyer;
 import com.initiativaromania.hartabanilorpublici.R;
-import com.initiativaromania.hartabanilorpublici.IRObjects.Category;
-import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;
-import com.initiativaromania.hartabanilorpublici.IRObjects.Company;
-import com.initiativaromania.hartabanilorpublici.IRObjects.Contract;
+import com.initiativaromania.hartabanilorpublici.IRData.Category;
+import com.initiativaromania.hartabanilorpublici.IRData.CommManager;
+import com.initiativaromania.hartabanilorpublici.IRData.Company;
+import com.initiativaromania.hartabanilorpublici.IRData.Contract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -179,9 +177,9 @@ public class ContractActivity extends Activity {
                     System.out.println("Click on company");
 
                     /* Start a separate view for a company */
-                    Intent intent = new Intent(getBaseContext(), ContractListActivity.class);
-                    intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_COMPANY);
-                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.company.name);
+                    Intent intent = new Intent(getBaseContext(), ParticipantActivity.class);
+                    intent.putExtra(ParticipantActivity.CONTRACT_LIST_TYPE, ParticipantActivity.CONTRACT_LIST_FOR_COMPANY);
+                    intent.putExtra(ParticipantActivity.CONTRACT_LIST_EXTRA, contract.company.name);
                     startActivity(intent);
                 }
             });
@@ -197,9 +195,9 @@ public class ContractActivity extends Activity {
                     System.out.println("Click on authority");
 
                     /* Start a separate view for a company */
-                    Intent intent = new Intent(getBaseContext(), ContractListActivity.class);
-                    intent.putExtra(ContractListActivity.CONTRACT_LIST_TYPE, ContractListActivity.CONTRACT_LIST_FOR_BUYER);
-                    intent.putExtra(ContractListActivity.CONTRACT_LIST_EXTRA, contract.buyer.name);
+                    Intent intent = new Intent(getBaseContext(), ParticipantActivity.class);
+                    intent.putExtra(ParticipantActivity.CONTRACT_LIST_TYPE, ParticipantActivity.CONTRACT_LIST_FOR_BUYER);
+                    intent.putExtra(ParticipantActivity.CONTRACT_LIST_EXTRA, contract.buyer.name);
                     startActivity(intent);
                 }
             });

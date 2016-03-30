@@ -94,66 +94,18 @@
     </FrameLayout>
 
 
-    <FrameLayout
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="50dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:background="#ffffff">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dip"
-                    android:id="@+id/view1"
-                    android:background="#9d9d9d"
-                    android:layout_gravity="center_vertical|bottom"
-                    android:layout_weight="4" />
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Contracte"
-                    android:id="@+id/textView11"
-                    android:layout_gravity="center_vertical|top"
-                    android:layout_weight="4"
-                    android:textAlignment="center" />
-
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dip"
-                    android:id="@+id/view2"
-                    android:background="#9d9d9d"
-                    android:layout_gravity="center_vertical|bottom"
-                    android:layout_weight="4" />
-
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/entityContractList"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.4"
-                android:divider="#ffffff"
-                android:dividerHeight="1dp"
-                android:paddingTop="10dp">
-            </ListView>
-
-
-        </LinearLayout>
+        <fragment
+            android:id="@+id/entity_info_fragment"
+            android:name="com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.CompanyViewPageFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            tools:context=".IRUserInterface.activities.ContractActivity" />
 
     </FrameLayout>
 

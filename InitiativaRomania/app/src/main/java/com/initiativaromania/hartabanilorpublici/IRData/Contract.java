@@ -15,7 +15,7 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRObjects;
+package com.initiativaromania.hartabanilorpublici.IRData;
 
 import java.io.Serializable;
 import java.util.LinkedList;

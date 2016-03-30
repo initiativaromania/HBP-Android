@@ -27,11 +27,11 @@ import java.util.List;
 /**
  * Created by claudiu on 3/30/16.
  */
-public class ContractListPageAdapter extends FragmentPagerAdapter {
-    private List<Fragment> fragments;
+public class EntityViewPageAdapter extends FragmentPagerAdapter {
+    public List<Fragment> fragments;
     private String tabTitles[];
 
-    public ContractListPageAdapter(FragmentManager fm, List<Fragment> fragments, String tabTitles[]) {
+    public EntityViewPageAdapter(FragmentManager fm, List<Fragment> fragments, String tabTitles[]) {
         super(fm);
         this.fragments = fragments;
         this.tabTitles = tabTitles;

@@ -15,23 +15,23 @@
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
+package com.initiativaromania.hartabanilorpublici.IRUserInterface.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.InfoActivity;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.MainActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.BuyerListFragment;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.CompanyListFragment;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.CompanyViewPageFragment;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.ContractListFragment;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListItem;
 import com.initiativaromania.hartabanilorpublici.R;
-import com.initiativaromania.hartabanilorpublici.IRObjects.Contract;
-import com.initiativaromania.hartabanilorpublici.IRObjects.CommManager;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.StatisticsContractRowAdapter;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.statistics.StatisticsContractDetails;
+import com.initiativaromania.hartabanilorpublici.IRData.Contract;
+import com.initiativaromania.hartabanilorpublici.IRData.CommManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * Created by claudiu on 2/12/16.
  */
-public class ContractListActivity extends Activity {
+public class ParticipantActivity extends FragmentActivity {
     public static final String COMPANY_ACTIVITY_NAME    = "Companie";
     public static final String AUTHORITY_ACTIVITY_NAME  = "Institutie";
     public static final String CONTRACT_LIST_TYPE       = "contract list type";
@@ -55,8 +55,12 @@ public class ContractListActivity extends Activity {
 
     private int type;
     private String name;
-    private LinkedList<Contract> contracts;
+    private LinkedList<Contract> contracts = new LinkedList<Contract>();
     private double totalValue = 0;
+
+    private ContractListFragment contractListFragment;
+    private CompanyListFragment companyListFragment;
+    private BuyerListFragment buyerListFragment;
 
     private void initUI() {
         Intent intent = getIntent();
@@ -113,9 +117,10 @@ public class ContractListActivity extends Activity {
     }
 
 
-    /* Show the contracts in a predefined list view */
-    private double displayContracts(JSONArray contractsJSON) {
-        List<StatisticsContractDetails> orderDetailsList = new ArrayList<>();
+    /* Parse data, fill fragments, display info */
+    private double displayInfo(JSONArray contractsJSON) {
+
+        /* Get data from server's response */
         double totalValue = 0;
 
         try {
@@ -129,22 +134,20 @@ public class ContractListActivity extends Activity {
 
                 totalValue += Double.parseDouble(contract.valueEUR);
 
-                orderDetailsList.add(new StatisticsContractDetails() {{
-                    id = contract.id;
-                    title = contract.title;
-                    price = contract.valueEUR;
-                }});
+                contracts.add(contract);
 
                 System.out.println("Contract " + contract.id + ", title " + contract.title);
-
-                ListView orderList = (ListView) findViewById(R.id.entityContractList);
-                StatisticsContractRowAdapter adapter = new StatisticsContractRowAdapter(this, orderDetailsList);
-                orderList.setAdapter(adapter);
-                orderList.setOnItemClickListener(adapter);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        /* Fill the contract list fragment */
+        contractListFragment = (ContractListFragment)CompanyViewPageFragment.pageAdapter.fragments.get(0);
+        if (contractListFragment != null) {
+            contractListFragment.displayContracts(contracts);
+        } else
+            System.out.println("NULL contract list fragment");
 
         return totalValue;
     }
@@ -167,7 +170,7 @@ public class ContractListActivity extends Activity {
         try {
             JSONArray contractsJSON = response.getJSONArray("topOrders");
 
-            displayContracts(contractsJSON);
+            displayInfo(contractsJSON);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -181,7 +184,7 @@ public class ContractListActivity extends Activity {
         try {
             JSONArray contractsJSON = response.getJSONArray("orders");
 
-            totalValue = displayContracts(contractsJSON);
+            totalValue = displayInfo(contractsJSON);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -196,7 +199,7 @@ public class ContractListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_contracts);
+        setContentView(R.layout.activity_participant);
 
         /* Set header text views */
         initUI();

@@ -21,6 +21,7 @@ import android.graphics.Rect;
 import android.widget.SeekBar;
 
 import com.google.android.gms.maps.model.Circle;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.MainActivity;
 
 /**
  * Created by claudiu on 2/9/16.

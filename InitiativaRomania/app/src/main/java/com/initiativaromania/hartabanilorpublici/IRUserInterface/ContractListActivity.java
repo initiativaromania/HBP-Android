@@ -45,7 +45,7 @@ import java.util.List;
  */
 public class ContractListActivity extends Activity {
     public static final String COMPANY_ACTIVITY_NAME    = "Companie";
-    public static final String AUTHORITY_ACTIVITY_NAME  = "Cumparator";
+    public static final String AUTHORITY_ACTIVITY_NAME  = "Institutie";
     public static final String CONTRACT_LIST_TYPE       = "contract list type";
     public static final String CONTRACT_LIST_EXTRA      = "contract list extra";
     public static final int CONTRACT_LIST_FOR_COMPANY   = 1;

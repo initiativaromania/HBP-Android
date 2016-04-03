@@ -43,16 +43,18 @@ import java.util.LinkedList;
  * Created by claudiu on 2/12/16.
  */
 public class ParticipantActivity extends FragmentActivity {
-    public static final String COMPANY_ACTIVITY_NAME    = "Companie";
-    public static final String AUTHORITY_ACTIVITY_NAME  = "Institutie";
-    public static final String CONTRACT_LIST_TYPE       = "contract list type";
-    public static final String CONTRACT_LIST_EXTRA      = "contract list extra";
-    public static final int CONTRACT_LIST_FOR_COMPANY   = 1;
-    public static final int CONTRACT_LIST_FOR_BUYER     = 2;
+    public static final String COMPANY_ACTIVITY_NAME = "Companie";
+    public static final String AUTHORITY_ACTIVITY_NAME = "Institutie";
+    public static final String CONTRACT_LIST_TYPE = "contract list type";
+    public static final String CONTRACT_LIST_EXTRA = "contract list extra";
+    public static final int CONTRACT_LIST_FOR_COMPANY = 1;
+    public static final int CONTRACT_LIST_FOR_BUYER = 2;
 
     private int type;
     private String name;
     private LinkedList<Contract> contracts = new LinkedList<Contract>();
+    private LinkedList<String> companies = new LinkedList<String>();
+    private LinkedList<String> buyers = new LinkedList<String>();
     private double totalValue = 0;
 
     private ContractListFragment contractListFragment;
@@ -70,11 +72,11 @@ public class ParticipantActivity extends FragmentActivity {
         /* Determine if the activity is for a Company or for a Mayor Office */
         if (type == CONTRACT_LIST_FOR_COMPANY) {
 
-            TextView tv = (TextView)findViewById(R.id.textViewContractList);
+            TextView tv = (TextView) findViewById(R.id.textViewContractList);
             if (tv != null)
                 tv.setText(COMPANY_ACTIVITY_NAME);
         } else {
-            TextView tv = (TextView)findViewById(R.id.textViewContractList);
+            TextView tv = (TextView) findViewById(R.id.textViewContractList);
             if (tv != null)
                 tv.setText(AUTHORITY_ACTIVITY_NAME);
         }
@@ -93,7 +95,7 @@ public class ParticipantActivity extends FragmentActivity {
         }
 
         /* IR home button */
-        ImageButton ir = (ImageButton)findViewById(R.id.imageViewContract);
+        ImageButton ir = (ImageButton) findViewById(R.id.imageViewContract);
         if (ir != null) {
             ir.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,14 +110,14 @@ public class ParticipantActivity extends FragmentActivity {
             });
         }
 
-        TextView tv = (TextView)findViewById(R.id.textEntityName);
+        TextView tv = (TextView) findViewById(R.id.textEntityName);
         if (tv != null)
             tv.setText(name);
     }
 
 
     /* Parse data, fill fragments, display info */
-    private double displayInfo(JSONArray contractsJSON) {
+    private double displayContracts(JSONArray contractsJSON) {
 
         /* Get data from server's response */
         double totalValue = 0;
@@ -157,7 +159,7 @@ public class ParticipantActivity extends FragmentActivity {
         try {
             totalValue = Double.parseDouble(response.getString("ordersSum"));
             DecimalFormat dm = new DecimalFormat("###,###.###");
-            TextView tv = (TextView)findViewById(R.id.textTotalValue);
+            TextView tv = (TextView) findViewById(R.id.textTotalValue);
             tv.setText(String.valueOf(dm.format(totalValue) + " EUR"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -167,7 +169,7 @@ public class ParticipantActivity extends FragmentActivity {
         try {
             JSONArray contractsJSON = response.getJSONArray("topOrders");
 
-            displayInfo(contractsJSON);
+            displayContracts(contractsJSON);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -181,15 +183,71 @@ public class ParticipantActivity extends FragmentActivity {
         try {
             JSONArray contractsJSON = response.getJSONArray("orders");
 
-            totalValue = displayInfo(contractsJSON);
+            totalValue = displayContracts(contractsJSON);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         /* Fill in the total value of all the contracts */
         DecimalFormat dm = new DecimalFormat("###,###.###");
-        TextView tv = (TextView)findViewById(R.id.textTotalValue);
+        TextView tv = (TextView) findViewById(R.id.textTotalValue);
         tv.setText(String.valueOf(dm.format(totalValue) + " EUR"));
+    }
+
+
+    /* Receive the list of firms for a buyer/authority */
+    public void receiveFirmsForBuyer(JSONObject response) {
+
+        System.out.println("Receiving firms for buyer");
+
+        try {
+            JSONArray firmsJSON = response.getJSONArray("firms");
+
+            for (int i = 0; i < firmsJSON.length(); i++) {
+                JSONObject firmJSON = firmsJSON.getJSONObject(i);
+
+                companies.add(firmJSON.getString("name"));
+                System.out.println("Received firm " + firmJSON.getString("name"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Fill the company list fragment */
+        companyListFragment = (CompanyListFragment) ParticipantViewPageFragment.pageAdapter.fragments.get(1);
+        if (companyListFragment != null) {
+            companyListFragment.displayCompanies(companies);
+        } else
+            System.out.println("NULL company list fragment");
+    }
+
+
+    /* Receive the list of buyers for a firm/company */
+    public void receiveBuyersForFirm(JSONObject response) {
+
+        System.out.println("Receiving buyers for firm");
+
+        try {
+            JSONArray buyersJSON = response.getJSONArray("buyers");
+
+            for (int i = 0; i < buyersJSON.length(); i++) {
+                JSONObject buyerJSON = buyersJSON.getJSONObject(i);
+
+                buyers.add(buyerJSON.getString("name"));
+                System.out.println("Received buyer " + buyerJSON.getString("name"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Fill the company list fragment */
+        buyerListFragment = (BuyerListFragment) ParticipantViewPageFragment.pageAdapter.fragments.get(1);
+        if (buyerListFragment != null) {
+            buyerListFragment.displayBuyers(buyers);
+        } else
+            System.out.println("NULL buyer list fragment");
     }
 
 
@@ -214,10 +272,11 @@ public class ParticipantActivity extends FragmentActivity {
         if (type == CONTRACT_LIST_FOR_COMPANY) {
             viewPageFragment.setViewPager(CONTRACT_LIST_FOR_COMPANY);
             CommManager.requestCompanyDetails(this, name);
+            CommManager.requestBuyersForFirm(this, name);
         } else {
             viewPageFragment.setViewPager(CONTRACT_LIST_FOR_BUYER);
             CommManager.requestBuyerDetails(this, name);
+            CommManager.requestFirmsForBuyer(this, name);
         }
     }
-
 }

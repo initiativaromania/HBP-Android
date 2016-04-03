@@ -56,6 +56,8 @@ public class CommManager {
     private static final String URL_GET_TOP_VOTED_CONTRACTS = SERVER_IP + "/getTop10VotedContracts";
     private static final String URL_GET_STATISTICS          = SERVER_IP + "/getStatisticsArea?lat=%s&lng=%s&zoom=%s";
     private static final String URL_GET_ALL_BUYERS          = SERVER_IP + "/getBuyers";
+    private static final String URL_GET_FIRMS_FOR_BUYER     = SERVER_IP + "/getFirmsForBuyer?name=%s";
+    private static final String URL_GET_BUYERS_FOR_FIRM     = SERVER_IP + "/getBuyersForFirm?name=%s";
 
 
     /* All the buyers */
@@ -166,7 +168,6 @@ public class CommManager {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        //System.out.println("Response: " + response.toString());
                         ParticipantActivity cla = (ParticipantActivity) context;
                         cla.receiveBuyerDetails(response);
 
@@ -305,5 +306,61 @@ public class CommManager {
         });
 
         queue.add(jsonObjectRequest);
+    }
+
+
+    /* Get all company names for a buyer */
+    public static void requestFirmsForBuyer(final Context context, String buyerName) {
+        System.out.println("Getting Firms for buyer " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, String.format(URL_GET_FIRMS_FOR_BUYER,
+                        buyerName.replaceAll(" ", "%20").replaceAll("'", "%27%27")).replaceAll("&", "%26"),
+                        (String) null, new Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ParticipantActivity cla = (ParticipantActivity) context;
+                        cla.receiveFirmsForBuyer(response);
+
+                    }
+                }, new ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Eroare conectare la server",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        queue.add(jsObjRequest);
+        System.out.println("Request sent");
+    }
+
+
+    /* Get all buyer names for a company */
+    public static void requestBuyersForFirm(final Context context, String firmName) {
+        System.out.println("Getting Buyers for firm " + String.format(URL_GET_BUYER, firmName.replaceAll(" ", "%20")));
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, String.format(URL_GET_BUYERS_FOR_FIRM,
+                        firmName.replaceAll(" ", "%20").replaceAll("'", "%27%27")).replaceAll("&", "%26"),
+                        (String) null, new Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ParticipantActivity cla = (ParticipantActivity) context;
+                        cla.receiveBuyersForFirm(response);
+
+                    }
+                }, new ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Eroare conectare la server",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        queue.add(jsObjRequest);
+        System.out.println("Request sent");
     }
 }

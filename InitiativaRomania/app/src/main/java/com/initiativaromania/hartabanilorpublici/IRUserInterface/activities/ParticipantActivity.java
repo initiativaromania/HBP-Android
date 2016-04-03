@@ -26,9 +26,8 @@ import android.widget.TextView;
 
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.BuyerListFragment;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.CompanyListFragment;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.CompanyViewPageFragment;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.ParticipantViewPageFragment;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.ContractListFragment;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListItem;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRData.Contract;
 import com.initiativaromania.hartabanilorpublici.IRData.CommManager;
@@ -38,9 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by claudiu on 2/12/16.
@@ -143,7 +140,7 @@ public class ParticipantActivity extends FragmentActivity {
         }
 
         /* Fill the contract list fragment */
-        contractListFragment = (ContractListFragment)CompanyViewPageFragment.pageAdapter.fragments.get(0);
+        contractListFragment = (ContractListFragment) ParticipantViewPageFragment.pageAdapter.fragments.get(0);
         if (contractListFragment != null) {
             contractListFragment.displayContracts(contracts);
         } else
@@ -201,14 +198,26 @@ public class ParticipantActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant);
 
+        System.out.println("On create ParticipanActivity");
+        ParticipantViewPageFragment viewPageFragment = (ParticipantViewPageFragment)
+                getSupportFragmentManager().findFragmentById(R.id.entity_info_fragment);
+        if (viewPageFragment != null)
+            System.out.println("Ok fragment");
+        else
+            System.out.println("Not ok fragment");
+
+
         /* Set header text views */
         initUI();
 
         /* Get Contract List */
-        if (type == CONTRACT_LIST_FOR_COMPANY)
+        if (type == CONTRACT_LIST_FOR_COMPANY) {
+            viewPageFragment.setViewPager(CONTRACT_LIST_FOR_COMPANY);
             CommManager.requestCompanyDetails(this, name);
-        else
+        } else {
+            viewPageFragment.setViewPager(CONTRACT_LIST_FOR_BUYER);
             CommManager.requestBuyerDetails(this, name);
+        }
     }
 
 }

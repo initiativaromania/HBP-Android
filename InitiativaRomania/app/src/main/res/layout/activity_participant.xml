@@ -102,7 +102,7 @@
 
         <fragment
             android:id="@+id/entity_info_fragment"
-            android:name="com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.CompanyViewPageFragment"
+            android:name="com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.ParticipantViewPageFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             tools:context=".IRUserInterface.activities.ContractActivity" />

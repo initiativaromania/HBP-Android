@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by claudiu on 3/30/16.
+ * Created by claudiu on 4/3/16.
  */
-public class CompanyViewPageFragment extends Fragment {
+public class BuyerViewPageFragment extends Fragment {
 
-    private String tabtitles[] = new String[] { "Contracte", "Institutii"};
+    private String tabtitles[] = new String[] { "Contracte", "Companii"};
     public static EntityViewPageAdapter pageAdapter;
 
     @Override
@@ -32,7 +32,7 @@ public class CompanyViewPageFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        System.out.println("CREATING THE Company view page fragment");
+        System.out.println("CREATING THE Buyer view page fragment");
 
         List<Fragment> fragments = getFragments();
         pageAdapter = new EntityViewPageAdapter(getFragmentManager(), fragments, tabtitles);
@@ -45,7 +45,7 @@ public class CompanyViewPageFragment extends Fragment {
     private List<Fragment> getFragments() {
         List<Fragment> fList = new ArrayList<Fragment>();
         fList.add(ContractListFragment.newInstance());
-        fList.add(BuyerListFragment.newInstance());
+        fList.add(CompanyListFragment.newInstance());
         return fList;
     }
 }

@@ -367,3 +367,41 @@ def getOrdersForBuyer(buyerName):
     cursor.close()
     cnx.close()
     return results
+
+
+def getFirmsForBuyer(buyerName):
+    cnx = mysql.connector.connect(user='root', database='ir-investitii')
+    cursor = cnx.cursor()
+
+    query = "SELECT distinct company \
+             from contracte where buyer like '%s'" % (buyerName)
+    cursor.execute(query)
+
+    results = []
+    for (company) in cursor:
+        results.append({
+            'name': company
+        })
+
+    cursor.close()
+    cnx.close()
+    return results
+
+
+def getBuyersForFirm(firmName):
+    cnx = mysql.connector.connect(user='root', database='ir-investitii')
+    cursor = cnx.cursor()
+
+    query = "SELECT distinct buyer \
+             from contracte where company like '%s'" % (firmName)
+    cursor.execute(query)
+
+    results = []
+    for (buyer) in cursor:
+        results.append({
+            'name': buyer
+        })
+
+    cursor.close()
+    cnx.close()
+    return results

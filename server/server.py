@@ -132,5 +132,23 @@ def getOrdersForBuyer():
     })
 
 
+@app.route('/getFirmsForBuyer', methods=['GET'])
+def getFirmsForBuyer():
+    buyerName = request.args.get('name')
+
+    return jsonify({
+        "firms": db.getFirmsForBuyer(buyerName)
+    })
+
+
+@app.route('/getBuyersForFirm', methods=['GET'])
+def getBuyersForFirm():
+    firmName = request.args.get('name')
+
+    return jsonify({
+        "buyers": db.getBuyersForFirm(firmName)
+    })
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

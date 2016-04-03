@@ -373,14 +373,14 @@ def getFirmsForBuyer(buyerName):
     cnx = mysql.connector.connect(user='root', database='ir-investitii')
     cursor = cnx.cursor()
 
-    query = "SELECT distinct company \
+    query = "SELECT distinct company as company\
              from contracte where buyer like '%s'" % (buyerName)
     cursor.execute(query)
 
     results = []
     for (company) in cursor:
         results.append({
-            'name': company
+            'name': company[0]
         })
 
     cursor.close()
@@ -392,14 +392,14 @@ def getBuyersForFirm(firmName):
     cnx = mysql.connector.connect(user='root', database='ir-investitii')
     cursor = cnx.cursor()
 
-    query = "SELECT distinct buyer \
+    query = "SELECT distinct buyer as buyer\
              from contracte where company like '%s'" % (firmName)
     cursor.execute(query)
 
     results = []
     for (buyer) in cursor:
         results.append({
-            'name': buyer
+            'name': buyer[0]
         })
 
     cursor.close()

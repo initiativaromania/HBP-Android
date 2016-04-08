@@ -177,7 +177,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     System.out.println("OK button pushed");
 
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-                    LinearLayout linear = (LinearLayout) findViewById(R.id.transparentLayer);;
+                    LinearLayout linear = (LinearLayout) findViewById(R.id.transparentLayer);
                     linear.startAnimation(animation);
                     linear.setVisibility(View.INVISIBLE);
 
@@ -312,15 +312,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
-     * Initiatlize data from the server on the UI
+     * Initialize data from the server on the UI
      */
     private void initData() {
         System.out.println("Getting all the data from server");
 
-        /* Init the hashmap Marker - Contracts */
+        /* Init the hashmap Marker - Buyer */
         markerBuyers = new HashMap<Marker, Buyer>();
 
-        /* Send a request to get all the cotnracts */
+        /* Send a request to get all the buyers */
         if (CommManager.buyers.isEmpty())
             /* Get all the buyers if not already available */
             CommManager.requestAllBuyers(this);
@@ -434,7 +434,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     /* Setup tab navigation bar */
     private void tabSetup() {
-        int viewId;
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
 
         tabHost.setup();

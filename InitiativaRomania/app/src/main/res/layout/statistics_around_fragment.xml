@@ -40,14 +40,13 @@
                 android:paddingBottom="0dp"
                 android:layout_gravity="bottom">
 
-                <Button
-                    android:layout_width="140dp"
+                <ProgressBar
+                    android:id="@+id/statistics_around_loading_progress"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Actualizeaza"
-                    android:id="@+id/buttonActualizeaza"
-                    android:layout_gravity="center_horizontal|top"
-                    android:background="@drawable/rounded_corner"
-                    android:textColor="#ffffff" />
+                    android:indeterminate="true"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
             </FrameLayout>
 
         </FrameLayout>

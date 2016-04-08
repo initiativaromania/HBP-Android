@@ -18,11 +18,13 @@
 package com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments;
 
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -41,6 +43,8 @@ import java.util.List;
 public class AroundStatisticsFragment extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     private View v;
+    private ListView orderList;
+    private List<ContractListItem> orderDetailsList;
 
     public static AroundStatisticsFragment newInstance() {
         AroundStatisticsFragment f = new AroundStatisticsFragment();
@@ -55,23 +59,41 @@ public class AroundStatisticsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.statistics_around_fragment, container, false);
 
-        if (MainActivity.currentLocation != null)
-            CommManager.requestStatsAround(this, 0, 0, 0);
+//        if (MainActivity.currentLocation != null)
+//            CommManager.requestStatsAround(this, 0, 0, 0);
 
+        orderDetailsList = new ArrayList<>();
 
-        /* Refresh button */
-        Button button = (Button)v.findViewById(R.id.buttonActualizeaza);
-        if (button != null) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    /* Check whether you have voted before */
-                    System.out.println("Actualizare lista");
-                    displayStatsInArea();
+        for (int i=0; i<15; i++)
+        {
+            orderDetailsList.add(new ContractListItem() {{
+                id = 1;
+                title = "bla";
+                price = "euro";
+            }});
 
-                }
-            });
         }
+
+        orderList = (ListView) v.findViewById(R.id.statistics_around_order_list);
+        ContractListAdapter adapter = new ContractListAdapter(getActivity(), orderDetailsList);
+        orderList.setAdapter(adapter);
+        orderList.setOnItemClickListener(adapter);
+        orderList.setOnScrollListener(new EndlessScrollListener());
+
+
+//        /* Refresh button */
+//        Button button = (Button)v.findViewById(R.id.buttonActualizeaza);
+//        if (button != null) {
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    /* Check whether you have voted before */
+//                    System.out.println("Actualizare lista");
+//                    displayStatsInArea();
+//
+//                }
+//            });
+//        }
 
         return v;
     }
@@ -91,7 +113,7 @@ public class AroundStatisticsFragment extends Fragment {
         LinkedList<Contract> areaContracts = new LinkedList<Contract>();
 
         /* Show contracts in area */
-        List<ContractListItem> orderDetailsList = new ArrayList<>();
+
 
         /* Walk through all the contracts */
         for (final Contract contract : CommManager.localContracts) {
@@ -113,22 +135,71 @@ public class AroundStatisticsFragment extends Fragment {
             }
         }
 
-        /* Pretty nasty hack */
-        View view = getView();
-        if (view == null) {
-            System.out.println("Should have died here");
-            return;
-        }
 
-        ListView orderList = (ListView) view.findViewById(R.id.statistics_around_order_list);
-        ContractListAdapter adapter = new ContractListAdapter(getActivity(), orderDetailsList);
-        orderList.setAdapter(adapter);
-        orderList.setOnItemClickListener(adapter);
+
+
 
         if (areaContracts.size() == 0)
             Toast.makeText(getContext(), "Nu e niciun contract in jurul tau", Toast.LENGTH_SHORT).show();
 
     }
 
+}
 
+
+class LoadContractsTask extends AsyncTask<String, String, String> {
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+
+        super.onPostExecute(result);
+    }
+}
+
+
+class EndlessScrollListener implements AbsListView.OnScrollListener {
+
+    private int visibleThreshold = 5;
+    private int currentPage = 0;
+    private int previousTotal = 0;
+    private boolean loading = true;
+
+    public EndlessScrollListener() {
+    }
+    public EndlessScrollListener(int visibleThreshold) {
+        this.visibleThreshold = visibleThreshold;
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem,
+                         int visibleItemCount, int totalItemCount) {
+        if (loading) {
+            if (totalItemCount > previousTotal) {
+                loading = false;
+                previousTotal = totalItemCount;
+                currentPage++;
+            }
+        }
+        if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+            // I load the next page of gigs using a background task,
+            // but you can call any function here.
+            new LoadContractsTask().execute(Integer.toString(currentPage+1));
+            Toast.makeText(MainActivity.context, "firstVisItem:"+firstVisibleItem+" ; visibleItemCnt:"+visibleItemCount+"totalItemCount:"+totalItemCount, Toast.LENGTH_SHORT).show();
+            loading = true;
+        }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+    }
 }

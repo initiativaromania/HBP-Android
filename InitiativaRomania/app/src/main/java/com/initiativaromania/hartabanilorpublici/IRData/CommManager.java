@@ -41,6 +41,7 @@ import java.util.LinkedList;
 /**
  * Created by claudiu on 2/9/16.
  */
+
 public class CommManager {
     private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
 
@@ -159,8 +160,9 @@ public class CommManager {
 
 
     /* Send request to server to get buyer details */
-    public static void requestBuyerDetails(final Context context, String buyerName) {
+    public static void requestBuyerDetails(final ICommManagerResponse commManagerResponse, String buyerName) {
         System.out.println("Getting buyer details for " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
+
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, String.format(URL_GET_BUYER,
                         buyerName.replaceAll(" ", "%20").replaceAll("'", "%27%27")).replaceAll("&", "%26"),
@@ -168,16 +170,17 @@ public class CommManager {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        ParticipantActivity cla = (ParticipantActivity) context;
-                        cla.receiveBuyerDetails(response);
+                     //   ParticipantActivity cla = (ParticipantActivity) context;
+                     //   cla.receiveBuyerDetails(response);
 
+                        commManagerResponse.processResponse(response);
                     }
                 }, new ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Eroare conectare la server",
-                                Toast.LENGTH_SHORT).show();
+                        commManagerResponse.onErrorOccurred("Eroare conectare la server");
+
                     }
                 });
 

@@ -23,7 +23,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.initiativaromania.hartabanilorpublici.IRData.ICommManagerResponse;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.BuyerListFragment;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.CompanyListFragment;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.ParticipantViewPageFragment;
@@ -275,7 +277,17 @@ public class ParticipantActivity extends FragmentActivity {
             CommManager.requestBuyersForFirm(this, name);
         } else {
             viewPageFragment.setViewPager(CONTRACT_LIST_FOR_BUYER);
-            CommManager.requestBuyerDetails(this, name);
+            CommManager.requestBuyerDetails(new ICommManagerResponse() {
+                @Override
+                public void processResponse(JSONObject response) {
+                    ParticipantActivity.this.receiveBuyerDetails(response);
+                }
+                @Override
+                public void onErrorOccurred(String errorMsg)
+                {
+                    Toast.makeText(ParticipantActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                }
+            }, name);
             CommManager.requestFirmsForBuyer(this, name);
         }
     }

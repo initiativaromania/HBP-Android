@@ -18,7 +18,6 @@
 package com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments;
 
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,12 +28,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.initiativaromania.hartabanilorpublici.IRData.ICommManagerResponse;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListAdapter;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListItem;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRData.CommManager;
 import com.initiativaromania.hartabanilorpublici.IRData.Contract;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.MainActivity;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -135,36 +137,11 @@ public class AroundStatisticsFragment extends Fragment {
             }
         }
 
-
-
-
-
         if (areaContracts.size() == 0)
             Toast.makeText(getContext(), "Nu e niciun contract in jurul tau", Toast.LENGTH_SHORT).show();
-
-    }
-
-}
-
-
-class LoadContractsTask extends AsyncTask<String, String, String> {
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected String doInBackground(String... params) {
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-
-        super.onPostExecute(result);
     }
 }
+
 
 
 class EndlessScrollListener implements AbsListView.OnScrollListener {
@@ -181,7 +158,7 @@ class EndlessScrollListener implements AbsListView.OnScrollListener {
     }
 
     @Override
-    public void onScroll(AbsListView view, int firstVisibleItem,
+    public void onScroll(final AbsListView view, int firstVisibleItem,
                          int visibleItemCount, int totalItemCount) {
         if (loading) {
             if (totalItemCount > previousTotal) {
@@ -191,10 +168,21 @@ class EndlessScrollListener implements AbsListView.OnScrollListener {
             }
         }
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-            // I load the next page of gigs using a background task,
-            // but you can call any function here.
-            new LoadContractsTask().execute(Integer.toString(currentPage+1));
+
             Toast.makeText(MainActivity.context, "firstVisItem:"+firstVisibleItem+" ; visibleItemCnt:"+visibleItemCount+"totalItemCount:"+totalItemCount, Toast.LENGTH_SHORT).show();
+
+            CommManager.requestBuyerDetails(new ICommManagerResponse() {
+                @Override
+                public void processResponse(JSONObject response) {
+
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    Toast.makeText(view.getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+                }
+            }, CommManager.buyers.get(currentPage).name);
+
             loading = true;
         }
     }

@@ -33,7 +33,6 @@
             android:layout_height="70dp"
             android:paddingBottom="10dp">
 
-
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"

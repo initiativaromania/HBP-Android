@@ -170,9 +170,6 @@ public class CommManager {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                     //   ParticipantActivity cla = (ParticipantActivity) context;
-                     //   cla.receiveBuyerDetails(response);
-
                         commManagerResponse.processResponse(response);
                     }
                 }, new ErrorListener() {

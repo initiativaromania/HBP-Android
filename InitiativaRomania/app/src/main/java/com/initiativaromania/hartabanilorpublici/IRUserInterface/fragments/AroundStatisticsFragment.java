@@ -36,6 +36,8 @@ import com.initiativaromania.hartabanilorpublici.IRData.CommManager;
 import com.initiativaromania.hartabanilorpublici.IRData.Contract;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.MainActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -44,9 +46,12 @@ import java.util.List;
 
 public class AroundStatisticsFragment extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
-    private View v;
+    public View v;
     private ListView orderList;
     private List<ContractListItem> orderDetailsList;
+    public static int currentBuyerToProcess;
+    private ContractListAdapter statisticsAroundAdapter;
+
 
     public static AroundStatisticsFragment newInstance() {
         AroundStatisticsFragment f = new AroundStatisticsFragment();
@@ -61,41 +66,15 @@ public class AroundStatisticsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.statistics_around_fragment, container, false);
 
-//        if (MainActivity.currentLocation != null)
-//            CommManager.requestStatsAround(this, 0, 0, 0);
-
         orderDetailsList = new ArrayList<>();
-
-        for (int i=0; i<15; i++)
-        {
-            orderDetailsList.add(new ContractListItem() {{
-                id = 1;
-                title = "bla";
-                price = "euro";
-            }});
-
-        }
-
         orderList = (ListView) v.findViewById(R.id.statistics_around_order_list);
-        ContractListAdapter adapter = new ContractListAdapter(getActivity(), orderDetailsList);
-        orderList.setAdapter(adapter);
-        orderList.setOnItemClickListener(adapter);
-        orderList.setOnScrollListener(new EndlessScrollListener());
+        statisticsAroundAdapter = new ContractListAdapter(getActivity(), orderDetailsList);
+        orderList.setAdapter(statisticsAroundAdapter);
+        orderList.setOnItemClickListener(statisticsAroundAdapter);
+        orderList.setOnScrollListener(new EndlessScrollListener(this));
 
-
-//        /* Refresh button */
-//        Button button = (Button)v.findViewById(R.id.buttonActualizeaza);
-//        if (button != null) {
-//            button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    /* Check whether you have voted before */
-//                    System.out.println("Actualizare lista");
-//                    displayStatsInArea();
-//
-//                }
-//            });
-//        }
+        currentBuyerToProcess = 0;
+        getMoreAroundStatistics();
 
         return v;
     }
@@ -140,21 +119,51 @@ public class AroundStatisticsFragment extends Fragment {
         if (areaContracts.size() == 0)
             Toast.makeText(getContext(), "Nu e niciun contract in jurul tau", Toast.LENGTH_SHORT).show();
     }
-}
 
+    public void getMoreAroundStatistics() {
+
+        if (CommManager.buyers.size() > currentBuyerToProcess)
+        {
+            CommManager.requestBuyerDetails(new ICommManagerResponse() {
+                @Override
+                public void processResponse(JSONObject response) {
+                    try {
+                        JSONArray contractsJSON = response.getJSONArray("orders");
+
+                        for (int i = 0; i < contractsJSON.length(); i++) {
+                            final JSONObject contractJSON = contractsJSON.getJSONObject(i);
+                            AroundStatisticsFragment.this.orderDetailsList.add(new ContractListItem() {{
+                                id = Integer.parseInt(contractJSON.getString("id"));
+                                title = contractJSON.getString("contract_title");
+                                price = "";
+                            }});
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    AroundStatisticsFragment.this.statisticsAroundAdapter.notifyDataSetChanged();
+                }
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    Toast.makeText(AroundStatisticsFragment.this.getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+                }
+            }, CommManager.buyers.get(currentBuyerToProcess++).name);
+        }
+    }
+}
 
 
 class EndlessScrollListener implements AbsListView.OnScrollListener {
 
-    private int visibleThreshold = 5;
-    private int currentPage = 0;
+    final int visibleThreshold = 5;
     private int previousTotal = 0;
     private boolean loading = true;
 
-    public EndlessScrollListener() {
-    }
-    public EndlessScrollListener(int visibleThreshold) {
-        this.visibleThreshold = visibleThreshold;
+    AroundStatisticsFragment viewFragment;
+
+    public EndlessScrollListener(AroundStatisticsFragment view) {
+        viewFragment = view;
     }
 
     @Override
@@ -164,25 +173,12 @@ class EndlessScrollListener implements AbsListView.OnScrollListener {
             if (totalItemCount > previousTotal) {
                 loading = false;
                 previousTotal = totalItemCount;
-                currentPage++;
+                viewFragment.v.findViewById(R.id.statistics_around_loading_progress).setVisibility(View.GONE);
             }
         }
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-
-            Toast.makeText(MainActivity.context, "firstVisItem:"+firstVisibleItem+" ; visibleItemCnt:"+visibleItemCount+"totalItemCount:"+totalItemCount, Toast.LENGTH_SHORT).show();
-
-            CommManager.requestBuyerDetails(new ICommManagerResponse() {
-                @Override
-                public void processResponse(JSONObject response) {
-
-                }
-
-                @Override
-                public void onErrorOccurred(String errorMsg) {
-                    Toast.makeText(view.getContext(), errorMsg, Toast.LENGTH_SHORT).show();
-                }
-            }, CommManager.buyers.get(currentPage).name);
-
+            viewFragment.v.findViewById(R.id.statistics_around_loading_progress).setVisibility(View.VISIBLE);
+            viewFragment.getMoreAroundStatistics();
             loading = true;
         }
     }

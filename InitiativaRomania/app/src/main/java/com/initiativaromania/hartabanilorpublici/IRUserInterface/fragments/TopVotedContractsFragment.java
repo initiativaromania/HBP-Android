@@ -85,7 +85,7 @@ public class TopVotedContractsFragment extends Fragment {
             orderList.setAdapter(adapter);
             orderList.setOnItemClickListener(adapter);
         } catch (JSONException e) {
-            Toast.makeText(getContext(), "Incercati mai traziu..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Incercati mai tarziu..", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -60,5 +60,7 @@ public class IRSeekBarListener implements SeekBar.OnSeekBarChangeListener {
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         System.out.println("End");
+
+        //TODO Rares: refresh Around you buyers
     }
 }

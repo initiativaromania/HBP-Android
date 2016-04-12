@@ -28,7 +28,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.initiativaromania.hartabanilorpublici.IRData.Buyer;
 import com.initiativaromania.hartabanilorpublici.IRData.ICommManagerResponse;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.IRSeekBarListener;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListAdapter;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.objects.ContractListItem;
 import com.initiativaromania.hartabanilorpublici.R;
@@ -48,8 +50,9 @@ public class AroundStatisticsFragment extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     public View v;
     private ListView orderList;
-    private List<ContractListItem> orderDetailsList;
+    public List<ContractListItem> orderDetailsList;
     public static int currentBuyerToProcess;
+    public static int previousTotal = 0;
     private ContractListAdapter statisticsAroundAdapter;
 
 
@@ -66,12 +69,17 @@ public class AroundStatisticsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.statistics_around_fragment, container, false);
 
+        IRSeekBarListener.registerAroundStatisticsInstance(this);
+
         orderDetailsList = new ArrayList<>();
+
         orderList = (ListView) v.findViewById(R.id.statistics_around_order_list);
         statisticsAroundAdapter = new ContractListAdapter(getActivity(), orderDetailsList);
         orderList.setAdapter(statisticsAroundAdapter);
         orderList.setOnItemClickListener(statisticsAroundAdapter);
         orderList.setOnScrollListener(new EndlessScrollListener(this));
+
+        Toast.makeText(MainActivity.context, "on create view", Toast.LENGTH_SHORT).show();
 
         currentBuyerToProcess = 0;
         getMoreAroundStatistics();
@@ -79,50 +87,9 @@ public class AroundStatisticsFragment extends Fragment {
         return v;
     }
 
-
-    /* Show statistics from your area */
-    public void displayStatsInArea() {
-        float distance[] = {0};
-
-        /* Ask again for location */
-        Location l = MainActivity.currentLocation;
-        if (l == null) {
-            MainActivity.locationListener.initLocationService((MainActivity) MainActivity.context);
-            return;
-        }
-
-        LinkedList<Contract> areaContracts = new LinkedList<Contract>();
-
-        /* Show contracts in area */
-
-
-        /* Walk through all the contracts */
-        for (final Contract contract : CommManager.localContracts) {
-
-            distance[0] = Float.MAX_VALUE;
-
-            /* Determine if a contract is in our area */
-            Location.distanceBetween(l.getLatitude(), l.getLongitude(), contract.latitude,
-                    contract.longitude, distance);
-            if (distance[0] < MainActivity.circle.getRadius()) {
-                //System.out.println("contract " + contract.title + " is in the circle " + distance[0]);
-                orderDetailsList.add(new ContractListItem() {{
-                    id = contract.id;
-                    title = contract.title;
-                    price = "";
-                }});
-
-                areaContracts.add(contract);
-            }
-        }
-
-        if (areaContracts.size() == 0)
-            Toast.makeText(getContext(), "Nu e niciun contract in jurul tau", Toast.LENGTH_SHORT).show();
-    }
-
     public void getMoreAroundStatistics() {
 
-        if (CommManager.buyers.size() > currentBuyerToProcess)
+        if (CommManager.aroundBuyersList.size() > currentBuyerToProcess)
         {
             CommManager.requestBuyerDetails(new ICommManagerResponse() {
                 @Override
@@ -148,8 +115,11 @@ public class AroundStatisticsFragment extends Fragment {
                 public void onErrorOccurred(String errorMsg) {
                     Toast.makeText(AroundStatisticsFragment.this.getContext(), errorMsg, Toast.LENGTH_SHORT).show();
                 }
-            }, CommManager.buyers.get(currentBuyerToProcess++).name);
+            }, CommManager.aroundBuyersList.get(currentBuyerToProcess++).name);
         }
+
+        if (currentBuyerToProcess == CommManager.aroundBuyersList.size())
+            v.findViewById(R.id.statistics_around_loading_progress).setVisibility(View.GONE);
     }
 }
 
@@ -157,7 +127,6 @@ public class AroundStatisticsFragment extends Fragment {
 class EndlessScrollListener implements AbsListView.OnScrollListener {
 
     final int visibleThreshold = 5;
-    private int previousTotal = 0;
     private boolean loading = true;
 
     AroundStatisticsFragment viewFragment;
@@ -169,10 +138,11 @@ class EndlessScrollListener implements AbsListView.OnScrollListener {
     @Override
     public void onScroll(final AbsListView view, int firstVisibleItem,
                          int visibleItemCount, int totalItemCount) {
+
         if (loading) {
-            if (totalItemCount > previousTotal) {
+            if (totalItemCount > AroundStatisticsFragment.previousTotal) {
                 loading = false;
-                previousTotal = totalItemCount;
+                AroundStatisticsFragment.previousTotal = totalItemCount;
                 viewFragment.v.findViewById(R.id.statistics_around_loading_progress).setVisibility(View.GONE);
             }
         }

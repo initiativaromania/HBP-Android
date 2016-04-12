@@ -62,6 +62,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -105,8 +106,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     /* Data objects */
     HashMap<Marker, Buyer> markerBuyers;
-
-
 
 
     @Override
@@ -190,7 +189,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     /* Display initial seek bar value */
                     Rect thumbRect = seekBar.getThumb().getBounds();
                     seekBarValue.setX(thumbRect.exactCenterX());
-                    seekBarValue.setText(" " + String.valueOf(seekBar.getProgress()) + " EURO ");
+                    DecimalFormat dm = new DecimalFormat("###,###.###");
+                    seekBarValue.setText(" " + String.valueOf(dm.format(CommManager.aroundTotalSum)) + " EURO ");
                     seekBarValue.setVisibility(View.VISIBLE);
                     seekBarValue.startAnimation(animationFadeIn);
                 }
@@ -347,6 +347,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 buyer.latitude = obj.getDouble("lat");
                 buyer.longitude = obj.getDouble("lng");
                 buyer.name = obj.getString("buyer");
+                buyer.totalPrice = obj.getDouble("sum");
 
                 CommManager.buyers.add(buyer);
             }
@@ -354,6 +355,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        CommManager.updateAroundBuyers();
 
         /* Show the received buyers */
         displayBuyers();
@@ -416,7 +419,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
         );
     }
-
 
     /**
      * Create primary tab view

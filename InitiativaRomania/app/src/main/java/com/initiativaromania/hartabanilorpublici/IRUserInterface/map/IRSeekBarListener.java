@@ -21,7 +21,11 @@ import android.graphics.Rect;
 import android.widget.SeekBar;
 
 import com.google.android.gms.maps.model.Circle;
+import com.initiativaromania.hartabanilorpublici.IRData.CommManager;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.MainActivity;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.AroundStatisticsFragment;
+
+import java.text.DecimalFormat;
 
 /**
  * Created by claudiu on 2/9/16.
@@ -30,6 +34,7 @@ public class IRSeekBarListener implements SeekBar.OnSeekBarChangeListener {
 
 
     private Circle circle;
+    private static AroundStatisticsFragment aroundStatisticsInstance;
 
     public IRSeekBarListener(Circle circle) {
         setCircle(circle);
@@ -39,17 +44,16 @@ public class IRSeekBarListener implements SeekBar.OnSeekBarChangeListener {
         this.circle = circle;
     }
 
+    public static void registerAroundStatisticsInstance(AroundStatisticsFragment instance)  {
+        aroundStatisticsInstance = instance;
+    }
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (this.circle == null)
             return;
 
         this.circle.setRadius(MainActivity.CIRCLE_MIN_RADIUS + progress * (MainActivity.CIRCLE_MAX_RADIUS - MainActivity.CIRCLE_MIN_RADIUS) / 100);
-
-        Rect thumbRect = seekBar.getThumb().getBounds();
-        MainActivity.seekBarValue.setX(thumbRect.exactCenterX());
-        MainActivity.seekBarValue.setText(" " + String.valueOf(progress) + " EURO ");
-        MainActivity.seekBarValue.startAnimation(MainActivity.animationFadeIn);
     }
 
     @Override
@@ -60,7 +64,20 @@ public class IRSeekBarListener implements SeekBar.OnSeekBarChangeListener {
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         System.out.println("End");
+        CommManager.updateAroundBuyers();
 
-        //TODO Rares: refresh Around you buyers
+        Rect thumbRect = seekBar.getThumb().getBounds();
+        MainActivity.seekBarValue.setX(thumbRect.exactCenterX());
+        DecimalFormat dm = new DecimalFormat("###,###.###");
+        MainActivity.seekBarValue.setText(" " + String.valueOf(dm.format(CommManager.aroundTotalSum)) + " EURO ");
+        MainActivity.seekBarValue.startAnimation(MainActivity.animationFadeIn);
+
+        if (null != aroundStatisticsInstance) {
+            aroundStatisticsInstance.currentBuyerToProcess = 0;
+            AroundStatisticsFragment.previousTotal = 0;
+            aroundStatisticsInstance.orderDetailsList.clear();
+            aroundStatisticsInstance.getMoreAroundStatistics();
+            aroundStatisticsInstance.getMoreAroundStatistics();
+        }
     }
 }

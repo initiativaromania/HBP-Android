@@ -12,5 +12,5 @@ public class Buyer implements Serializable {
     public double longitude;
     public double latitude;
 
-    public long totalPrice;
+    public double totalPrice;
 }

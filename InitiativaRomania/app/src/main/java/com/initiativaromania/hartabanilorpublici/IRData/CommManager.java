@@ -18,6 +18,7 @@
 package com.initiativaromania.hartabanilorpublici.IRData;
 
 import android.content.Context;
+import android.location.Location;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -65,7 +66,9 @@ public class CommManager {
     public static LinkedList<Buyer> buyers = new LinkedList<Buyer>();
 
     /* All the contracts in your area */
-    public static LinkedList<Contract> localContracts = new LinkedList<Contract>();
+    public static LinkedList<Buyer> aroundBuyersList = new LinkedList<>();
+
+    public static double aroundTotalSum = 0;
 
     public static RequestQueue queue;
 
@@ -73,6 +76,39 @@ public class CommManager {
         queue = Volley.newRequestQueue(context);
     }
 
+    public static void updateAroundBuyers() {
+
+        aroundTotalSum = 0;
+
+        float distance[] = {0};
+        distance[0] = Float.MAX_VALUE;
+
+        aroundBuyersList.clear();
+
+        /* Ask again for location */
+        Location l = MainActivity.currentLocation;
+        if (l == null) {
+            MainActivity.locationListener.initLocationService((MainActivity) MainActivity.context);
+            return;
+        }
+
+        for (final Buyer itBuyer : CommManager.buyers) {
+
+
+            /* Determine if a buyer is in our area */
+            Location.distanceBetween(l.getLatitude(), l.getLongitude(), itBuyer.latitude,
+                    itBuyer.longitude, distance);
+
+            if (distance[0] < MainActivity.circle.getRadius()) {
+                System.out.println("=========" + itBuyer.name + " ; " + itBuyer.totalPrice);
+                aroundTotalSum += itBuyer.totalPrice;
+                CommManager.aroundBuyersList.add(itBuyer);
+            }
+        }
+
+        if (CommManager.aroundBuyersList.isEmpty())
+            Toast.makeText(MainActivity.context, "Nu e niciun contract in jurul tau", Toast.LENGTH_SHORT).show();
+    }
 
     /* Send request to server to get init data for the infographic */
     public static void requestInitData(final Context context) {
@@ -209,31 +245,6 @@ public class CommManager {
 
         queue.add(jsonObjectRequest);
     }
-
-    public static void requestStatsAround(final AroundStatisticsFragment statisticsFragment, double lat, double lng, int zoom) {
-
-        System.out.println("Getting statistics around you");
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, String.format(URL_GET_STATISTICS, lat, lng, zoom),
-                        (String)null, new Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //System.out.println("Response: " + response.toString());
-                        //statisticsFragment.dataUpdated(response);
-                        statisticsFragment.displayStatsInArea();
-
-                    }
-                }, new ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(statisticsFragment.getContext(), "Eroare conectare la server", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        queue.add(jsObjRequest);
-    }
-
 
     /* Get top 10 most voted contracts */
     public static void requestTop10Contracts(final TopVotedContractsFragment fragment) {

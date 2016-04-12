@@ -99,15 +99,16 @@ def get_buyers():
     cursor = cnx.cursor()
     result = []
 
-    query = ("SELECT buyer, location_lat, location_lng FROM contracte"
+    query = ("SELECT buyer, location_lat, location_lng, sum(price) as sum1 FROM contracte"
              " GROUP BY buyer")
     cursor.execute(query)
 
-    for (buyer, location_lat, location_lng) in cursor:
+    for (buyer, location_lat, location_lng, sum1) in cursor:
         result.append({
             'buyer': buyer,
             'lat': location_lat,
-            'lng': location_lng
+            'lng': location_lng,
+            'sum': sum1
         })
 
     cursor.close()

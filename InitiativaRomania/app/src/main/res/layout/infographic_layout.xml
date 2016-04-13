@@ -54,28 +54,37 @@
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingRight="5dp">
+                    android:paddingRight="10dp">
 
-                    <TextView
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Autoritati contractante"
-                        android:id="@+id/textView6"
-                        android:layout_weight="2"
-                        android:textColor="#f9a792"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingRight="5dp">
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="89"
-                        android:id="@+id/textViewNrBuyers"
-                        android:layout_weight="3"
-                        android:textColor="#f9a792"
-                        android:textAlignment="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text=""
+                            android:id="@+id/textViewNrBuyers"
+                            android:layout_weight="1"
+                            android:textColor="#f9a792"
+                            android:textAlignment="textEnd"
+                            android:gravity="bottom"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Autoritati\ncontractante"
+                            android:id="@+id/textView6"
+                            android:layout_weight="1"
+                            android:textColor="#f9a792"
+                            android:gravity="top|right"/>
+
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="fill_parent"
@@ -91,7 +100,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="5dp">
+                    android:paddingLeft="10dp">
 
                     <ImageView
                         android:layout_width="fill_parent"
@@ -100,27 +109,34 @@
                         android:src="@drawable/company"
                         android:layout_weight="3" />
 
-                    <TextView
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="361"
-                        android:id="@+id/textViewNrCompanies"
-                        android:layout_weight="3"
-                        android:textColor="#c57ffa"
-                        android:textAlignment="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text=""
+                            android:id="@+id/textViewNrCompanies"
+                            android:layout_weight="1"
+                            android:textColor="#c57ffa"
+                            android:textAlignment="textStart"
+                            android:textStyle="bold"
+                            android:gravity="bottom" />
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Companii"
-                        android:id="@+id/textView19"
-                        android:layout_weight="2"
-                        android:textColor="#c57ffa"
-                        android:gravity="center_vertical|center_horizontal" />
-
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Companii"
+                            android:id="@+id/textView19"
+                            android:layout_weight="1"
+                            android:textColor="#c57ffa"
+                            android:gravity="top|left" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -137,26 +153,34 @@
                     android:layout_weight="1"
                     android:paddingRight="5dp">
 
-                    <TextView
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Contracte"
-                        android:id="@+id/textView61"
-                        android:layout_weight="2"
-                        android:textColor="#ffdb44"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingRight="10dp">
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="727"
-                        android:id="@+id/textViewNrContracts"
-                        android:layout_weight="3"
-                        android:textColor="#ffdb44"
-                        android:textAlignment="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text=""
+                            android:id="@+id/textViewNrContracts"
+                            android:layout_weight="1"
+                            android:textColor="#ffdb44"
+                            android:textAlignment="textEnd"
+                            android:gravity="bottom"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Contracte"
+                            android:id="@+id/textView61"
+                            android:layout_weight="1"
+                            android:textColor="#ffdb44"
+                            android:gravity="top|right"/>
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="fill_parent"
@@ -171,7 +195,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="5dp">
+                    android:paddingLeft="10dp">
 
                     <ImageView
                         android:layout_width="fill_parent"
@@ -180,26 +204,34 @@
                         android:src="@drawable/eurosymbol"
                         android:layout_weight="3" />
 
-                    <TextView
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="6.29"
-                        android:id="@+id/textViewValueContracts"
-                        android:layout_weight="3"
-                        android:textColor="#a8e87b"
-                        android:textAlignment="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingRight="5dp">
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Valoare contracte        (mil EURO)"
-                        android:id="@+id/textView191"
-                        android:layout_weight="2"
-                        android:textColor="#a8e87b"
-                        android:gravity="center_vertical|center_horizontal" />
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text=""
+                            android:id="@+id/textViewValueContracts"
+                            android:layout_weight="1"
+                            android:textColor="#a8e87b"
+                            android:textAlignment="textStart"
+                            android:textStyle="bold"
+                            android:gravity="bottom" />
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Valoare contracte\n(mil EURO)"
+                            android:id="@+id/textView191"
+                            android:layout_weight="1"
+                            android:textColor="#a8e87b"
+                            android:gravity="top|left" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -242,12 +274,13 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="0"
+                        android:text=""
                         android:id="@+id/textViewNrJustifies"
-                        android:layout_weight="1"
+                        android:layout_weight="0.95"
                         android:textColor="#77cbd4"
                         android:singleLine="false"
-                        android:gravity="center_vertical" />
+                        android:gravity="bottom|left"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="fill_parent"
@@ -275,8 +308,8 @@
                     android:id="@+id/textView21"
                     android:layout_weight="1"
                     android:textColor="#77cbd4"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal|top" />
             </LinearLayout>
         </LinearLayout>
 

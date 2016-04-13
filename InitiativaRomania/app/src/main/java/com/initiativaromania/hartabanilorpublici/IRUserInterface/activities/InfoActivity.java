@@ -89,19 +89,5 @@ public class InfoActivity extends Activity {
             }
         });
 
-
-        /* Setup the OK button */
-        Button okButton = (Button) this.findViewById(R.id.okButton);
-        if (okButton != null) {
-            okButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Animation animation = AnimationUtils.loadAnimation(InfoActivity.this, R.anim.slide_down);
-                    LinearLayout linear = (LinearLayout) findViewById(R.id.transparentLayer);
-                    linear.startAnimation(animation);
-                    linear.setVisibility(View.INVISIBLE);
-                }
-            });
-        }
     }
 }

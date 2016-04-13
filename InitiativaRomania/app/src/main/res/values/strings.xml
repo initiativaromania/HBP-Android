@@ -30,10 +30,9 @@
 
     <string name="disclaimer1">
         Datele sunt preluate din setul de date „Achiziții publice 2007-2015 (Contracte)”
-        de pe data.gov.ro, din perioada iulie - septembrie 2015. Contractele selectate sunt cele care
-        conțin în numele autorității contractante cuvintele „București” și „sector” din care au fost
-        extrase, aleatoriu, pentru varianta pilot, 727 de contracte.</string>
-    <string name="versiune">1.0.2</string>
+        de pe data.gov.ro, din perioada iulie - septembrie 2015. Contractele selectate sunt achizitiile directe care
+        conțin în numele autorității contractante cuvintele „București” și „sector”.</string>
+    <string name="versiune">1.0.3</string>
     <string name="initiativaromania">
         Inițiativa România este o mișcare civică având ca misiune promovarea interacțiunii deschise
         și participative între instituțiile statului și cetăteni, dar și identificarea și promovarea

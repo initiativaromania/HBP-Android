@@ -1,8 +1,5 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-
-
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -62,12 +59,25 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-            <LinearLayout
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/imageView5"
+                    android:src="@drawable/google_map"
+                    android:scaleType="centerCrop" />
+
+                <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_height="300dp"
+                android:background="#b9494949">
+
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -81,7 +91,8 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Bucuresti"
                         android:id="@+id/textView3"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:textColor="#ffffff"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -89,7 +100,8 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="1 Iulie - 30 Septembrie 2015"
                         android:id="@+id/textView5"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:textColor="#ffffff"/>
 
                 </LinearLayout>
 
@@ -338,6 +350,8 @@
 
 
             </LinearLayout>
+
+            </RelativeLayout>
 
 
             <LinearLayout

@@ -27,28 +27,14 @@
             android:paddingTop="10dp">
         </ListView>
 
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:paddingBottom="10dp">
-
-            <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:paddingBottom="0dp"
-                android:layout_gravity="bottom">
-
-                <ProgressBar
-                    android:id="@+id/statistics_around_loading_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    android:layout_gravity="center"
-                    android:visibility="gone"/>
-            </FrameLayout>
-
-        </FrameLayout>
+        <ProgressBar
+            android:id="@+id/statistics_around_loading_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:visibility="gone"/>
 
     </LinearLayout>
 </RelativeLayout>

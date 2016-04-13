@@ -108,7 +108,7 @@ public class CommManager {
     }
 
     /* Send request to server to get init data for the infographic */
-    public static void requestInitData(final Context context) {
+    public static void requestInitData(final ICommManagerResponse commManagerResponse) {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, URL_GET_INIT_DATA,
                         (String) null, new Listener<JSONObject>() {
@@ -116,16 +116,13 @@ public class CommManager {
                     @Override
                     public void onResponse(JSONObject response) {
                         System.out.println("Response: " + response.toString());
-                        MainActivity ma = (MainActivity) context;
-                        ma.receiveInitData(response);
-
+                        commManagerResponse.processResponse(response);
                     }
                 }, new ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Eroare conectare la server",
-                                Toast.LENGTH_SHORT).show();
+                        commManagerResponse.onErrorOccurred("Eroare conectare la server");
                     }
                 });
 

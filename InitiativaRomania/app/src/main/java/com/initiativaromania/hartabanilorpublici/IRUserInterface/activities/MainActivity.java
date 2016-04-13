@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.initiativaromania.hartabanilorpublici.IRData.Buyer;
+import com.initiativaromania.hartabanilorpublici.IRData.ICommManagerResponse;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.IRLocationListener;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.map.IRSeekBarListener;
 import com.initiativaromania.hartabanilorpublici.R;
@@ -162,7 +163,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         displayInfographic = intent.getBooleanExtra(EXTRA_DISPLAY_INFOGRAPHIC, true);
         System.out.println("Display info " + displayInfographic);
         if (!displayInfographic) {
-            LinearLayout linear = (LinearLayout) findViewById(R.id.transparentLayer);;
+            LinearLayout linear = (LinearLayout) findViewById(R.id.transparentLayer);
             linear.setVisibility(View.INVISIBLE);
             return;
         }
@@ -198,7 +199,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         /* Send request to get the init data */
-        CommManager.requestInitData(this);
+        CommManager.requestInitData(new ICommManagerResponse() {
+            @Override
+            public void processResponse(JSONObject response) {
+                MainActivity.this.receiveInitData(response);
+            }
+
+            @Override
+            public void onErrorOccurred(String errorMsg) {
+                Toast.makeText(MainActivity.this, "Eroare conectare la server",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

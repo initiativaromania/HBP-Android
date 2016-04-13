@@ -1,260 +1,266 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff">
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
 
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="44dp"
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="#ffffff">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center">
-
-            <ImageView
-                android:layout_width="41dp"
-                android:layout_height="35dp"
-                android:id="@+id/imageViewContract"
-                android:src="@drawable/fb_profile_photo"
-                android:background="#ffffff"
-                android:layout_gravity="center" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Informatii"
-                android:id="@+id/textViewInfo"
-                android:textColor="#77cbd4"
-                android:textColorHighlight="#953232"
-                android:textSize="25dp"
-                android:visibility="visible"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:background="#ffffff"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <ImageButton
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:id="@+id/imageButton"
-            android:src="@drawable/info"
-            android:background="#ffffff"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center" />
-
-    </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp">
-
-            <View
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:id="@+id/view1011"
-                android:background="#9d9d9d"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="6" />
+                android:layout_height="44dp"
+                android:background="#ffffff">
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Descriere"
-                android:id="@+id/textView111"
-                android:layout_gravity="center_vertical|top"
-                android:layout_weight="4"
-                android:textAlignment="center"
-                android:gravity="top" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:id="@+id/view1021"
-                android:background="#9d9d9d"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="6" />
+                    <ImageView
+                        android:layout_width="41dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/imageViewContract"
+                        android:src="@drawable/fb_profile_photo"
+                        android:background="#ffffff"
+                        android:layout_gravity="center" />
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Informatii"
+                        android:id="@+id/textViewInfo"
+                        android:textColor="#77cbd4"
+                        android:textColorHighlight="#953232"
+                        android:textSize="25dp"
+                        android:visibility="visible"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="#ffffff"
+                        android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/descriere1"
-                android:id="@+id/textView10" />
+                </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/descriere2"
-                android:id="@+id/textView101" />
+                <ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/imageButton"
+                    android:src="@drawable/info"
+                    android:background="#ffffff"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/descriere3"
-                android:id="@+id/textView102" />
+            </LinearLayout>
 
             <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp">
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:id="@+id/view1012"
-                android:background="#9d9d9d"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="6" />
+                <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Disclaimer"
-                android:id="@+id/textView113"
-                android:layout_gravity="center_vertical|top"
-                android:layout_weight="4"
-                android:textAlignment="center"
-                android:gravity="top" />
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:id="@+id/view1011"
+                    android:background="#9d9d9d"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6" />
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:id="@+id/view104"
-                android:background="#9d9d9d"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="6" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Descriere"
+                    android:id="@+id/textView111"
+                    android:layout_gravity="center_vertical|top"
+                    android:layout_weight="4"
+                    android:textAlignment="center"
+                    android:gravity="top" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:id="@+id/view1021"
+                    android:background="#9d9d9d"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6" />
+
+            </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/descriere1"
+                    android:id="@+id/textView10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/descriere2"
+                    android:id="@+id/textView101" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/descriere3"
+                    android:id="@+id/textView102" />
+
+                <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:id="@+id/view1012"
+                    android:background="#9d9d9d"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Disclaimer"
+                    android:id="@+id/textView113"
+                    android:layout_gravity="center_vertical|top"
+                    android:layout_weight="4"
+                    android:textAlignment="center"
+                    android:gravity="top" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:id="@+id/view104"
+                    android:background="#9d9d9d"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6" />
+
+            </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/disclaimer1"
+                    android:id="@+id/textView15" />
+
+                <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:id="@+id/view1014"
+                    android:background="#9d9d9d"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Versiune"
+                    android:id="@+id/textView115"
+                    android:layout_gravity="center_vertical|top"
+                    android:layout_weight="4"
+                    android:textAlignment="center"
+                    android:gravity="top" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:id="@+id/view105"
+                    android:background="#9d9d9d"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6" />
+
+            </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/versiune"
+                    android:id="@+id/textView151"
+                    android:layout_gravity="center" />
+
+                <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:id="@+id/view101"
+                    android:background="#9d9d9d"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Initiativa Romania"
+                    android:id="@+id/textView11"
+                    android:layout_gravity="center_vertical|top"
+                    android:layout_weight="4"
+                    android:textAlignment="center"
+                    android:gravity="top" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:id="@+id/view102"
+                    android:background="#9d9d9d"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6" />
+
+            </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:autoLink="web"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/initiativaromania"
+                    android:id="@+id/textView152" />
+            </LinearLayout>
+
 
         </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/disclaimer1"
-                android:id="@+id/textView15" />
+    </ScrollView>
 
-            <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp">
+    <include layout="@layout/infographic_layout"/>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:id="@+id/view1014"
-                android:background="#9d9d9d"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="6" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Versiune"
-                android:id="@+id/textView115"
-                android:layout_gravity="center_vertical|top"
-                android:layout_weight="4"
-                android:textAlignment="center"
-                android:gravity="top" />
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:id="@+id/view105"
-                android:background="#9d9d9d"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="6" />
-
-        </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/versiune"
-                android:id="@+id/textView151"
-                android:layout_gravity="center" />
-
-            <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp">
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:id="@+id/view101"
-                android:background="#9d9d9d"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="6" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Initiativa Romania"
-                android:id="@+id/textView11"
-                android:layout_gravity="center_vertical|top"
-                android:layout_weight="4"
-                android:textAlignment="center"
-                android:gravity="top" />
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:id="@+id/view102"
-                android:background="#9d9d9d"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="6" />
-
-        </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:autoLink="web"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/initiativaromania"
-                android:id="@+id/textView152" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-</ScrollView>
+</merge>

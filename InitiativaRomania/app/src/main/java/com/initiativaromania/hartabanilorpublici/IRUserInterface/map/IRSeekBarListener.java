@@ -57,21 +57,22 @@ public class IRSeekBarListener implements SeekBar.OnSeekBarChangeListener {
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        System.out.println("Start");
-    }
+    public void onStartTrackingTouch(SeekBar seekBar){ }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        System.out.println("End");
+
+        /* Refresh the around buyers array */
         CommManager.updateAroundBuyers();
 
+        /* Update the seekbar value with new total price sum */
         Rect thumbRect = seekBar.getThumb().getBounds();
         MainActivity.seekBarValue.setX(thumbRect.exactCenterX());
         DecimalFormat dm = new DecimalFormat("###,###.###");
         MainActivity.seekBarValue.setText(" " + String.valueOf(dm.format(CommManager.aroundTotalSum)) + " EURO ");
         MainActivity.seekBarValue.startAnimation(MainActivity.animationFadeIn);
 
+        /* If around contracts fragment is NOT destroyed, refresh the ListView data */
         if (null != aroundStatisticsInstance) {
             aroundStatisticsInstance.currentBuyerToProcess = 0;
             AroundStatisticsFragment.previousTotal = 0;

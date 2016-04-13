@@ -65,9 +65,10 @@ public class CommManager {
     /* All the buyers */
     public static LinkedList<Buyer> buyers = new LinkedList<Buyer>();
 
-    /* All the contracts in your area */
+    /* All the buyers in your area */
     public static LinkedList<Buyer> aroundBuyersList = new LinkedList<>();
 
+    /* Contracts total price i your area */
     public static double aroundTotalSum = 0;
 
     public static RequestQueue queue;
@@ -78,11 +79,9 @@ public class CommManager {
 
     public static void updateAroundBuyers() {
 
-        aroundTotalSum = 0;
-
         float distance[] = {0};
         distance[0] = Float.MAX_VALUE;
-
+        aroundTotalSum = 0;
         aroundBuyersList.clear();
 
         /* Ask again for location */
@@ -94,13 +93,11 @@ public class CommManager {
 
         for (final Buyer itBuyer : CommManager.buyers) {
 
-
             /* Determine if a buyer is in our area */
             Location.distanceBetween(l.getLatitude(), l.getLongitude(), itBuyer.latitude,
                     itBuyer.longitude, distance);
 
             if (distance[0] < MainActivity.circle.getRadius()) {
-                System.out.println("=========" + itBuyer.name + " ; " + itBuyer.totalPrice);
                 aroundTotalSum += itBuyer.totalPrice;
                 CommManager.aroundBuyersList.add(itBuyer);
             }

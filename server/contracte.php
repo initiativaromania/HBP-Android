@@ -6,10 +6,22 @@ $res = new mysqli('localhost', 'root', '', 'ir-investitii');
 
 $row = 1;
 
-if (($handle = fopen("contracts_final.csv", "r")) !== FALSE) {
+if (($handle = fopen("contracte_t3_final.csv", "r")) !== FALSE) {
 	while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 
 		if(!empty($data[1])) {
+
+			$query1 = "SELECT id FROM contracte
+				WHERE contract_nr = '{$data[13]}';";
+			$result = mysqli_query($res, $query1);
+			$result = $res->query($query1);
+
+			while ($row = $result->fetch_assoc()) {
+				echo $row["id"] . "\n";
+			}
+
+			if ($result->num_rows > 0)
+				continue;
 
 			$query = "INSERT INTO  `ir-investitii`.`contracte` (
 				`id` ,
@@ -37,7 +49,6 @@ if (($handle = fopen("contracts_final.csv", "r")) !== FALSE) {
 
 			mysqli_query($res, $query);
 			//echo mysqli_error($res);exit;
-
 		}
 
 	}

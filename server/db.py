@@ -73,7 +73,7 @@ def get_orders(area):
     query = ("SELECT id, location_lat, location_lng, contract_title, company, buyer FROM contracte"
              " WHERE"
              " location_lat BETWEEN %s AND %s"
-             " AND location_lng BETWEEN %s AND %s order by price desc")
+             " AND location_lng BETWEEN %s AND %s order by price desc limit 727")
 
     cursor.execute(query, area)
 

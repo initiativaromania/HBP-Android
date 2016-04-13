@@ -23,12 +23,13 @@
                     android:layout_weight="1"
                     android:layout_gravity="center">
 
-                    <ImageView
+                    <ImageButton
                         android:layout_width="41dp"
                         android:layout_height="35dp"
                         android:id="@+id/imageViewContract"
                         android:src="@drawable/fb_profile_photo"
                         android:background="#ffffff"
+                        android:scaleType="fitCenter"
                         android:layout_gravity="center" />
 
                     <TextView

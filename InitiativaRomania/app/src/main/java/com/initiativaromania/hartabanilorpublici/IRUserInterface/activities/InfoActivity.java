@@ -18,6 +18,7 @@
 package com.initiativaromania.hartabanilorpublici.IRUserInterface.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,22 @@ public class InfoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+
+        /* IR home button */
+        ImageButton ir = (ImageButton) findViewById(R.id.imageViewContract);
+        if (ir != null) {
+            ir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                     /* Go to the homepage */
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    intent.putExtra(MainActivity.EXTRA_DISPLAY_INFOGRAPHIC, false);
+                    startActivity(intent);
+                }
+            });
+        }
 
         /* Get data for infographic from server*/
         CommManager.requestInitData(new ICommManagerResponse() {

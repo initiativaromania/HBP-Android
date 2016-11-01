@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -44,6 +45,8 @@ import java.text.DecimalFormat;
  * Created by claudiu on 2/27/16.
  */
 public class InfoActivity extends Activity {
+
+    public static final String TAG=InfoActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,32 +75,37 @@ public class InfoActivity extends Activity {
             public void processResponse(JSONObject response) {
 
                 try {
-                    TextView tv = (TextView) findViewById(R.id.textViewNrBuyers);
-                    if (tv != null)
-                        tv.setText(response.getString("buyers"));
-
-                    tv = (TextView) findViewById(R.id.textViewNrCompanies);
-                    if (tv != null)
-                        tv.setText(response.getString("companies"));
-
-                    tv = (TextView) findViewById(R.id.textViewNrContracts);
-                    if (tv != null)
-                        tv.setText(response.getString("contracts"));
-
-                    tv = (TextView) findViewById(R.id.textViewValueContracts);
-                    if (tv != null) {
-                        double totalValue = Double.parseDouble(response.getString("sumprice"));
-                        totalValue /= 1000000;
-                        tv.setText(String.format("%.2f", totalValue));
-                    }
-
-                    tv = (TextView) findViewById(R.id.textViewNrJustifies);
-                    if (tv != null)
-                        tv.setText(response.getString("justifies"));
-
+                    mapResponseToView(response);
                 } catch (JSONException e) {
+                    Log.e(TAG,"Problems while mapping response",e);
                     e.printStackTrace();
                 }
+            }
+
+            private void mapResponseToView(JSONObject response) throws JSONException {
+
+                TextView tv = (TextView) findViewById(R.id.textViewNrBuyers);
+                if (tv != null)
+                    tv.setText(response.getString("buyers"));
+
+                tv = (TextView) findViewById(R.id.textViewNrCompanies);
+                if (tv != null)
+                    tv.setText(response.getString("companies"));
+
+                tv = (TextView) findViewById(R.id.textViewNrContracts);
+                if (tv != null)
+                    tv.setText(response.getString("contracts"));
+
+                tv = (TextView) findViewById(R.id.textViewValueContracts);
+                if (tv != null) {
+                    double totalValue = Double.parseDouble(response.getString("sumprice"));
+                    totalValue /= 1000000;
+                    tv.setText(String.format("%.2f", totalValue));
+                }
+
+                tv = (TextView) findViewById(R.id.textViewNrJustifies);
+                if (tv != null)
+                    tv.setText(response.getString("justifies"));
             }
 
             @Override

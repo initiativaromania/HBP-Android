@@ -18,11 +18,15 @@
 package com.initiativaromania.hartabanilorpublici.IRUserInterface.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import 	android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +43,7 @@ import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 import com.facebook.share.widget.ShareDialog;
 import com.initiativaromania.hartabanilorpublici.IRData.Buyer;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.ContractPageFragment;
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRData.Category;
 import com.initiativaromania.hartabanilorpublici.IRData.CommManager;
@@ -50,39 +55,67 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 
 /**
  * Created by claudiu on 2/10/16.
  */
 public class ContractActivity extends Activity {
-    public static final String EXTRA_CONTRACT_ID    = "com.example.claudiu.investitiipublice.IRObjects.Contract";
-    private static final String JUSTIFY_PREFFERENCE = "justify_prefference";
-    private static final int MINIMUM_VOTES          = 300;
-    private static final String URL_HBP             = "http://initiativaromania.ro/proiecte/harta-banilor-publici/";
-    private static final String URL_HBP_BANNER      = "http://initiativaromania.ro/wp-content/uploads/2015/11/1280x720.png";
+    public static final String TAG=ContractActivity.class.getName();
 
-    private Contract contract;
+    public static final String INITIAL_POSITION    = "initial.position";
+    public static final String CONTRACTS_AROUND_IDS = "contracts.around.ids";
+
+
+    private List<Integer> contractsAroundIds ;
+    private Integer initialPosition;
     private Context contractContext = this;
-    private SharedPreferences just_prefs;
-    CallbackManager callbackManager;
-    ShareDialog shareDialog;
-    ShareButton shareButton;
+    private ViewPager pager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contract);
 
-        just_prefs = getApplicationContext().getSharedPreferences(JUSTIFY_PREFFERENCE, 0);
-
         /* Get the contract only with the id from the intent */
         Intent intent = getIntent();
-        contract = (Contract)intent.getSerializableExtra(EXTRA_CONTRACT_ID);
+        initialPosition =  intent.getIntExtra(INITIAL_POSITION,1);
+        contractsAroundIds = (List<Integer>) intent.getIntegerArrayListExtra(CONTRACTS_AROUND_IDS);
 
-        System.out.println("Got contract " + contract.id);
+        Log.i(TAG,"Got initial contract " +  initialPosition);
 
-        /* Information button */
+        setNavigateToMainActivityButtonListener();
+
+        setContractInformationButtonListener();
+
+        pager = (ViewPager ) findViewById(R.id.contract_pager);
+
+        pager.setAdapter(new ContractPageAdapter(getFragmentManager()));
+        pager.setCurrentItem(initialPosition);
+    }
+
+    private void setNavigateToMainActivityButtonListener() {
+    /* IR home button */
+        ImageButton ir = (ImageButton)findViewById(R.id.imageViewContract);
+        if (ir != null) {
+            ir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG,"Click IR");
+
+                     /* Go to the homepage */
+                    Intent intent = new Intent(ContractActivity.this, MainActivity.class);
+                    intent.putExtra(MainActivity.EXTRA_DISPLAY_INFOGRAPHIC, false);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    private void setContractInformationButtonListener() {
+    /* Information button */
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButtonContract);
         if (imageButton != null) {
             imageButton.setOnClickListener(new View.OnClickListener() {
@@ -94,206 +127,25 @@ public class ContractActivity extends Activity {
                 }
             });
         }
-
-
-        /* Send request to server to get all the contract details */
-        CommManager.requestContract(this, contract.id);
     }
 
+    class ContractPageAdapter extends FragmentStatePagerAdapter {
 
-    /* Initia Facebook share dialog */
-    private void initFacebook() {
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
-        shareDialog = new ShareDialog(this);
-        callbackManager = CallbackManager.Factory.create();
-
-        /* Init button */
-        shareButton = (ShareButton)findViewById(R.id.fb_share_button);
-        ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                .setContentUrl(Uri.parse(URL_HBP))
-                .setContentTitle(contract.buyer.name + " a cheltuit " + contract.valueEUR +
-                        " EURO pentru " + contract.title)
-                .setImageUrl(Uri.parse(URL_HBP_BANNER))
-                .build();
-        shareButton.setShareContent(linkContent);
-
-
-        shareButton.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-            @Override
-            public void onSuccess(Sharer.Result result) {
-                Log.i("FB Share button", "success");
-            }
-
-            @Override
-            public void onCancel() {
-                Log.i("FB Share button", "cancel");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.i("FB Share button", "error");
-            }
-        });
-    }
-
-
-    /* Show contract details in the contract view */
-    private void displayContract() {
-
-        /* IR home button */
-        ImageButton ir = (ImageButton)findViewById(R.id.imageViewContract);
-        if (ir != null) {
-            ir.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("Click IR");
-
-                     /* Go to the homepage */
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                    intent.putExtra(MainActivity.EXTRA_DISPLAY_INFOGRAPHIC, false);
-                    startActivity(intent);
-                }
-            });
+        public ContractPageAdapter(FragmentManager fragmentManager ) {
+            super(fragmentManager );
         }
 
-        /* Show contract title */
-        TextView tv = (TextView)findViewById(R.id.textViewTitluContract);
-        if (tv != null)
-            tv.setText(contract.title);
 
-        /* Show Contract number */
-        tv = (TextView)findViewById(R.id.textContractNr);
-        if (tv != null)
-            tv.setText(contract.number);
+        @Override
+        public Fragment getItem(int position) {
 
-        /* Show company */
-        tv = (TextView)findViewById(R.id.textCompany);
-        if (tv != null) {
-            tv.setText(contract.company.name);
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("Click on company");
-
-                    /* Start a separate view for a company */
-                    Intent intent = new Intent(getBaseContext(), ParticipantActivity.class);
-                    intent.putExtra(ParticipantActivity.CONTRACT_LIST_TYPE, ParticipantActivity.CONTRACT_LIST_FOR_COMPANY);
-                    intent.putExtra(ParticipantActivity.CONTRACT_LIST_EXTRA, contract.company.name);
-                    startActivity(intent);
-                }
-            });
+            Log.i(TAG,"Getting contract id:" + contractsAroundIds.get(position));
+            return    ContractPageFragment.newInstance(contractsAroundIds.get(position)) ;
         }
 
-        /* Show the buyeer */
-        tv = (TextView)findViewById(R.id.textPrimarie);
-        if (tv != null) {
-            tv.setText(contract.buyer.name);
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("Click on authority");
-
-                    /* Start a separate view for a company */
-                    Intent intent = new Intent(getBaseContext(), ParticipantActivity.class);
-                    intent.putExtra(ParticipantActivity.CONTRACT_LIST_TYPE, ParticipantActivity.CONTRACT_LIST_FOR_BUYER);
-                    intent.putExtra(ParticipantActivity.CONTRACT_LIST_EXTRA, contract.buyer.name);
-                    startActivity(intent);
-                }
-            });
+        @Override
+        public int getCount() {
+            return contractsAroundIds.size();
         }
-
-        /* Show the date of the contract */
-        tv = (TextView)findViewById(R.id.textData);
-        if (tv != null)
-            tv.setText(contract.date);
-
-        /* Show the value of the contract */
-        tv = (TextView)findViewById(R.id.textValue);
-        double price = Double.parseDouble(contract.valueEUR);
-        DecimalFormat dm = new DecimalFormat("###,###.###");
-        if (tv != null)
-            tv.setText(String.valueOf(dm.format(price)) + " EUR");
-
-        /* Show the contract's CPV code */
-        tv = (TextView)findViewById(R.id.textCPV);
-        if (tv != null)
-            tv.setText(contract.CPVCode);
-
-
-        /* Setup the Justify button */
-        System.out.println("Contract votes " + contract.votes);
-        Button button = (Button)findViewById(R.id.button);
-        if (button != null) {
-            button.setText("Cere justificare (" + contract.votes + ")");
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    /* Check whether you have voted before */
-                    int votedBefore = just_prefs.getInt("Contract" + contract.id, -1);
-                    System.out.println("Saved prefference value for contract " + contract.id + " id " + votedBefore);
-
-                    if (votedBefore == -1) {
-                        System.out.println("Never voted. Calling justify from button");
-                        CommManager.justifyContract(contractContext, contract);
-                    } else
-                        Toast.makeText(contractContext, "Ai mai cerut o data justificarea acestui contract",
-                                Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
-    /* Update the Justify button when the justify succeeds */
-    public void ackJustify() {
-        contract.votes++;
-        Button button = (Button)findViewById(R.id.button);
-        if (button != null) {
-            button.setText("Cere justificare (" + contract.votes + ")");
-        }
-
-        /* Remember the fact that you voted for this contract */
-        SharedPreferences.Editor editor = just_prefs.edit();
-        editor.putInt("Contract" + contract.id, 1);
-        editor.commit();
-
-        Toast.makeText(this, "Cererea ta a fost inregistrata. La " + MINIMUM_VOTES +
-                " de cereri Initiativa Romania va cere detalii despre acest contract si anexele sale.", Toast.LENGTH_LONG).show();
-    }
-
-
-    /* Receive the contract details from the server and display them */
-    public void receiveContract(JSONObject response) {
-
-        try {
-            contract.CPVCode = response.getString("CPVCode");
-            contract.address = response.getString("address");
-            contract.company = new Company();
-            contract.buyer = new Buyer();
-            contract.buyer.name = response.getString("buyer");
-            contract.votes = Integer.parseInt(response.getString("justify"));
-            contract.company.name = response.getString("company");
-            contract.number = response.getString("contract_nr");
-            contract.title = response.getString("contract_title");
-            contract.valueEUR = response.getString("price");
-            contract.date = response.getString("start_date");
-
-            /* Save all the categories */
-            JSONArray categoriesJSON = response.getJSONArray("categories");
-            for (int i = 0; i < categoriesJSON.length(); i++) {
-
-                Category category = new Category();
-                category.name = categoriesJSON.get(i).toString();
-                contract.addCategory(category);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        displayContract();
-
-         /* Initiatilize Facebook share dialog */
-        initFacebook();
-
     }
 }

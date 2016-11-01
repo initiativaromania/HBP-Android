@@ -19,6 +19,7 @@ package com.initiativaromania.hartabanilorpublici.IRData;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,10 +29,9 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.ContractActivity;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.ParticipantActivity;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.MainActivity;
-import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.AroundStatisticsFragment;
+import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.ContractPageFragment;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.TopCompanyFragment;
 import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.TopVotedContractsFragment;
 
@@ -44,6 +44,7 @@ import java.util.LinkedList;
  */
 
 public class CommManager {
+    private static final String TAG =CommManager.class.getName();
     private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
 
     /* Requests to server */
@@ -115,7 +116,7 @@ public class CommManager {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response: " + response.toString());
+                        Log.i(TAG,"Response: " + response.toString());
                         commManagerResponse.processResponse(response);
                     }
                 }, new ErrorListener() {
@@ -127,13 +128,13 @@ public class CommManager {
                 });
 
         queue.add(jsObjRequest);
-        System.out.println("Init Request sent");
+        Log.i(TAG,"Init Request sent");
     }
 
 
     /* Send request to server to get company details */
     public static void requestCompanyDetails(final Context context, String companyName) {
-        System.out.println("Getting company details for " + String.format(URL_GET_COMPANY,
+        Log.i(TAG,"Getting company details for " + String.format(URL_GET_COMPANY,
                 companyName.replaceAll(" ", "%20").replaceAll("'", "%27%27")));
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, String.format(URL_GET_COMPANY,
@@ -142,7 +143,7 @@ public class CommManager {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        //System.out.println("Response: " + response.toString());
+                        //Log.i(TAG,"Response: " + response.toString());
                         ParticipantActivity cla = (ParticipantActivity) context;
                         cla.receiveCompanyDetails(response);
 
@@ -157,20 +158,20 @@ public class CommManager {
                 });
 
         queue.add(jsObjRequest);
-        System.out.println("Request sent");
+        Log.i(TAG,"Request sent");
     }
 
 
     /* Send request to server to get all the buyers */
     public static void requestAllBuyers(final Context context) {
-        System.out.println("Getting all buyers");
+        Log.i(TAG,"Getting all buyers");
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, URL_GET_ALL_BUYERS,
                         (String) null, new Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response: " + response.toString());
+                        Log.i(TAG,"Response: " + response.toString());
                         MainActivity ma = (MainActivity) context;
                         ma.receiveAllBuyers(response);
 
@@ -185,13 +186,13 @@ public class CommManager {
                 });
 
         queue.add(jsObjRequest);
-        System.out.println("Request sent");
+        Log.i(TAG,"Request sent");
     }
 
 
     /* Send request to server to get buyer details */
     public static void requestBuyerDetails(final ICommManagerResponse commManagerResponse, String buyerName) {
-        System.out.println("Getting buyer details for " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
+        Log.i(TAG,"Getting buyer details for " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, String.format(URL_GET_BUYER,
@@ -212,13 +213,13 @@ public class CommManager {
                 });
 
         queue.add(jsObjRequest);
-        System.out.println("Request sent");
+        Log.i(TAG,"Request sent");
     }
 
 
     /* Get all the details for a contract based on its contract id */
-    public static void requestContract(final Context context, int contractID) {
-        System.out.println("Getting the contract details for id " + contractID);
+    public static void requestContract(final ContractPageFragment contractPageFragment, int contractID) {
+        Log.i(TAG,"Getting the contract details for id " + contractID);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, String.format(URL_GET_ORDER, contractID),
@@ -226,14 +227,13 @@ public class CommManager {
 
             @Override
             public void onResponse(JSONObject response) {
-                //System.out.println("Response: " + response);
-                ContractActivity ca = (ContractActivity) context;
-                ca.receiveContract(response);
+                Log.i(TAG,"Response: " + response);
+                contractPageFragment.receiveContract(response);
             }
         }, new ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Eroare conectare la server. Incearca mai tarziu", Toast.LENGTH_SHORT).show();
+                Toast.makeText(contractPageFragment.getActivity(), "Eroare conectare la server. Incearca mai tarziu", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -242,13 +242,13 @@ public class CommManager {
 
     /* Get top 10 most voted contracts */
     public static void requestTop10Contracts(final TopVotedContractsFragment fragment) {
-        System.out.println("Getting top 10 voted contracts");
+        Log.i(TAG,"Getting top 10 voted contracts");
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, URL_GET_TOP_VOTED_CONTRACTS,
                         (String)null, new Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //System.out.println("Response: " + response.toString());
+                        //Log.i(TAG,"Response: " + response.toString());
                         fragment.displayTop10Contracts(response);
 
                     }
@@ -266,14 +266,14 @@ public class CommManager {
 
     /* Get top 10 companies */
     public static void requestTop10Companies(final TopCompanyFragment fragment) {
-        System.out.println("Getting top 10 companies");
+        Log.i(TAG,"Getting top 10 companies");
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, URL_GET_TOP_COMPANIES,
                         (String)null, new Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //System.out.println("Response: " + response.toString());
+                        //Log.i(TAG,"Response: " + response.toString());
                         fragment.displayTop10Companies(response);
 
                     }
@@ -290,8 +290,8 @@ public class CommManager {
 
 
     /* Call server to add a request to justify a contract */
-    public static void justifyContract(final Context context, Contract contract) {
-        System.out.println("Calling justify " + contract.id);
+    public static void justifyContract(final ContractPageFragment contractPageFragment, Contract contract) {
+        Log.i(TAG,"Calling justify " + contract.id);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, String.format(URL_GET_JUSTIFICA, contract.id),
@@ -299,14 +299,13 @@ public class CommManager {
 
             @Override
             public void onResponse(JSONObject response) {
-                //System.out.println("Response: " + response);
-                ContractActivity ca = (ContractActivity)context;
-                ca.ackJustify();
+                //Log.i(TAG,"Response: " + response);
+                contractPageFragment.contractJustification();
             }
         }, new ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Eroare conectare la server. Incearca mai tarziu", Toast.LENGTH_SHORT).show();
+                Toast.makeText(contractPageFragment.getActivity(), "Eroare conectare la server. Incearca mai tarziu", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -316,7 +315,7 @@ public class CommManager {
 
     /* Get all company names for a buyer */
     public static void requestFirmsForBuyer(final Context context, String buyerName) {
-        System.out.println("Getting Firms for buyer " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
+        Log.i(TAG,"Getting Firms for buyer " + String.format(URL_GET_BUYER, buyerName.replaceAll(" ", "%20")));
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, String.format(URL_GET_FIRMS_FOR_BUYER,
                         buyerName.replaceAll(" ", "%20").replaceAll("'", "%27%27")).replaceAll("&", "%26"),
@@ -338,13 +337,13 @@ public class CommManager {
                 });
 
         queue.add(jsObjRequest);
-        System.out.println("Request sent");
+        Log.i(TAG,"Request sent");
     }
 
 
     /* Get all buyer names for a company */
     public static void requestBuyersForFirm(final Context context, String firmName) {
-        System.out.println("Getting Buyers for firm " + String.format(URL_GET_BUYER, firmName.replaceAll(" ", "%20")));
+        Log.i(TAG,"Getting Buyers for firm " + String.format(URL_GET_BUYER, firmName.replaceAll(" ", "%20")));
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, String.format(URL_GET_BUYERS_FOR_FIRM,
                         firmName.replaceAll(" ", "%20").replaceAll("'", "%27%27")).replaceAll("&", "%26"),
@@ -366,6 +365,6 @@ public class CommManager {
                 });
 
         queue.add(jsObjRequest);
-        System.out.println("Request sent");
+        Log.i(TAG,"Request sent");
     }
 }

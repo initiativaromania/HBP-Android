@@ -19,6 +19,7 @@ package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.initiativaromania.hartabanilorpublici.IRUserInterface.activities.Cont
 import com.initiativaromania.hartabanilorpublici.R;
 import com.initiativaromania.hartabanilorpublici.IRData.Contract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContractListAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
@@ -52,7 +54,6 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
         TextView contractName = (TextView) convertView.findViewById(R.id.statistics_around_row_contractName);
         contractName.setText((position + 1) +". " + orders.get(position).title);
         convertView.setTag(orders.get(position).id);
-
         return convertView;
     }
 
@@ -78,10 +79,21 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         Intent intent = new Intent(context, ContractActivity.class);
-        Contract contract = new Contract();
-        contract.id = (int) v.getTag();
 
-        intent.putExtra(ContractActivity.EXTRA_CONTRACT_ID, contract);
+        intent.putExtra(ContractActivity.INITIAL_POSITION, position);
+        intent.putIntegerArrayListExtra(ContractActivity.CONTRACTS_AROUND_IDS,createContractsAroundIds());
+
         context.startActivity(intent);
+    }
+
+    @NonNull
+    private ArrayList<Integer> createContractsAroundIds() {
+
+        ArrayList<Integer> contractsFoundIds= new ArrayList<>();
+
+        for (ContractListItem contractListItem:orders) {
+            contractsFoundIds.add(contractListItem.id);
+        }
+        return contractsFoundIds;
     }
 }

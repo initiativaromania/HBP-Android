@@ -17,10 +17,13 @@
 
 package com.initiativaromania.hartabanilorpublici.IRUserInterface.objects;
 
+import java.io.Serializable;
+
 /**
  * Created by claudiu on 2/20/16.
  */
-public class ContractListItem {
+public class ContractListItem implements Serializable {
+
     public int id;
     public String title;
     public String price;

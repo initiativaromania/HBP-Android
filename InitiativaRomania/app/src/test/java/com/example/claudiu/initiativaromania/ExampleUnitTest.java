@@ -1,4 +1,4 @@
-package com.initiativaromania.hartabanilorpublici.initiativaromania;
+package com.example.claudiu.initiativaromania;
 
 import org.junit.Test;
 

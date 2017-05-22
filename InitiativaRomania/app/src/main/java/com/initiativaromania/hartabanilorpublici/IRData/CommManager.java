@@ -19,6 +19,7 @@ package com.initiativaromania.hartabanilorpublici.IRData;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -37,14 +38,53 @@ import com.initiativaromania.hartabanilorpublici.IRUserInterface.fragments.TopVo
 
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
+import java.util.Properties;
 
 /**
  * Created by claudiu on 2/9/16.
  */
 
 public class CommManager {
-    private static final String SERVER_IP = "http://dev01.petrosol.ro:20500";
+    private static final String SERVER_IP;
+    private static final String SERVER_PROPERTIES_FILENAME = "server.properties";
+
+    private static final String LOG_TAG = "debugger";
+
+    static {
+        String      ip    = "localhost";
+        String      port  = "80";
+        Properties  prop  = new Properties();
+        InputStream input = null;
+
+        try {
+            input = MainActivity.context.getAssets().open(SERVER_PROPERTIES_FILENAME); // WINNER
+            prop.load(input);
+
+            ip   = prop.getProperty("server.ip");
+            port = prop.getProperty("server.port");
+            Log.d(LOG_TAG, "[REMOVE_ME] [MY_DEBUG] ip: " + ip + " port " + port);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.exit(-1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            SERVER_IP = "http://" + ip + ":" + port;
+        }
+    }
+
 
     /* Requests to server */
     private static final String URL_GET_ORDERS              = SERVER_IP + "/getOrders?lat=%s&lng=%s&zoom=%s";

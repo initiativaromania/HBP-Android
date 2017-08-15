@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Harta Banilor Publici</string>
+    <string name="title_activity_maps">Harta Banilor Publici</string>
+    <string name="title_activity_contract">Contract</string>
+    <string name="title_activity_contract_list">Contract List</string>
+    <string name="title_activity_info">Info</string>
+
+    <string name="facebook_app_id">195358604166337</string>
+
+    <string name="info1">Navigheaza pe harta pentru a vedea contracte.</string>
+    <string name="info4">Foloseste bara de jos pentru a modifica zona de interes.</string>
+    <string name="descriere1">Cetățenii au dreptul
+        să beneficieze de informații de interes public, în mod gratuit, în timp real,
+        într-un format accesibil, lesne de ințeles și de utilizat. Punem la dispoziția
+        cetățeanului aflat pe suprafața municipiului București date, în format mobil,
+        despre achizițiile publice directe făcute de autorități contractante din București.</string>
+    <string name="descriere2">
+        Utilizatorul poate folosi funcția de geolocație a telefonului pentru a afla ce
+        contracte a atribuit în mod direct o autoritate contractantă aflată în raza sa de interes.
+        Alte informații puse la dispoziție prin intermediul aplicației mobile sunt: valoarea contractului
+        atribuit de autoritatea contractantă și numele companiei căreia a fost atribuit contractul.
+        În plus, o dată ajuns pe detaliile contractului, utilizatorul poate accesa și toate celelalte
+        contracte primite de o companie de la orice autoritate contractantă din Bucuresti,
+        în perioada analizată.</string>
+    <string name="descriere3">
+        Utilizatorul are la dispoziție un buton de „justifică”. Inițiativa România își propune
+        ca la 300 de cereri de justificare per contract atribuit
+        să ceară mai multe informații autorității contractante despre contractul în cauză,
+        în baza legii 544/2011 de acces la informații de interes public.</string>
+
+    <string name="disclaimer1">
+        Datele sunt preluate din setul de date „Achiziții publice 2007-2015 (Contracte)”
+        de pe data.gov.ro, din perioada iulie - septembrie 2015. Contractele selectate sunt achizitiile directe care
+        conțin în numele autorității contractante cuvintele „București” și „sector”.</string>
+    <string name="versiune">1.0.3</string>
+    <string name="initiativaromania">
+        Inițiativa România este o mișcare civică având ca misiune promovarea interacțiunii deschise
+        și participative între instituțiile statului și cetăteni, dar și identificarea și promovarea
+        unei noi clase politice care să reprezinte competent și integru interesele alegătorilor.
+        \n\n
+        initiativaromania.ro\n\n
+        www.facebook.com/initiativaromania2016\n</string>
+
+    <string-array name="list">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <item>Item 4</item>
+        <item>Item 5</item>
+    </string-array>
+</resources>

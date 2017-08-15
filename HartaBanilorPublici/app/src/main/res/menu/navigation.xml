@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/placeholder3x"
+        android:title="@string/title_map" />
+
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/search3x"
+        android:title="@string/title_search" />
+
+    <item
+        android:id="@+id/navigation_top"
+        android:icon="@drawable/barchart3x"
+        android:title="@string/title_top" />
+
+    <item
+        android:id="@+id/navigation_info"
+        android:icon="@drawable/info3x"
+        android:title="@string/title_info" />
+</menu>

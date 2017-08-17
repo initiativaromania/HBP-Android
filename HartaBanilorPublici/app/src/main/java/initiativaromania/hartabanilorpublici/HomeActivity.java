@@ -45,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (searchFragment == null)
                         searchFragment = new SearchFragment();
                     fragment = searchFragment;
+                    System.out.println("Search");
                     break;
 
                 case R.id.navigation_top:

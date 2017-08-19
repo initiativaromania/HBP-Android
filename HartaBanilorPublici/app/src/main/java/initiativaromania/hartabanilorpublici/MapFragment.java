@@ -21,6 +21,7 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Random;
 
 
@@ -47,6 +48,25 @@ public class MapFragment extends android.support.v4.app.Fragment
     public MapFragment(){};
 
 
+    /**
+     * Initialize data from the server on the UI
+     */
+    private void initData() {
+        System.out.println("Getting all the data from server");
+
+        /* Init the hashmap Marker - Buyer */
+        markerPublicInstitutions = new HashMap<Marker, PublicInstitution>();
+
+        /* Build an empty cluster of markers */
+        clusterManager = new ClusterManager<PublicInstitution>(this.getContext(), mMap);
+
+        /* Create the list of public institutions */
+        PublicInstitutionsManager.populatePIs();
+        PublicInstitutionsManager.resetPiSet();
+
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         originalView = inflater.inflate(R.layout.fragment_map, container, false);
@@ -59,20 +79,38 @@ public class MapFragment extends android.support.v4.app.Fragment
     }
 
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapLoadedCallback(this);
         mMap.setOnCameraIdleListener(this);
 
+        System.out.println("MAP IS READY");
+
         // Add a marker in Bucharest and move the camera
         LatLng bucharest = new LatLng(44.435503, 26.102513);
         mMap.addMarker(new MarkerOptions().position(bucharest).title("Locatia ta"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bucharest));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bucharest, MAP_DEFAULT_ZOOM));
+    }
 
-        /* Init data from server */
-        initData();
+
+    /* Removes visible PIs from a set and displays them in the cluster */
+    public void addVisiblePIs() {
+        int index = 0;
+        LinkedList<PublicInstitution> visiblePIs = PublicInstitutionsManager.popVisiblePIs(mMap);
+
+        System.out.println("Adding visible public institution to the cluster");
+
+        for (PublicInstitution pi : visiblePIs)
+            clusterManager.addItem(pi);
+
+        LatLngBounds llb = mMap.getProjection().getVisibleRegion().latLngBounds;
+        System.out.println("Added " + visiblePIs.size() + " public institutions to the map");
+        System.out.println("Bounds " + llb);
+
+        clusterManager.cluster();
     }
 
 
@@ -82,8 +120,10 @@ public class MapFragment extends android.support.v4.app.Fragment
 
         System.out.println("Showing all the public institutions");
 
-        /* Show all the public institutions on the map */
-        buildPICluster();
+        initData();
+
+        /* Add the visible PIs */
+        addVisiblePIs();
 
         /* TODO Replace with the current location */
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(44.435503, 26.102513), MAP_DEFAULT_ZOOM));
@@ -91,54 +131,10 @@ public class MapFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onCameraIdle() {
-        System.out.println("Camera is idle");
-        if (clusterManager != null)
+        System.out.println("CAMERA IS IDLE");
+        if (clusterManager != null) {
             clusterManager.onCameraIdle();
-    }
-
-
-    /* TODO replace tmp method */
-    public void getPublicInstitutions() {
-        tmpPIs = new ArrayList<PublicInstitution>();
-
-        Random randomGenerator = new Random();
-        for (int i = 0; i < 13000; i++) {
-            int randomlat = randomGenerator.nextInt(370);
-            int randomlong = randomGenerator.nextInt(600);
-            double latitude = 44 + (double)randomlat / 100;
-            double longitude = 22.5 + (double)randomlong / 100;
-            tmpPIs.add(new PublicInstitution("Spitalul Universitar Bucuresti",longitude, latitude));
+            addVisiblePIs();
         }
-    }
-
-
-    public void buildPICluster() {
-        int index = 0;
-        clusterManager = new ClusterManager<PublicInstitution>(this.getContext(), mMap);
-
-        for (PublicInstitution pi : tmpPIs) {
-            if (mMap.getProjection().getVisibleRegion().latLngBounds.contains(pi.position)) {
-                index++;
-                clusterManager.addItem(pi);
-            }
-        }
-
-        LatLngBounds llb = mMap.getProjection().getVisibleRegion().latLngBounds;
-        System.out.println("Added " + index + " public institutions to the map");
-        System.out.println("Bounds " + llb);
-    }
-
-    /**
-     * Initialize data from the server on the UI
-     */
-    private void initData() {
-        System.out.println("Getting all the data from server");
-
-        /* Init the hashmap Marker - Buyer */
-        markerPublicInstitutions = new HashMap<Marker, PublicInstitution>();
-
-        /* Create the list of public institutions */
-        getPublicInstitutions();
-
     }
 }

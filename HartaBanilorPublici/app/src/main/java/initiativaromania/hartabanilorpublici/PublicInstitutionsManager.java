@@ -1,6 +1,7 @@
 package initiativaromania.hartabanilorpublici;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.HashSet;
@@ -60,7 +61,7 @@ public class PublicInstitutionsManager {
 
     /* Remove from the set the public instituions that are visible in this
     projections and return them */
-    public static LinkedList<PublicInstitution> popVisiblePIs(GoogleMap mMap) {
+    public static LinkedList<PublicInstitution> popVisiblePIs(LatLngBounds bounds) {
         LinkedList<PublicInstitution> visiblePIs = new LinkedList<PublicInstitution>();
         int index = 0;
         PublicInstitution pi;
@@ -75,7 +76,7 @@ public class PublicInstitutionsManager {
 
         while (it.hasNext()) {
             pi = it.next();
-            if (mMap.getProjection().getVisibleRegion().latLngBounds.contains(pi.position)) {
+            if (bounds.contains(pi.position)) {
                 index++;
                 visiblePIs.add(pi);
                 it.remove();

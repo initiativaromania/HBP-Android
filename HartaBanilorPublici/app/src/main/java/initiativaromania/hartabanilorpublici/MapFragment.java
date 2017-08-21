@@ -1,7 +1,12 @@
 package initiativaromania.hartabanilorpublici;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -16,20 +21,27 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public class MapFragment extends android.support.v4.app.Fragment
         implements OnMapReadyCallback, GoogleMap.OnMapLoadedCallback, GoogleMap.OnCameraIdleListener,
-        GoogleMap.InfoWindowAdapter, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener{
+        GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener,
+        ClusterManager.OnClusterItemClickListener {
 
     private static final int MAP_DEFAULT_ZOOM       = 10;
 
@@ -49,9 +61,13 @@ public class MapFragment extends android.support.v4.app.Fragment
     HashMap<Marker, PublicInstitution> markerPublicInstitutions;
     ArrayList<PublicInstitution> tmpPIs;
     MapFragment fragmentCopy;
+    LayoutInflater layoutInflater;
+    boolean clickedOnItem = false;
 
 
-    public MapFragment(){};
+    public MapFragment(){
+        initData();
+    };
 
 
     /**
@@ -63,8 +79,7 @@ public class MapFragment extends android.support.v4.app.Fragment
         /* Init the hashmap Marker - Buyer */
         markerPublicInstitutions = new HashMap<Marker, PublicInstitution>();
 
-        /* Build an empty cluster of markers */
-        clusterManager = new ClusterManager<PublicInstitution>(this.getContext(), mMap);
+
 
         /* Create the list of public institutions */
         PublicInstitutionsManager.populatePIs();
@@ -75,6 +90,7 @@ public class MapFragment extends android.support.v4.app.Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.layoutInflater = inflater;
         originalView = inflater.inflate(R.layout.fragment_map, container, false);
         mWindow = inflater.inflate(R.layout.custom_info_window, null);
         mContents = inflater.inflate(R.layout.custom_info_contents, null);
@@ -92,20 +108,28 @@ public class MapFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        System.out.println("ON MAP READY");
         mMap = googleMap;
         mMap.setOnMapLoadedCallback(this);
         mMap.setOnCameraIdleListener(this);
         mMap.setInfoWindowAdapter(this);
         mMap.setOnInfoWindowClickListener(this);
-        mMap.setOnMarkerClickListener(this);
 
-        System.out.println("MAP IS READY");
+        /* Build an empty cluster of markers */
+        if (clusterManager == null) {
+            System.out.println("Cluster manager is null");
+            clusterManager = new ClusterManager<PublicInstitution>(this.getContext(), mMap);
+            clusterManager.setOnClusterItemClickListener(this);
+            mMap.setOnMarkerClickListener(clusterManager);
+            //clusterManager.setRenderer(new PublicInstitutionRenderer());
+            System.out.println("MAP IS READY");
 
-        // Add a marker in Bucharest and move the camera
-        LatLng bucharest = new LatLng(44.435503, 26.102513);
-        mMap.addMarker(new MarkerOptions().position(bucharest).title("Locatia ta"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(bucharest));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bucharest, MAP_DEFAULT_ZOOM));
+            // TODO get the current location
+            LatLng bucharest = new LatLng(44.435503, 26.102513);
+            mMap.addMarker(new MarkerOptions().position(bucharest).title("Locatia ta"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(bucharest));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bucharest, MAP_DEFAULT_ZOOM));
+        }
     }
 
 
@@ -130,16 +154,11 @@ public class MapFragment extends android.support.v4.app.Fragment
 
         System.out.println("Showing all the public institutions");
 
-        initData();
-
         currentBounds = mMap.getProjection().getVisibleRegion().latLngBounds;
 
         /* Add the visible PIs */
         addVisiblePIs();
         clusterManager.cluster();
-
-        /* TODO Replace with the current location */
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(44.435503, 26.102513), MAP_DEFAULT_ZOOM));
     }
 
     @Override
@@ -169,17 +188,25 @@ public class MapFragment extends android.support.v4.app.Fragment
 
     @Override
     public View getInfoWindow(Marker marker) {
-        render(marker, mWindow);
+        System.out.println("Get info window");
+        if (clickedOnItem)
+            render(marker, mWindow);
+        else
+            return null;
+
+        clickedOnItem = false;
         return mWindow;
     }
 
     @Override
     public View getInfoContents(Marker marker) {
+        System.out.println("Get info contents");
         render(marker, mContents);
         return mContents;
     }
 
     private void render(Marker marker, View view) {
+        System.out.println("Rendering Info window");
         ((ImageView) view.findViewById(R.id.badge)).setImageResource(R.drawable.parliament50);
 
         String title = marker.getTitle();
@@ -193,26 +220,94 @@ public class MapFragment extends android.support.v4.app.Fragment
             titleUi.setText("");
         }
 
-        String snippet = marker.getSnippet();
-        TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
-        if (snippet != null && snippet.length() > 12) {
-            SpannableString snippetText = new SpannableString(snippet);
-            snippetText.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0, 10, 0);
-            snippetText.setSpan(new ForegroundColorSpan(Color.BLUE), 12, snippet.length(), 0);
-            snippetUi.setText(snippetText);
-        } else {
-            snippetUi.setText("Snippet Text");
+        TextView ad = ((TextView) view.findViewById(R.id.textAchizitiiDirecte));
+        if (ad != null) {
+            SpannableString text = new SpannableString("Achizitii Directe");
+            text.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
+            ad.setText(text);
+        }
+
+        TextView adNr = ((TextView) view.findViewById(R.id.nrAchizitiiDirecte));
+        if (adNr != null) {
+            SpannableString text = new SpannableString("340");
+            text.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
+            adNr.setText(text);
+        }
+
+        TextView lic = ((TextView) view.findViewById(R.id.textLicitatii));
+        if (lic != null) {
+            SpannableString text = new SpannableString("Licitatii");
+            text.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
+            lic.setText(text);
+        }
+
+        TextView licNr = ((TextView) view.findViewById(R.id.nrLicitatii));
+        if (licNr != null) {
+            SpannableString text = new SpannableString("559");
+            text.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
+            licNr.setText(text);
         }
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(this.getContext(), "Click Info Window", Toast.LENGTH_SHORT).show();
+        System.out.println("Click on info window");
+        Fragment publicInstitutionFragment = new PublicInstitutionFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.content, publicInstitutionFragment).addToBackStack("TAG")
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
-        System.out.println("Click pe marker");
+    public boolean onClusterItemClick(ClusterItem clusterItem) {
+        System.out.println("Click pe cluster item");
+        clickedOnItem = true;
         return false;
     }
+
+//    private class PublicInstitutionRenderer extends DefaultClusterRenderer<PublicInstitution> {
+//        private final IconGenerator mIconGenerator = new IconGenerator(getContext());
+//        private final IconGenerator mClusterIconGenerator = new IconGenerator(getContext());
+//        private final ImageView mImageView;
+//        private final ImageView mClusterImageView;
+//        private final int mDimension;
+//
+//        public PublicInstitutionRenderer() {
+//            super(getContext(), mMap, clusterManager);
+//
+//            View multiProfile = layoutInflater.inflate(R.layout.multi_profile, null);
+//            mClusterIconGenerator.setContentView(multiProfile);
+//            mClusterImageView = (ImageView) multiProfile.findViewById(R.id.image);
+//
+//            mImageView = new ImageView(getContext());
+//            mDimension = (int) 50;
+//            mImageView.setLayoutParams(new ViewGroup.LayoutParams(mDimension, mDimension));
+//            int padding = (int) 2;
+//            mImageView.setPadding(padding, padding, padding, padding);
+//            mIconGenerator.setContentView(mImageView);
+//        }
+//
+//        @Override
+//        protected void onBeforeClusterItemRendered(PublicInstitution pi, MarkerOptions markerOptions) {
+//            // Draw a single person.
+//            // Set the info window to show their name.
+//            mImageView.setImageResource(R.drawable.parliament50);
+//            Bitmap icon = mIconGenerator.makeIcon();
+//            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(pi.name);
+//        }
+//
+//        @Override
+//        protected void onBeforeClusterRendered(Cluster<PublicInstitution> cluster, MarkerOptions markerOptions) {
+//            mClusterImageView.setImageResource(R.drawable.parliament50);
+//            Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
+//            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
+//        }
+//
+//        @Override
+//        protected boolean shouldRenderAsCluster(Cluster cluster) {
+//            // Always render clusters.
+//            return cluster.getSize() > 1;
+//        }
+//    }
 }

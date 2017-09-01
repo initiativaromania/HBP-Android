@@ -4,9 +4,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.clustering.ClusterManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -15,16 +20,20 @@ import java.util.Random;
 
 public class PublicInstitutionsManager {
 
-    /* This set holds the public institutions that are not yet
-    displayed on the map */
-    private static HashSet<PublicInstitution> piSet;
+    public static final String PI_FILENAME = "institutii_publice_cui_pins_v0.csv";
 
     /* This list contains all the public institutions */
     private static LinkedList<PublicInstitution> piList;
 
 
     /* Fill the list of public institutions */
-    public static void populatePIs() {
+    public static void populatePIs(final MapFragment mapFragment) {
+
+        if (mapFragment == null)
+            System.out.println("NULL fragment");
+        if (mapFragment.getActivity() == null)
+            System.out.println("NULL activity fragment");
+        System.out.println("Totul ok");
 
         if (piList != null)
             return;
@@ -32,58 +41,71 @@ public class PublicInstitutionsManager {
         System.out.println("Populating the list of public institutions");
         piList = new LinkedList<PublicInstitution>();
 
-        Random randomGenerator = new Random();
-        for (int i = 0; i < 13000; i++) {
-            int randomlat = randomGenerator.nextInt(370);
-            int randomlong = randomGenerator.nextInt(600);
-            double latitude = 44 + (double)randomlat / 100;
-            double longitude = 22.5 + (double)randomlong / 100;
-            piList.add(new PublicInstitution("Spitalul Universitar Bucuresti",longitude, latitude));
-        }
+        /* Read PIs from asset file */
+        new Thread(new Runnable() {
+            public void run() {
+                BufferedReader reader = null;
+                String[] lineArray;
+
+                try {
+                    reader = new BufferedReader(
+                            new InputStreamReader(mapFragment.getActivity().getAssets().open(PI_FILENAME)));
+
+                    String mLine;
+                    while ((mLine = reader.readLine()) != null) {
+                        lineArray = mLine.split(",");
+                        if (lineArray.length < 4)
+                            continue;
+
+                        PublicInstitution pi = new PublicInstitution(lineArray[0],
+                                Double.parseDouble(lineArray[1]),
+                                Double.parseDouble(lineArray[2]),
+                                Integer.parseInt(lineArray[3]));
+                        pi.name = "Spitalul Universitar Bucuresti";
+                        piList.add(pi);
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                System.out.println("Reading PIs from file completed");
+                if (mapFragment.clusterManager != null)
+                    System.out.println("Cluster manager available");
+                else
+                    System.out.println("Cluster manager is not available");
+            }
+        }).start();
     }
 
 
-    /* Recreate the set of public institutions from the list */
-    public static void resetPiSet() {
-        piSet = new HashSet<PublicInstitution>();
-
-        System.out.println("Resetting the PI set");
-
-        if (piList == null || piList.size() == 0)
-            populatePIs();
-
-        for (PublicInstitution pi : piList)
-            piSet.add(pi);
-
-        System.out.println("The PI set has " + piSet.size());
-    }
-
-
-    /* Remove from the set the public instituions that are visible in this
-    projections and return them */
-    public static LinkedList<PublicInstitution> popVisiblePIs(LatLngBounds bounds) {
+    /* Build a list with all the public instituions that are visible in this
+    projections and return it */
+    public static LinkedList<PublicInstitution> getVisiblePIs(LatLngBounds bounds) {
         LinkedList<PublicInstitution> visiblePIs = new LinkedList<PublicInstitution>();
         int index = 0;
-        PublicInstitution pi;
 
-        System.out.println("Creating the list of visible public institutions");
-        if (piSet == null || piSet.size() == 0)
-            System.out.println("Null piSet");
+        if (piList == null || piList.size() == 0)
+            System.out.println("Null piList");
         else
-            System.out.println("PISEt " + piSet.size());
+            System.out.println("PiList " + piList.size());
 
-        Iterator<PublicInstitution> it = piSet.iterator();
-
-        while (it.hasNext()) {
-            pi = it.next();
+        for (PublicInstitution pi : piList) {
             if (bounds.contains(pi.position)) {
                 index++;
                 visiblePIs.add(pi);
-                it.remove();
             }
         }
 
-        System.out.println(index + " visible public institutions removed from the set");
+        System.out.println(index + " pis added out of total " + piList.size());
 
         return visiblePIs;
     }

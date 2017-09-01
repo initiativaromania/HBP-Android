@@ -1,8 +1,6 @@
 package initiativaromania.hartabanilorpublici;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,28 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 
 public class MapFragment extends android.support.v4.app.Fragment
@@ -47,7 +39,7 @@ public class MapFragment extends android.support.v4.app.Fragment
 
 
     /* Setup Objects */
-    private ClusterManager<PublicInstitution> clusterManager = null;
+    public ClusterManager<PublicInstitution> clusterManager = null;
     private View originalView;
 
     /* UI Objects */
@@ -63,28 +55,28 @@ public class MapFragment extends android.support.v4.app.Fragment
     MapFragment fragmentCopy;
     LayoutInflater layoutInflater;
     boolean clickedOnItem = false;
+    boolean dataInited = false;
 
 
-    public MapFragment(){
-        initData();
-    };
+    public MapFragment(){};
 
 
     /**
      * Initialize data from the server on the UI
      */
     private void initData() {
+        if (dataInited == true)
+            return;
+
         System.out.println("Getting all the data from server");
 
         /* Init the hashmap Marker - Buyer */
         markerPublicInstitutions = new HashMap<Marker, PublicInstitution>();
 
+        /* Read the list of public institutions */
+        PublicInstitutionsManager.populatePIs(this);
 
-
-        /* Create the list of public institutions */
-        PublicInstitutionsManager.populatePIs();
-        PublicInstitutionsManager.resetPiSet();
-
+        dataInited = true;
     }
 
 
@@ -100,6 +92,8 @@ public class MapFragment extends android.support.v4.app.Fragment
         System.out.println("On create view");
 
         fragmentCopy = this;
+
+        initData();
 
         return originalView;
     }
@@ -126,19 +120,20 @@ public class MapFragment extends android.support.v4.app.Fragment
 
             // TODO get the current location
             LatLng bucharest = new LatLng(44.435503, 26.102513);
-            mMap.addMarker(new MarkerOptions().position(bucharest).title("Locatia ta"));
+            //mMap.addMarker(new MarkerOptions().position(bucharest).title("Locatia ta"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(bucharest));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bucharest, MAP_DEFAULT_ZOOM));
         }
     }
 
 
-    /* Removes visible PIs from a set and displays them in the cluster */
+    /* Clear the cluster and add only those PIs that are visible in the current projection */
     public void addVisiblePIs() {
         int index = 0;
-        LinkedList<PublicInstitution> visiblePIs = PublicInstitutionsManager.popVisiblePIs(currentBounds);
+        LinkedList<PublicInstitution> visiblePIs = PublicInstitutionsManager.getVisiblePIs(currentBounds);
 
-        System.out.println("Adding visible public institution to the cluster");
+        /* Clear the cluster */
+        clusterManager.clearItems();
 
         for (PublicInstitution pi : visiblePIs)
             clusterManager.addItem(pi);

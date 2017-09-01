@@ -12,11 +12,14 @@ import java.io.Serializable;
 public class PublicInstitution implements Serializable, ClusterItem {
     private static final long serialVersionUID = 1L;
     public String name;
+    public String CUI;
     public LatLng position;
+    public int version;
 
-    public PublicInstitution(String name, double longitude, double latitude) {
+    public PublicInstitution(String CUI, double longitude, double latitude, int version) {
         this.position = new LatLng(latitude, longitude);
-        this.name = name;
+        this.CUI = CUI;
+        this.version = version;
     }
 
 

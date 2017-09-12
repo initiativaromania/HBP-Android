@@ -256,7 +256,8 @@ public class MapFragment extends android.support.v4.app.Fragment
 
     @Override
     public boolean onClusterItemClick(ClusterItem clusterItem) {
-        System.out.println("Click pe cluster item");
+        PublicInstitution pi = (PublicInstitution)clusterItem;
+        System.out.println("Click pe cluster item "  + pi.id);
         clickedOnItem = true;
         return false;
     }

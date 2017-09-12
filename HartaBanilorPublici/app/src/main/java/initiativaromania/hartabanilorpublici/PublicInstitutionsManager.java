@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class PublicInstitutionsManager {
 
-    public static final String PI_FILENAME = "institutii_publice_cui_pins_v0.csv";
+    public static final String PI_FILENAME = "institutii_publice_pins_v0.csv";
 
     /* This list contains all the public institutions */
     private static LinkedList<PublicInstitution> piList;
@@ -57,7 +57,7 @@ public class PublicInstitutionsManager {
                         if (lineArray.length < 4)
                             continue;
 
-                        PublicInstitution pi = new PublicInstitution(lineArray[0],
+                        PublicInstitution pi = new PublicInstitution(Integer.parseInt(lineArray[0]),
                                 Double.parseDouble(lineArray[1]),
                                 Double.parseDouble(lineArray[2]),
                                 Integer.parseInt(lineArray[3]));

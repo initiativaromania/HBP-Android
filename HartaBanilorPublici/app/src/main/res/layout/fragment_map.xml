@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_map_layout"
-    tools:context="initiativaromania.hartabanilorpublici.MapFragment">
+    tools:context="initiativaromania.hartabanilorpublici.ui.MapFragment">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"

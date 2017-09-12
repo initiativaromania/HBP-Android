@@ -1,18 +1,14 @@
-package initiativaromania.hartabanilorpublici;
+package initiativaromania.hartabanilorpublici.data;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.maps.android.clustering.ClusterManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Random;
+
+import initiativaromania.hartabanilorpublici.data.PublicInstitution;
+import initiativaromania.hartabanilorpublici.ui.MapFragment;
 
 /**
  * Created by claudiu on 8/19/17.

@@ -1,4 +1,4 @@
-package initiativaromania.hartabanilorpublici;
+package initiativaromania.hartabanilorpublici.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,13 +21,16 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import initiativaromania.hartabanilorpublici.data.PublicInstitutionsManager;
+import initiativaromania.hartabanilorpublici.R;
+import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 
 
 public class MapFragment extends android.support.v4.app.Fragment
@@ -247,7 +250,7 @@ public class MapFragment extends android.support.v4.app.Fragment
     @Override
     public void onInfoWindowClick(Marker marker) {
         System.out.println("Click on info window");
-        Fragment publicInstitutionFragment = new PublicInstitutionFragment();
+        Fragment publicInstitutionFragment = new InstitutionFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.content, publicInstitutionFragment).addToBackStack("TAG")

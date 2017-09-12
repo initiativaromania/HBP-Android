@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/fragment_public_institution_layout"
     android:background="#FFFFFF"
-    tools:context="initiativaromania.hartabanilorpublici.PublicInstitutionFragment">
+    tools:context="initiativaromania.hartabanilorpublici.ui.InstitutionFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -153,5 +153,20 @@
 
 
     </LinearLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/entity_info_fragment"
+            android:name="initiativaromania.hartabanilorpublici.ui.ParticipantViewPageFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            tools:context=".IRUserInterface.activities.ContractActivity" />
+
+    </FrameLayout>
 
 </LinearLayout>

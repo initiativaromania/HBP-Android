@@ -162,7 +162,7 @@
 
         <fragment
             android:id="@+id/entity_info_fragment"
-            android:name="initiativaromania.hartabanilorpublici.ui.ParticipantViewPageFragment"
+            android:name="initiativaromania.hartabanilorpublici.ui.InstitutionViewPageFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             tools:context=".IRUserInterface.activities.ContractActivity" />

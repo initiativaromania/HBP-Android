@@ -18,16 +18,16 @@ import initiativaromania.hartabanilorpublici.R;
  * Created by claudiu on 9/12/17.
  */
 
-public class ParticipantViewPageFragment extends Fragment {
+public class InstitutionViewPageFragment extends Fragment {
 
-    private String tabTitlesCompany[] = new String[]{"Achizitii directe", "Licitatii", "Institutii"};
+    private String tabTitlesCompany[] = new String[]{"Achizitii directe", "Licitatii", "Institutii publice"};
     private String tabTitlesBuyer[] = new String[]{"Achizitii directe", "Licitatii", "Companii"};
     public static EntityViewPageAdapter pageAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        System.out.println("On create view ParticipantViewPageFragment fragment");
+        System.out.println("On create view InstitutionViewPageFragment fragment");
         return inflater.inflate(R.layout.fragment_viewpager, container, false);
     }
 

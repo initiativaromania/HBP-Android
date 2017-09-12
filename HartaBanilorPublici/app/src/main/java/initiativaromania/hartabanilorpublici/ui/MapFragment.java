@@ -205,7 +205,7 @@ public class MapFragment extends android.support.v4.app.Fragment
 
     private void render(Marker marker, View view) {
         System.out.println("Rendering Info window");
-        ((ImageView) view.findViewById(R.id.badge)).setImageResource(R.drawable.parliament50);
+        ((ImageView) view.findViewById(R.id.badge)).setImageResource(R.drawable.city_hall);
 
         String title = marker.getTitle();
         TextView titleUi = ((TextView) view.findViewById(R.id.title));

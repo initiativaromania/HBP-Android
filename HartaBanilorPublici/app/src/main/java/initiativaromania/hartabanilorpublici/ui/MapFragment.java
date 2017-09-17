@@ -287,7 +287,18 @@ public class MapFragment extends android.support.v4.app.Fragment
         System.out.println("Click on info window");
         Fragment publicInstitutionFragment = new InstitutionFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        /* Build Fragment Arguments */
+        Bundle bundle = new Bundle();
+        bundle.putInt(CommManager.BUNDLE_PI_ID, clickedPI.id);
+        bundle.putInt(CommManager.BUNDLE_INST_TYPE, InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION);
+        bundle.putString(CommManager.BUNDLE_PI_NAME, clickedPI.name);
+        bundle.putInt(CommManager.BUNDLE_PI_ACQS, clickedPI.directAcqs);
+        bundle.putInt(CommManager.BUNDLE_PI_TENDERS, clickedPI.tenders);
+        publicInstitutionFragment.setArguments(bundle);
+
+        /* Got the Institution Fragment */
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.content, publicInstitutionFragment).addToBackStack("TAG")
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
@@ -298,7 +309,7 @@ public class MapFragment extends android.support.v4.app.Fragment
         clickedOnItem = true;
         System.out.println("Click pe cluster item "  + clickedPI.id);
 
-        /* Send request to get the init data */
+        /* Send request to get the PI summary */
         CommManager.requestPISummary(new CommManagerResponse() {
             @Override
             public void processResponse(JSONArray response) {

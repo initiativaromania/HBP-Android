@@ -27,10 +27,20 @@ public class CommManager {
     private static final String URL_GET_PI_INFO                 = SERVER_IP + "InstitutionByID/";
 
 
+    /* Bundle keys */
+    public static final String BUNDLE_INST_TYPE                 = "bundle_inst_type";
+    public static final String BUNDLE_PI_ID                     = "bundle_pi_id";
+    public static final String BUNDLE_PI_NAME                   = "bundle_pi_name";
+    public static final String BUNDLE_PI_ACQS                   = "bundle_pi_acqs";
+    public static final String BUNDLE_PI_TENDERS                = "bundle_pi_tenders";
+
+
     /* JSON fields */
-    public static final String JSON_PI_NAME                    = "nume_institutie";
-    public static final String JSON_PI_NO_ACQS                 = "nr_achizitii";
-    public static final String JSON_PI_NO_TENDERS              = "nr_licitatii";
+    public static final String JSON_PI_NAME                     = "nume_institutie";
+    public static final String JSON_PI_NO_ACQS                  = "nr_achizitii";
+    public static final String JSON_PI_NO_TENDERS               = "nr_licitatii";
+    public static final String JSON_PI_CUI                      = "CUI";
+    public static final String JSON_PI_ADDRESS                  = "Adresa";
 
     public static RequestQueue queue;
 
@@ -47,6 +57,34 @@ public class CommManager {
         System.out.println("Send PI Summary request to URL " + URL_GET_PI_SUMMARY + publicInstitutionID);
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
                 (Request.Method.GET, URL_GET_PI_SUMMARY + publicInstitutionID,
+                        (String) null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println("CommManager: Got response from the server");
+                        if (commManagerResponse != null)
+                            commManagerResponse.processResponse(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("GOT ERRROR " + error + " " + error.toString());
+                        error.printStackTrace();
+                        if (commManagerResponse != null)
+                            commManagerResponse.onErrorOccurred("Eroare conectare la server");
+                    }
+                });
+
+        queue.add(jsObjRequest);
+    }
+
+
+    /* Send a request to the server for Public Institution Summary */
+    public static void requestPIInfo(final CommManagerResponse commManagerResponse, int publicInstitutionID) {
+        System.out.println("Send PI Info request to URL " + URL_GET_PI_INFO + publicInstitutionID);
+        JsonArrayRequest jsObjRequest = new JsonArrayRequest
+                (Request.Method.GET, URL_GET_PI_INFO + publicInstitutionID,
                         (String) null, new Response.Listener<JSONArray>() {
 
                     @Override

@@ -1,10 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_public_institution_layout"
+    android:id="@+id/fragment_institution_layout"
     android:background="#FFFFFF"
     tools:context="initiativaromania.hartabanilorpublici.ui.InstitutionFragment">
 
@@ -15,6 +14,8 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:paddingTop="10dp"
+        android:onClick="expandableButton1"
+        android:id="@+id/layoutPIName"
         android:paddingBottom="10dp">
 
 
@@ -33,130 +34,154 @@
             android:id="@+id/publicInstitutionName"
             android:textColor="#ff000000"
             android:textSize="18dp"
-            android:text="Spitalul Universitar Bucuresti" />
+            android:text="" />
     </LinearLayout>
 
-    <LinearLayout
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayout1"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="5dp"
-        android:orientation="vertical"
-        android:paddingBottom="5dp">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutPIName"
+        android:background="#FFFFFF"
+        app:ael_duration="400"
+        app:ael_expanded="true"
+        app:ael_interpolator="bounce"
+        app:ael_orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_height="match_parent">
+            android:layout_height="60dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:orientation="vertical"
+            android:paddingBottom="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:paddingRight="5dp"
+                android:orientation="horizontal"
                 android:layout_height="match_parent">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:gravity="left"
+                    android:text="Adresa" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:textSize="13dp"
+                    android:id="@+id/piAddress"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:paddingRight="5dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="left"
                     android:text="Achizitii directe" />
-                <TextView
+                    <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:gravity="right"
                     android:textSize="13dp"
                     android:id="@+id/nrDirectAcquisitions"
-                    android:text="1234321" />
+                    android:text="" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="15dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:text="Licitatii" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="right"
+                        android:textSize="13dp"
+                        android:id="@+id/nrTenders"
+                        android:text="" />
+
+                </LinearLayout>
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:paddingLeft="15dp"
+                android:orientation="horizontal"
                 android:layout_height="match_parent">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Companii" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:textSize="13dp"
-                    android:id="@+id/nrCompanies"
-                    android:text="11" />
 
+                    android:paddingRight="5dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="CUI" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="right"
+                        android:textSize="13dp"
+                        android:id="@+id/piCUI"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="15dp"
+                    android:layout_height="match_parent">
+
+
+
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:paddingRight="5dp"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:text="Licitatii" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:textSize="13dp"
-                    android:id="@+id/nrTenders"
-                    android:text="7654" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:paddingLeft="15dp"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Sesizari" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:textSize="13dp"
-                    android:id="@+id/nrComplaints"
-                    android:text="29" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-
-
-
-    </LinearLayout>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:layout_below="@+id/expandableLayout1"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -169,4 +194,4 @@
 
     </FrameLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -17,6 +17,10 @@ public class PublicInstitution implements Serializable, ClusterItem {
     public int version;
     public int directAcqs = 0;
     public int tenders = 0;
+    public String CUI;
+    public String address;
+
+    public PublicInstitution(){};
 
     public PublicInstitution(int id, double longitude, double latitude, int version) {
         this.position = new LatLng(latitude, longitude);

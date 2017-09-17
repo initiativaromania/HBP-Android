@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,10 +25,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import initiativaromania.hartabanilorpublici.comm.CommManager;
+import initiativaromania.hartabanilorpublici.comm.CommManagerResponse;
 import initiativaromania.hartabanilorpublici.data.PublicInstitutionsManager;
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.data.PublicInstitution;
@@ -59,6 +66,8 @@ public class MapFragment extends android.support.v4.app.Fragment
     LayoutInflater layoutInflater;
     boolean clickedOnItem = false;
     boolean dataInited = false;
+    PublicInstitution clickedPI;
+    Marker clickedMarker;
 
 
     public MapFragment(){};
@@ -184,11 +193,32 @@ public class MapFragment extends android.support.v4.app.Fragment
         }
     }
 
+
+    /* Receive Public Institution Summary from the server */
+    public void receivePISummary(JSONArray response) {
+        System.out.println("MapFragment: receivePISummary " + response);
+
+        try {
+            JSONObject piSummary = response.getJSONObject(0);
+            clickedPI.name = piSummary.getString(CommManager.JSON_PI_NAME);
+            clickedPI.directAcqs = Integer.parseInt(piSummary.getString(CommManager.JSON_PI_NO_ACQS));
+            clickedPI.tenders = Integer.parseInt(piSummary.getString(CommManager.JSON_PI_NO_TENDERS));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        clickedOnItem = true;
+        clickedMarker.showInfoWindow();
+    }
+
     @Override
     public View getInfoWindow(Marker marker) {
         System.out.println("Get info window");
-        if (clickedOnItem)
-            render(marker, mWindow);
+        clickedMarker = marker;
+
+        if (clickedOnItem && clickedPI.name.equals("") == false)
+            render(marker, mWindow, clickedPI.name,
+                    clickedPI.directAcqs, clickedPI.tenders);
         else
             return null;
 
@@ -199,19 +229,24 @@ public class MapFragment extends android.support.v4.app.Fragment
     @Override
     public View getInfoContents(Marker marker) {
         System.out.println("Get info contents");
-        render(marker, mContents);
-        return mContents;
+        if (clickedOnItem && clickedPI.name.equals("") == false)
+            render(marker, mWindow, clickedPI.name,
+                    clickedPI.directAcqs, clickedPI.tenders);
+        else
+            return null;
+
+        return mWindow;
     }
 
-    private void render(Marker marker, View view) {
-        System.out.println("Rendering Info window");
+    private void render(Marker marker, View view, String piName, int acqs, int tenders) {
+        System.out.println("Rendering Info window " + piName + " " + acqs + " " + tenders);
         ((ImageView) view.findViewById(R.id.badge)).setImageResource(R.drawable.city_hall);
 
-        String title = marker.getTitle();
+
         TextView titleUi = ((TextView) view.findViewById(R.id.title));
-        if (title != null) {
+        if (titleUi != null) {
             // Spannable string allows us to edit the formatting of the text.
-            SpannableString titleText = new SpannableString(title);
+            SpannableString titleText = new SpannableString(piName);
             titleText.setSpan(new ForegroundColorSpan(Color.BLACK), 0, titleText.length(), 0);
             titleUi.setText(titleText);
         } else {
@@ -227,7 +262,7 @@ public class MapFragment extends android.support.v4.app.Fragment
 
         TextView adNr = ((TextView) view.findViewById(R.id.nrAchizitiiDirecte));
         if (adNr != null) {
-            SpannableString text = new SpannableString("340");
+            SpannableString text = new SpannableString("" + acqs);
             text.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
             adNr.setText(text);
         }
@@ -241,7 +276,7 @@ public class MapFragment extends android.support.v4.app.Fragment
 
         TextView licNr = ((TextView) view.findViewById(R.id.nrLicitatii));
         if (licNr != null) {
-            SpannableString text = new SpannableString("559");
+            SpannableString text = new SpannableString("" + tenders);
             text.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
             licNr.setText(text);
         }
@@ -259,9 +294,24 @@ public class MapFragment extends android.support.v4.app.Fragment
 
     @Override
     public boolean onClusterItemClick(ClusterItem clusterItem) {
-        PublicInstitution pi = (PublicInstitution)clusterItem;
-        System.out.println("Click pe cluster item "  + pi.id);
+        clickedPI = (PublicInstitution)clusterItem;
         clickedOnItem = true;
+        System.out.println("Click pe cluster item "  + clickedPI.id);
+
+        /* Send request to get the init data */
+        CommManager.requestPISummary(new CommManagerResponse() {
+            @Override
+            public void processResponse(JSONArray response) {
+                receivePISummary(response);
+            }
+
+            @Override
+            public void onErrorOccurred(String errorMsg) {
+                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, clickedPI.id);
+
         return false;
     }
 

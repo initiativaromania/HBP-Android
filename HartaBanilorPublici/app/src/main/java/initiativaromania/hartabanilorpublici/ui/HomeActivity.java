@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;;
 import android.view.MenuItem;
 
 import initiativaromania.hartabanilorpublici.R;
+import initiativaromania.hartabanilorpublici.comm.CommManager;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -85,6 +86,9 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        /* Initialize communication with the server */
+        CommManager.init(this);
 
         mapFragment = new MapFragment();
         setFragment(mapFragment);

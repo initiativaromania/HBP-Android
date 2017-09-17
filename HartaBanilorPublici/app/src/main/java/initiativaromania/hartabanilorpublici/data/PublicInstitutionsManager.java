@@ -57,7 +57,6 @@ public class PublicInstitutionsManager {
                                 Double.parseDouble(lineArray[1]),
                                 Double.parseDouble(lineArray[2]),
                                 Integer.parseInt(lineArray[3]));
-                        pi.name = "Spitalul Universitar Bucuresti";
                         piList.add(pi);
 
                     }

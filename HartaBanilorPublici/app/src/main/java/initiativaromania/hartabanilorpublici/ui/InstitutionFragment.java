@@ -52,47 +52,6 @@ public class InstitutionFragment extends Fragment {
     private LinkedList<PublicInstitution> pis = new LinkedList<PublicInstitution>();
 
 
-    /* Fill the list of direct acquisitions for this institution */
-    private void displayDirectAcqs() {
-
-        for (int i = 0; i < 10; i++) {
-            Contract contract = new Contract();
-            contract.title = "Laptop de test " + i;
-
-            directAcqs.add(contract);
-        }
-
-        /* Fill the contract list fragment */
-        directAcqListFragment = (ContractListFragment) InstitutionViewPageFragment
-                .pageAdapter.fragments.get(DIRECT_ACQ_FRAGMENT_INDEX);
-        if (directAcqListFragment != null) {
-            directAcqListFragment.setContracts(directAcqs);
-        } else
-            System.out.println("NULL contract list fragment");
-    }
-
-
-    /* Fil lthe list of tenders for this institution */
-    private void displayTenders() {
-
-        for (int i = 0; i < 10; i++) {
-            Contract contract = new Contract();
-            contract.title = "Laptop de test " + i;
-
-            tenders.add(contract);
-        }
-
-        /* Fill the contract list fragment */
-        tendersListFragment = (ContractListFragment) InstitutionViewPageFragment
-                .pageAdapter.fragments.get(TENDER_FRAGMENT_INDEX);
-        if (tendersListFragment != null) {
-            tendersListFragment.setContracts(tenders);
-        } else
-            System.out.println("NULL contract list fragment");
-    }
-
-
-
 
 
     @Override
@@ -103,9 +62,9 @@ public class InstitutionFragment extends Fragment {
         fragmentCopy = this;
         pi = new PublicInstitution();
 
+        /* Init the expandable layout */
         LinearLayout layout = (LinearLayout) originalView.findViewById(R.id.layoutPIName);
         ExpandableRelativeLayout expandableLayout1 = (ExpandableRelativeLayout) originalView.findViewById(R.id.expandableLayout1);
-        //expandableLayout1.expand(); // toggle expand and collapse
         layout.setOnClickListener(new LinearLayout.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("Expanding view");
@@ -118,21 +77,13 @@ public class InstitutionFragment extends Fragment {
         /* Build the View Pager */
         InstitutionViewPageFragment viewPageFragment = (InstitutionViewPageFragment)
                 getChildFragmentManager().findFragmentById(R.id.entity_info_fragment);
-        if (viewPageFragment != null)
-            System.out.println("Ok fragment");
-        else
-            System.out.println("Not ok fragment");
-
 
 
         /* Get fragment parameters */
         Bundle bundle = new Bundle();
         bundle = getArguments();
         type = bundle.getInt(CommManager.BUNDLE_INST_TYPE);
-
-
-
-        type = CONTRACT_LIST_FOR_PUBLIC_INSTITUTION;
+        System.out.println("Institution Arguments: Type" + type );
 
         if (type == CONTRACT_LIST_FOR_COMPANY) {
             viewPageFragment.setViewPager(CONTRACT_LIST_FOR_COMPANY);
@@ -150,7 +101,6 @@ public class InstitutionFragment extends Fragment {
             displayInitPIInfo();
         }
 
-        System.out.println("Institution Arguments: Type" + type );
 
         /* Call the server for all the institution info */
         getServerPIInfo(type);
@@ -161,11 +111,16 @@ public class InstitutionFragment extends Fragment {
 
     /* Get all the institution info from the server */
     private void getServerPIInfo(int type) {
+
+        System.out.println("Get all PI info from server");
+
          /* Get Contract List */
         if (type == CONTRACT_LIST_FOR_COMPANY) {
 //            CommManager.requestCompanyDetails(this, name);
 //            CommManager.requestBuyersForFirm(this, name);
+
         } else {
+
              /* Send request to get the init data */
             CommManager.requestPIInfo(new CommManagerResponse() {
                 @Override
@@ -179,11 +134,35 @@ public class InstitutionFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                 }
             }, pi.id);
-        }
 
-        // TODO replace with call to server
-        displayDirectAcqs();
-        displayTenders();
+             /* Send request to get the institution direct acquisitions */
+            CommManager.requestPIAcqs(new CommManagerResponse() {
+                @Override
+                public void processResponse(JSONArray response) {
+                    receivePIAcqs(response);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }, pi.id);
+
+             /* Send request to get the institution tenders */
+            CommManager.requestPITenders(new CommManagerResponse() {
+                @Override
+                public void processResponse(JSONArray response) {
+                    receivePITenders(response);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }, pi.id);
+        }
     }
 
 
@@ -201,6 +180,62 @@ public class InstitutionFragment extends Fragment {
 
         /* Show the info received from the server */
         displayServerPIInfo();
+    }
+
+
+    /* Receive Public Institution Direct Acquisitions from the server */
+    private void receivePIAcqs(JSONArray response) {
+        System.out.println("InstitutionFragment: receivePIAcqs " + response +
+            " size " + response.length());
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject acq = response.getJSONObject(i);
+                if (acq == null)
+                    continue;
+
+                Contract a = new Contract();
+                a.id = Integer.parseInt(acq.getString(CommManager.JSON_ACQ_ID));
+                a.title = acq.getString(CommManager.JSON_CONTRACT_TITLE);
+                a.number = acq.getString(CommManager.JSON_CONTRACT_NR);
+                a.valueRON = acq.getString(CommManager.JSON_CONTRACT_VALUE_RON);
+
+                directAcqs.add(a);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Show the info received from the server */
+        displayDirectAcqs();
+    }
+
+
+    /* Receive Public Institution Tenders from the server */
+    private void receivePITenders(JSONArray response) {
+        System.out.println("InstitutionFragment: receivePITenders " +
+                " size " + response.length());
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject tender = response.getJSONObject(i);
+                if (tender == null)
+                    continue;
+
+                Contract t = new Contract();
+                t.id = Integer.parseInt(tender.getString(CommManager.JSON_TENDER_ID));
+                t.title = tender.getString(CommManager.JSON_CONTRACT_TITLE);
+                t.number = tender.getString(CommManager.JSON_CONTRACT_NR);
+                t.valueRON = tender.getString(CommManager.JSON_CONTRACT_VALUE_RON);
+
+                tenders.add(t);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Show the info received from the server */
+        displayTenders();
     }
 
 
@@ -234,5 +269,33 @@ public class InstitutionFragment extends Fragment {
         if (text != null) {
             text.setText(pi.address);
         }
+    }
+
+
+    /* Fill the list of direct acquisitions for this institution */
+    private void displayDirectAcqs() {
+
+        /* Fill the contract list fragment */
+        directAcqListFragment = (ContractListFragment) InstitutionViewPageFragment
+                .pageAdapter.fragments.get(DIRECT_ACQ_FRAGMENT_INDEX);
+        if (directAcqListFragment != null) {
+            directAcqListFragment.setContracts(directAcqs);
+            directAcqListFragment.displayContracts();
+        } else
+            System.out.println("NULL contract list fragment");
+    }
+
+
+    /* Fil lthe list of tenders for this institution */
+    private void displayTenders() {
+
+        /* Fill the contract list fragment */
+        tendersListFragment = (ContractListFragment) InstitutionViewPageFragment
+                .pageAdapter.fragments.get(TENDER_FRAGMENT_INDEX);
+        if (tendersListFragment != null) {
+            tendersListFragment.setContracts(tenders);
+            tendersListFragment.displayContracts();
+        } else
+            System.out.println("NULL contract list fragment");
     }
 }

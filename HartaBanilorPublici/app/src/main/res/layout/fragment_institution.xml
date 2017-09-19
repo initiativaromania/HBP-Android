@@ -46,7 +46,7 @@
         android:background="#FFFFFF"
         app:ael_duration="400"
         app:ael_expanded="true"
-        app:ael_interpolator="bounce"
+        app:ael_interpolator="fastOutSlowIn"
         app:ael_orientation="vertical">
 
         <LinearLayout

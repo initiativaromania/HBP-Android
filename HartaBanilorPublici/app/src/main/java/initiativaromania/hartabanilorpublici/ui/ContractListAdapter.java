@@ -35,8 +35,12 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
             convertView = inflater.inflate(R.layout.contract_list_item, null);
         }
 
-        TextView contractName = (TextView) convertView.findViewById(R.id.statistics_around_row_contractName);
+        TextView contractName = (TextView) convertView.findViewById(R.id.listTitle);
         contractName.setText((position + 1) +". " + contracts.get(position).title);
+
+        TextView contractValue = (TextView) convertView.findViewById(R.id.listPrice);
+        contractValue.setText(contracts.get(position).price + " RON");
+
         convertView.setTag(contracts.get(position).id);
 
         return convertView;

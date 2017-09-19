@@ -35,7 +35,6 @@ public class ContractListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_list, container, false);
-        System.out.println("ON CREATE VIEW LISTAAAAAAAAAAAAA");
 
         displayContracts();
 
@@ -55,7 +54,7 @@ public class ContractListFragment extends Fragment {
             orderDetailsList.add(new ContractListItem() {{
                 id = contract.id;
                 title = contract.title;
-                price = "";
+                price = contract.valueRON;
             }});
         }
 

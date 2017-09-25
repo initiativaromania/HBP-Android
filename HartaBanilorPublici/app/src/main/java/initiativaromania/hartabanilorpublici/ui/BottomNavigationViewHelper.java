@@ -1,4 +1,4 @@
-package initiativaromania.hartabanilorpublici;
+package initiativaromania.hartabanilorpublici.ui;
 
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;

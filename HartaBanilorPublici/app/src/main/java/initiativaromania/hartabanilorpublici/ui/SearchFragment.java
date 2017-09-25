@@ -1,4 +1,4 @@
-package initiativaromania.hartabanilorpublici;
+package initiativaromania.hartabanilorpublici.ui;
 
 import android.content.Context;
 import android.net.Uri;
@@ -31,6 +31,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 */
 
+import initiativaromania.hartabanilorpublici.R;
 
 /**
  * @// TODO: 25.09.2017  Remove Log.d

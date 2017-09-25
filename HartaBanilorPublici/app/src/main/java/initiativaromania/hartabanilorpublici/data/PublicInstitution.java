@@ -1,4 +1,4 @@
-package initiativaromania.hartabanilorpublici;
+package initiativaromania.hartabanilorpublici.data;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
@@ -11,12 +11,21 @@ import java.io.Serializable;
 
 public class PublicInstitution implements Serializable, ClusterItem {
     private static final long serialVersionUID = 1L;
-    public String name;
+    public String name = "";
+    public int id;
     public LatLng position;
+    public int version;
+    public int directAcqs = 0;
+    public int tenders = 0;
+    public String CUI;
+    public String address;
 
-    public PublicInstitution(String name, double longitude, double latitude) {
+    public PublicInstitution(){};
+
+    public PublicInstitution(int id, double longitude, double latitude, int version) {
         this.position = new LatLng(latitude, longitude);
-        this.name = name;
+        this.id = id;
+        this.version = version;
     }
 
 

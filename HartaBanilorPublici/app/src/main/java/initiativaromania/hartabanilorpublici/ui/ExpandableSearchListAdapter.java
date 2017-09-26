@@ -1,4 +1,4 @@
-package initiativaromania.hartabanilorpublici;
+package initiativaromania.hartabanilorpublici.ui;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
+
+import initiativaromania.hartabanilorpublici.R;
 
 /**
  * Created by adriana on 30.08.2017.

@@ -1,7 +1,13 @@
 package initiativaromania.hartabanilorpublici.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +18,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import initiativaromania.hartabanilorpublici.R;
+import initiativaromania.hartabanilorpublici.comm.CommManager;
 import initiativaromania.hartabanilorpublici.data.ContractListItem;
 
 /**
@@ -20,10 +27,10 @@ import initiativaromania.hartabanilorpublici.data.ContractListItem;
 
 public class ContractListAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
-    private final Context context;
+    private final FragmentActivity context;
     private List<ContractListItem> contracts;
 
-    public ContractListAdapter(Context context, List<ContractListItem> contracts) {
+    public ContractListAdapter(FragmentActivity context, List<ContractListItem> contracts) {
         this.context = context;
         this.contracts = contracts;
     }
@@ -68,11 +75,22 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         System.out.println("Click on contract");
-//        Intent intent = new Intent(context, ContractActivity.class);
-//        Contract contract = new Contract();
-//        contract.id = (int) v.getTag();
-//
-//        intent.putExtra(ContractActivity.EXTRA_CONTRACT_ID, contract);
-//        context.startActivity(intent);
+
+        Fragment contractFragment = new ContractFragment();
+        FragmentManager fragmentManager = context.getSupportFragmentManager();
+
+        /* Build Fragment Arguments */
+//        Bundle bundle = new Bundle();
+//        bundle.putInt(CommManager.BUNDLE_PI_ID, clickedPI.id);
+//        bundle.putInt(CommManager.BUNDLE_INST_TYPE, InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION);
+//        bundle.putString(CommManager.BUNDLE_PI_NAME, clickedPI.name);
+//        bundle.putInt(CommManager.BUNDLE_PI_ACQS, clickedPI.directAcqs);
+//        bundle.putInt(CommManager.BUNDLE_PI_TENDERS, clickedPI.tenders);
+//        contractFragment.setArguments(bundle);
+
+        /* Got the Contract Fragment */
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.fragment_institution_layout, contractFragment).addToBackStack("TAG")
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 }

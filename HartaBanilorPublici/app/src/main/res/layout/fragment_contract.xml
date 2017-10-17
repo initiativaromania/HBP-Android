@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#FFFFFF"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp">
+
+
+        <!-- Titlu contract -->
+        <TextView
+            android:id="@+id/titleContractView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Lucrari de reparatie la reteaua de canalizare exterioara si refacere ca."
+            android:textSize="18dp"
+            android:textAlignment="center"
+            android:textColor="#111111"
+            android:textStyle="bold"
+            />
+
+
+        <!-- Padding -->
+        <TextView
+            android:id="@+id/padding"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/contract_padding"
+            android:layout_weight="1"
+            android:text=""
+            />
+
+        <!-- Numar contract line -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/nrContractName"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:background="#eeeeee"
+                    android:text="Numar Contract"
+                    />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="#aaaaaa" />
+
+                <TextView
+                    android:id="@+id/nrContractContract"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:background="#eeeeee"
+                    android:text="DA9191919232"
+                    />
+            </LinearLayout>
+
+
+            <!-- Valoare contract RON -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/valContractRONName"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="Valoare RON"
+                    />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="#aaaaaa" />
+
+                <TextView
+                    android:id="@+id/valContractRONContract"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="210603.9"
+                    />
+            </LinearLayout>
+
+
+
+            <!-- Valoare contract EURO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/valContractEURName"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:background="#eeeeee"
+                    android:text="Valoare EUR"
+                    />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="#aaaaaa" />
+
+                <TextView
+                    android:id="@+id/valContractEURContract"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:background="#eeeeee"
+                    android:text="47355"
+                    />
+            </LinearLayout>
+
+
+
+            <!-- Data contract -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dataContractName"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="Data"
+                    />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="#aaaaaa" />
+
+                <TextView
+                    android:id="@+id/dataContractContract"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="09.10.2016"
+                    />
+            </LinearLayout>
+
+
+
+            <!-- Cod CPV -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/codCPVContractName"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:background="#eeeeee"
+                    android:text="Cod CPV"
+                    />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="#aaaaaa" />
+
+                <TextView
+                    android:id="@+id/codCPVContract"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:background="#eeeeee"
+                    android:text="45332000"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <!-- Padding -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/contract_padding"
+            android:layout_weight="1"
+            android:text=""
+            />
+
+
+
+        <!-- Companie -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Companie"
+            />
+
+        <include
+            android:id="@+id/companyInContract"
+            layout="@layout/contract_list_item"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"></include>
+
+
+        <!-- Padding -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/contract_padding"
+            android:layout_weight="1"
+            android:text=""
+            />
+
+
+        <!-- Institutie -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Institutie"
+            />
+        <include
+            android:id="@+id/companyInContract"
+            layout="@layout/contract_list_item"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"></include>
+
+
+        <!-- Padding -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/contract_padding"
+            android:layout_weight="1"
+            android:text=""
+            />
+
+
+        <!-- Cere justificare -->
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:text="Cere justificare"
+            android:background="@drawable/rounded_corner"/>
+
+    </LinearLayout>
+
+
+</ScrollView>

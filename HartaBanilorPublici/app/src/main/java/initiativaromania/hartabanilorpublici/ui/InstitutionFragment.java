@@ -37,7 +37,7 @@ public class InstitutionFragment extends Fragment {
     public static final int DIRECT_ACQ_FRAGMENT_INDEX               = 0;
     public static final int TENDER_FRAGMENT_INDEX                   = 1;
 
-    private int type;
+    private int type = CONTRACT_LIST_FOR_COMPANY;
 
     private PublicInstitution pi;
     private ContractListFragment directAcqListFragment;
@@ -82,6 +82,9 @@ public class InstitutionFragment extends Fragment {
         /* Get fragment parameters */
         Bundle bundle = new Bundle();
         bundle = getArguments();
+        if (bundle == null)
+            return originalView;
+
         type = bundle.getInt(CommManager.BUNDLE_INST_TYPE);
         System.out.println("Institution Arguments: Type" + type );
 

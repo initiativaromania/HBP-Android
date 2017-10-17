@@ -2,4 +2,6 @@
 <resources>
     <dimen name="custom_profile_image">50dp</dimen>
     <dimen name="custom_profile_padding">2dp</dimen>
+    <dimen name="contract_padding">14dp</dimen>
+
 </resources>

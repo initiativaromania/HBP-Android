@@ -19,6 +19,7 @@ import java.util.List;
 
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.comm.CommManager;
+import initiativaromania.hartabanilorpublici.data.Contract;
 import initiativaromania.hartabanilorpublici.data.ContractListItem;
 
 /**
@@ -48,7 +49,7 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
         TextView contractValue = (TextView) convertView.findViewById(R.id.listPrice);
         contractValue.setText(contracts.get(position).price + " RON");
 
-        convertView.setTag(contracts.get(position).id);
+        convertView.setTag(contracts.get(position));
 
         return convertView;
     }
@@ -74,19 +75,27 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        System.out.println("Click on contract");
+        ContractListItem contractItem = (ContractListItem) v.getTag();
+
+        System.out.println("Click on contract " + contractItem.id + " type " + contractItem.type);
 
         Fragment contractFragment = new ContractFragment();
         FragmentManager fragmentManager = context.getSupportFragmentManager();
 
         /* Build Fragment Arguments */
-//        Bundle bundle = new Bundle();
-//        bundle.putInt(CommManager.BUNDLE_PI_ID, clickedPI.id);
-//        bundle.putInt(CommManager.BUNDLE_INST_TYPE, InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION);
-//        bundle.putString(CommManager.BUNDLE_PI_NAME, clickedPI.name);
-//        bundle.putInt(CommManager.BUNDLE_PI_ACQS, clickedPI.directAcqs);
-//        bundle.putInt(CommManager.BUNDLE_PI_TENDERS, clickedPI.tenders);
-//        contractFragment.setArguments(bundle);
+        Bundle bundle = new Bundle();
+        bundle.putInt(CommManager.BUNDLE_CONTRACT_ID, contractItem.id);
+        bundle.putInt(CommManager.BUNDLE_CONTRACT_TYPE, contractItem.type);
+        bundle.putInt(CommManager.BUNDLE_CONTRACT_PI_ID, contractItem.pi != null ?
+            contractItem.pi.id : 0);
+        bundle.putString(CommManager.BUNDLE_CONTRACT_PI_NAME, contractItem.pi != null ?
+                contractItem.pi.name : "");
+        bundle.putInt(CommManager.BUNDLE_CONTRACT_COMP_ID, contractItem.company != null ?
+                contractItem.company.id : 0);
+        bundle.putString(CommManager.BUNDLE_CONTRACT_COMP_NAME, contractItem.company != null ?
+                contractItem.company.name : "");
+        contractFragment.setArguments(bundle);
+
 
         /* Got the Contract Fragment */
         FragmentTransaction transaction = fragmentManager.beginTransaction();

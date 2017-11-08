@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="6"
+            android:layout_gravity="center_vertical"
             android:id="@+id/listPrice">
         </TextView>
     </LinearLayout>

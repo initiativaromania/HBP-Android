@@ -53,8 +53,11 @@ public class ContractListFragment extends Fragment {
         for (final Contract contract : contracts) {
             orderDetailsList.add(new ContractListItem() {{
                 id = contract.id;
+                type = contract.type;
                 title = contract.title;
                 price = contract.valueRON;
+                pi = contract.pi;
+                company = contract.company;
             }});
         }
 

@@ -27,6 +27,8 @@ public class CommManager {
     private static final String URL_GET_PI_INFO                 = SERVER_IP + "InstitutionByID/";
     private static final String URL_GET_PI_ACQS                 = SERVER_IP + "InstitutionContracts/";
     private static final String URL_GET_PI_TENDERS              = SERVER_IP + "InstitutionTenders/";
+    private static final String URL_GET_AD                      = SERVER_IP + "Contract/";
+    private static final String URL_GET_TENDER                  = SERVER_IP + "Tender/";
 
 
     /* Bundle keys */
@@ -35,6 +37,12 @@ public class CommManager {
     public static final String BUNDLE_PI_NAME                   = "bundle_pi_name";
     public static final String BUNDLE_PI_ACQS                   = "bundle_pi_acqs";
     public static final String BUNDLE_PI_TENDERS                = "bundle_pi_tenders";
+    public static final String BUNDLE_CONTRACT_ID               = "bundle contract_id";
+    public static final String BUNDLE_CONTRACT_TYPE             = "bundle contract_type";
+    public static final String BUNDLE_CONTRACT_PI_ID            = "bundle contract_pi_id";
+    public static final String BUNDLE_CONTRACT_PI_NAME          = "bundle contract_pi_name";
+    public static final String BUNDLE_CONTRACT_COMP_ID          = "bundle contract_comp_id";
+    public static final String BUNDLE_CONTRACT_COMP_NAME        = "bundle contract_comp_name";
 
 
     /* JSON fields */
@@ -48,6 +56,20 @@ public class CommManager {
     public static final String JSON_CONTRACT_TITLE              = "TitluContract";
     public static final String JSON_CONTRACT_NR                 = "NumarContract";
     public static final String JSON_CONTRACT_VALUE_RON          = "ValoareRON";
+    public static final String JSON_AD_PROCEDURE_TYPE           = "TipProcedura";
+    public static final String JSON_AD_PARTICIP_DATE            = "DataAnuntParticipare";
+    public static final String JSON_AD_FINAL_CONTRACT_TYPE      = "TipIncheiereContract";
+    public static final String JSON_AD_NUMBER                   = "NumarContract";
+    public static final String JSON_AD_DATE                     = "DataContract";
+    public static final String JSON_AD_TITLE                    = "TitluContract";
+    public static final String JSON_AD_VALUE                    = "Valoare";
+    public static final String JSON_AD_CURRENCY                 = "Moneda";
+    public static final String JSON_AD_VALUE_EUR                = "ValoareEUR";
+    public static final String JSON_AD_VALUE_RON                = "ValoareRON";
+    public static final String JSON_AD_CPV_CODE                 = "CPVCode";
+    public static final String JSON_AD_INSTITUTION_ID           = "InstitutiePublicaID";
+    public static final String JSON_AD_COMPANY_ID               = "CompanieId";
+
 
     public static RequestQueue queue;
 
@@ -110,5 +132,19 @@ public class CommManager {
     public static void requestPITenders(final CommManagerResponse commManagerResponse, int publicInstitutionID) {
         System.out.println("Send PI Tenders request to URL " + URL_GET_PI_TENDERS + publicInstitutionID);
         request(commManagerResponse, URL_GET_PI_TENDERS + publicInstitutionID);
+    }
+
+
+    /* Send a request to the server for a direct acquisition */
+    public static void requestAD(final CommManagerResponse commManagerResponse, int contractID) {
+        System.out.println("Send AD request to URL " + URL_GET_AD + contractID);
+        request(commManagerResponse, URL_GET_AD + contractID);
+    }
+
+
+    /* Send a request to the server for a tender */
+    public static void requestTender(final CommManagerResponse commManagerResponse, int contractID) {
+        System.out.println("Send Tender request to URL " + URL_GET_TENDER + contractID);
+        request(commManagerResponse, URL_GET_TENDER + contractID);
     }
 }

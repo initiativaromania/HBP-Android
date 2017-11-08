@@ -9,24 +9,34 @@ import java.io.Serializable;
 public class Contract implements Serializable, Cloneable{
     private static final long serialVersionUID = 1L;
 
-    private static final int CONTRACT_TYPE_DIRECT_ACQUISITION   = 1;
-    private static final int CONTRACT_TYPE_TENDER               = 2;
+    public static final int CONTRACT_TYPE_DIRECT_ACQUISITION   = 1;
+    public static final int CONTRACT_TYPE_TENDER               = 2;
 
     public int type;
     public int id;
 
-    public String title;
-    public String address;
-    public String CPVCode;
-    public String valueEUR;
-    public String valueRON;
+
+    /* Contract info as returned by the server */
+    public String procedureType;
+    public String participationDate;
+    public String finaliseContractType;
     public String number;
     public String date;
+    public String title;
+    public double value;
+    public String currency;
+    public double valueEUR;
+    public double valueRON;
+    public String CPVCode;
+    public int institutionID;
+    public int companyID;
+
+    public PublicInstitution pi;
+    public Company company;
+
 
     public int votes;
 
-    public Company company = null;
-    public PublicInstitution pi;
 
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();

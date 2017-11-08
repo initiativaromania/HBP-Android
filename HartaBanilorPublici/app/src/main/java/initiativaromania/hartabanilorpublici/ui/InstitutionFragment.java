@@ -39,7 +39,12 @@ public class InstitutionFragment extends Fragment {
 
     private int type = CONTRACT_LIST_FOR_COMPANY;
 
+    /* The root public institution for this view */
     private PublicInstitution pi;
+
+    /* The root company for this view */
+    private Company company;
+
     private ContractListFragment directAcqListFragment;
     private ContractListFragment tendersListFragment;
 
@@ -198,10 +203,15 @@ public class InstitutionFragment extends Fragment {
                     continue;
 
                 Contract a = new Contract();
+                a.type = Contract.CONTRACT_TYPE_DIRECT_ACQUISITION;
                 a.id = Integer.parseInt(acq.getString(CommManager.JSON_ACQ_ID));
                 a.title = acq.getString(CommManager.JSON_CONTRACT_TITLE);
                 a.number = acq.getString(CommManager.JSON_CONTRACT_NR);
-                a.valueRON = acq.getString(CommManager.JSON_CONTRACT_VALUE_RON);
+                a.valueRON = Double.parseDouble(acq.getString(CommManager.JSON_CONTRACT_VALUE_RON));
+                if (type == CONTRACT_LIST_FOR_COMPANY)
+                    a.company = company;
+                else
+                    a.pi = pi;
 
                 directAcqs.add(a);
             }
@@ -226,10 +236,15 @@ public class InstitutionFragment extends Fragment {
                     continue;
 
                 Contract t = new Contract();
+                t.type = Contract.CONTRACT_TYPE_TENDER;
                 t.id = Integer.parseInt(tender.getString(CommManager.JSON_TENDER_ID));
                 t.title = tender.getString(CommManager.JSON_CONTRACT_TITLE);
                 t.number = tender.getString(CommManager.JSON_CONTRACT_NR);
-                t.valueRON = tender.getString(CommManager.JSON_CONTRACT_VALUE_RON);
+                t.valueRON = Double.parseDouble(tender.getString(CommManager.JSON_CONTRACT_VALUE_RON));
+                if (type == CONTRACT_LIST_FOR_COMPANY)
+                    t.company = company;
+                else
+                    t.pi = pi;
 
                 tenders.add(t);
             }
@@ -245,33 +260,28 @@ public class InstitutionFragment extends Fragment {
     /* PI name, acq, tenders */
     private void displayInitPIInfo() {
         TextView text = ((TextView) originalView.findViewById(R.id.publicInstitutionName));
-        if (text != null) {
+        if (text != null)
             text.setText(pi.name);
-        }
 
         text = ((TextView) originalView.findViewById(R.id.nrDirectAcquisitions));
-        if (text != null) {
+        if (text != null)
             text.setText(pi.directAcqs + "");
-        }
 
         text = ((TextView) originalView.findViewById(R.id.nrTenders));
-        if (text != null) {
+        if (text != null)
             text.setText(pi.tenders + "");
-        }
     }
 
 
     /* PI CUI, Address */
     private void displayServerPIInfo() {
         TextView text = ((TextView) originalView.findViewById(R.id.piCUI));
-        if (text != null) {
+        if (text != null)
             text.setText(pi.CUI);
-        }
 
         text = ((TextView) originalView.findViewById(R.id.piAddress));
-        if (text != null) {
+        if (text != null)
             text.setText(pi.address);
-        }
     }
 
 

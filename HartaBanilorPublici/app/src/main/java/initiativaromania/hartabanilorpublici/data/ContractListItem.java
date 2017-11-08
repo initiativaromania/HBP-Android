@@ -6,6 +6,9 @@ package initiativaromania.hartabanilorpublici.data;
 
 public class ContractListItem {
     public int id;
+    public int type;
     public String title;
-    public String price;
+    public double price;
+    public PublicInstitution pi;
+    public Company company;
 }

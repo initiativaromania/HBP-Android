@@ -29,6 +29,8 @@ public class CommManager {
     private static final String URL_GET_PI_TENDERS              = SERVER_IP + "InstitutionTenders/";
     private static final String URL_GET_AD                      = SERVER_IP + "Contract/";
     private static final String URL_GET_TENDER                  = SERVER_IP + "Tender/";
+    private static final String URL_GET_AD_COMPANY              = SERVER_IP + "ADCompany/";
+    private static final String URL_GET_TENDER_COMPANY          = SERVER_IP + "TenderCompany/";
 
 
     /* Bundle keys */
@@ -95,6 +97,8 @@ public class CommManager {
     public static final String JSON_TENDER_PARTICIP_ESTIM_CURR  = "MonedaValoareEstimataParticipare";
     public static final String JSON_TENDER_INSTITUTION_ID       = "InstitutiePublicaID";
     public static final String JSON_TENDER_COMPANY_ID           = "CompanieId";
+
+    public static final String JSON_COMPANY_NAME                = "Nume";
 
 
     public static RequestQueue queue;
@@ -172,5 +176,19 @@ public class CommManager {
     public static void requestTender(final CommManagerResponse commManagerResponse, int contractID) {
         System.out.println("Send Tender request to URL " + URL_GET_TENDER + contractID);
         request(commManagerResponse, URL_GET_TENDER + contractID);
+    }
+
+
+    /* Send a request to the server for an AD Company */
+    public static void requestADCompany(final CommManagerResponse commManagerResponse, int companyID) {
+        System.out.println("Send ADCompany request to URL " + URL_GET_AD_COMPANY + companyID);
+        request(commManagerResponse, URL_GET_AD_COMPANY + companyID);
+    }
+
+
+    /* Send a request to the server for a Tender Company */
+    public static void requestTenderCompany(final CommManagerResponse commManagerResponse, int companyId) {
+        System.out.println("Send TenderCompany request to URL " + URL_GET_TENDER_COMPANY + companyId);
+        request(commManagerResponse, URL_GET_TENDER_COMPANY + companyId);
     }
 }

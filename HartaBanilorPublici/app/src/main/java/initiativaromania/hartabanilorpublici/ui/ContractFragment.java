@@ -65,6 +65,7 @@ public class ContractFragment extends Fragment {
             contract.company = new Company();
             contract.company.id = compID;
             contract.company.name = bundle.getString(CommManager.BUNDLE_CONTRACT_PI_NAME);
+            displayCompanyButton();
         }
 
         System.out.println("Created fragment for contract " + contract.id +
@@ -87,7 +88,7 @@ public class ContractFragment extends Fragment {
             return;
         }
 
-        switch(contract.type) {
+        switch (contract.type) {
             case Contract.CONTRACT_TYPE_DIRECT_ACQUISITION:
                 /* Send request to get the direct acquisition */
                 CommManager.requestAD(new CommManagerResponse() {
@@ -126,6 +127,73 @@ public class ContractFragment extends Fragment {
     }
 
 
+    /* Request Contract and/or PI info based on server response */
+    private void requestAdditionalInfo() {
+        if (contract == null) {
+            System.out.println("Uninitialized contract");
+            return;
+        }
+
+        if (contract.pi == null) {
+            /* Send request to get the Public institution */
+            CommManager.requestPISummary(new CommManagerResponse() {
+                @Override
+                public void processResponse(JSONArray response) {
+                    receivePI(response);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }, contract.institutionID);
+        }
+
+        if (contract.company != null)
+            return;
+
+        /* Get company info, we only need the name */
+        switch (contract.type) {
+            case Contract.CONTRACT_TYPE_DIRECT_ACQUISITION:
+                /* Send request to get AD Company */
+                CommManager.requestADCompany(new CommManagerResponse() {
+                    @Override
+                    public void processResponse(JSONArray response) {
+                        receiveCompany(response);
+                    }
+
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }, contract.companyID);
+                break;
+
+            case Contract.CONTRACT_TYPE_TENDER:
+                /* Send request to get Tender Company */
+                CommManager.requestTenderCompany(new CommManagerResponse() {
+                    @Override
+                    public void processResponse(JSONArray response) {
+                        receiveCompany(response);
+                    }
+
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }, contract.companyID);
+                break;
+
+            default:
+                System.out.println("Unknown contract type for id " + contract.id);
+        }
+
+    }
+
+
     /* Receive Direct Acquisition information from the server */
     private void receiveAD(JSONArray response) {
         System.out.println("ContractFragment: receiveAD " + response);
@@ -151,6 +219,9 @@ public class ContractFragment extends Fragment {
 
         /* Show the info received from the server */
         displayAD();
+
+        /* Get PI and company info based on response */
+        requestAdditionalInfo();
     }
 
 
@@ -190,6 +261,44 @@ public class ContractFragment extends Fragment {
 
         /* Show the info received from the server */
         displayTender();
+
+        /* Get PI and company info based on response */
+        requestAdditionalInfo();
+    }
+
+
+    /* Receive Public Institution information from the server */
+    private void receivePI(JSONArray response) {
+        System.out.println("ContractFragment: receivePI " + response);
+
+        try {
+            JSONObject piSummary = response.getJSONObject(0);
+            contract.pi = new PublicInstitution();
+            contract.pi.id = contract.institutionID;
+            contract.pi.name = piSummary.getString(CommManager.JSON_PI_NAME);
+
+            displayPIButton();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /* Receive Company information from the server */
+    private void receiveCompany(JSONArray response) {
+        System.out.println("ContractFragment: receiveCompany " + response);
+
+        try {
+            JSONObject companySummary = response.getJSONObject(0);
+            contract.company = new Company();
+            contract.company.id = contract.companyID;
+            contract.company.name = companySummary.getString(CommManager.JSON_COMPANY_NAME);
+
+            displayCompanyButton();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

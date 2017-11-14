@@ -17,9 +17,15 @@ public class Contract implements Serializable, Cloneable{
 
 
     /* Contract info as returned by the server */
+    public String tenderContractType;
     public String procedureType;
     public String participationDate;
+    public String announceOfferNumber;
+    public String offerDate;
     public String finaliseContractType;
+    public String offerCriteria;
+    public String nrOffers;
+    public String subcontract;
     public String number;
     public String date;
     public String title;
@@ -28,6 +34,11 @@ public class Contract implements Serializable, Cloneable{
     public double valueEUR;
     public double valueRON;
     public String CPVCode;
+    public String participationNumber;
+    public double participationEstimValue;
+    public String participationCurrency;
+    public String deposit;
+    public String finance;
     public int institutionID;
     public int companyID;
 

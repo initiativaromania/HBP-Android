@@ -1,10 +1,12 @@
 package initiativaromania.hartabanilorpublici.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +26,13 @@ import initiativaromania.hartabanilorpublici.data.PublicInstitution;
  */
 
 public class ContractFragment extends Fragment {
+    private static int CONTRACT_TABLE_DEFAULT_ROW_NUMBER        = 8;
+
     private View originalView;
     private Contract contract = null;
     private Fragment fragmentCopy;
+    private LayoutInflater inflater;
+    private int rowNumber = CONTRACT_TABLE_DEFAULT_ROW_NUMBER;
 
 
     @Override
@@ -34,6 +40,7 @@ public class ContractFragment extends Fragment {
                              Bundle savedInstanceState) {
         originalView = inflater.inflate(R.layout.fragment_contract, container, false);
         fragmentCopy = this;
+        this.inflater = inflater;
 
         Bundle bundle = getArguments();
         if (bundle == null)
@@ -67,14 +74,14 @@ public class ContractFragment extends Fragment {
 
 
         /* Get contract information from the server */
-        getServerADInfo();
+        getServerContractInfo();
 
         return originalView;
     }
 
 
     /* Get contract information from the server */
-    private void getServerADInfo() {
+    private void getServerContractInfo() {
         if (contract == null) {
             System.out.println("Uninitialized contract");
             return;
@@ -151,16 +158,38 @@ public class ContractFragment extends Fragment {
     private void receiveTender(JSONArray response) {
         System.out.println("ContractFragment: receiveTender " + response);
 
-//        try {
-//            JSONObject piSummary = response.getJSONObject(0);
-//            pi.CUI = piSummary.getString(CommManager.JSON_PI_CUI);
-//            pi.address = piSummary.getString(CommManager.JSON_PI_ADDRESS);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        /* Show the info received from the server */
-//        displayServerPIInfo();
+        try {
+            JSONObject contractSummary = response.getJSONObject(0);
+            contract.procedureType = contractSummary.getString(CommManager.JSON_TENDER_PROCEDURE_TYPE);
+            contract.tenderContractType = contractSummary.getString(CommManager.JSON_TENDER_CONTRACT_TYPE);
+            contract.announceOfferNumber = contractSummary.getString(CommManager.JSON_TENDER_ANN_OFFER_NUMBER);
+            contract.offerDate = contractSummary.getString(CommManager.JSON_TENDER_OFFER_DATE);
+            contract.finaliseContractType = contractSummary.getString(CommManager.JSON_TENDER_FINAL_CONTRACT_TYPE);
+            contract.offerCriteria = contractSummary.getString(CommManager.JSON_TENDER_OFFER_CRITERIA);
+            contract.nrOffers = contractSummary.getString(CommManager.JSON_TENDER_NUMBER_OFFERS);
+            contract.subcontract = contractSummary.getString(CommManager.JSON_TENDER_SUBCONTRACT);
+            contract.number = contractSummary.getString(CommManager.JSON_TENDER_NUMBER);
+            contract.date = contractSummary.getString(CommManager.JSON_TENDER_DATE);
+            contract.title = contractSummary.getString(CommManager.JSON_TENDER_TITLE);
+            contract.value = contractSummary.getDouble(CommManager.JSON_TENDER_VALUE);
+            contract.currency = contractSummary.getString(CommManager.JSON_TENDER_CURRENCY);
+            contract.valueEUR = contractSummary.getDouble(CommManager.JSON_TENDER_VALUE_EUR);
+            contract.valueRON = contractSummary.getDouble(CommManager.JSON_TENDER_VALUE_RON);
+            contract.CPVCode = contractSummary.getString(CommManager.JSON_TENDER_CPV_CODE);
+            contract.participationNumber = contractSummary.getString(CommManager.JSON_TENDER_PARTICIP_NUMBER);
+            contract.participationDate = contractSummary.getString(CommManager.JSON_TENDER_PARTICIP_DATE);
+            contract.participationEstimValue = contractSummary.getDouble(CommManager.JSON_TENDER_PARTICIP_ESTIM_VALUE);
+            contract.participationCurrency = contractSummary.getString(CommManager.JSON_TENDER_PARTICIP_ESTIM_CURR);
+            contract.deposit = contractSummary.getString(CommManager.JSON_TENDER_DEPOSITS);
+            contract.finance = contractSummary.getString(CommManager.JSON_TENDER_FINANCE);
+            contract.institutionID = contractSummary.getInt(CommManager.JSON_TENDER_INSTITUTION_ID);
+            contract.companyID = contractSummary.getInt(CommManager.JSON_TENDER_COMPANY_ID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Show the info received from the server */
+        displayTender();
     }
 
 
@@ -205,6 +234,88 @@ public class ContractFragment extends Fragment {
     }
 
 
+    /* Add a new row in the table */
+    private void addDynamicRow(String key, String value) {
+
+        LinearLayout contractTable = (LinearLayout)originalView.findViewById(R.id.contractTable);
+        if (contractTable == null)
+            return;
+
+        View row = inflater.inflate(R.layout.contract_row, (LinearLayout)null, false);
+        if (row == null)
+            return;
+
+        contractTable.addView(row);
+
+        TextView textT = ((TextView) row.findViewById(R.id.fieldTitle));
+        if (textT == null)
+            return;
+
+        textT.setText(key);
+
+        TextView textV = ((TextView) row.findViewById(R.id.fieldValue));
+        if (textV == null)
+            return;
+
+        textV.setText(value);
+
+        this.rowNumber++;
+        if (this.rowNumber % 2 == 1) {
+            textT.setBackgroundColor(Color.parseColor("#eeeeee"));
+            textV.setBackgroundColor(Color.parseColor("#eeeeee"));
+        }
+    }
+
+
+    /* Add dynamic text */
+    private void addDynamicText(String title, String text) {
+        LinearLayout contractTable = (LinearLayout)originalView.findViewById(R.id.contractTable);
+        if (contractTable == null)
+            return;
+
+        View row = inflater.inflate(R.layout.contract_text, (LinearLayout)null, false);
+        if (row == null)
+            return;
+
+        contractTable.addView(row);
+
+        TextView textT = ((TextView) row.findViewById(R.id.titleContractText));
+        if (textT == null)
+            return;
+
+        textT.setText(title);
+
+        TextView textV = ((TextView) row.findViewById(R.id.valueContractText));
+        if (textV == null)
+            return;
+
+        textV.setText(text);
+    }
+
+
+    /* Tender info */
+    private void displayTender() {
+
+        /* Tender includes AD information */
+        displayAD();
+
+        addDynamicRow("Tip Contract", contract.tenderContractType);
+        addDynamicRow("Numar Anunt Participare", contract.participationNumber);
+        addDynamicRow("Data Anunt Participare", contract.participationDate);
+        addDynamicRow("Numar Anunt Atribuire", contract.announceOfferNumber);
+        addDynamicRow("Data Anunt Atribuire", contract.offerDate);
+        addDynamicRow("Tip Criterii Atribuire", contract.offerCriteria);
+        addDynamicRow("Numar Oferte Primite", contract.nrOffers);
+        addDynamicRow("Subcontractat", contract.subcontract.equals("") ?
+                "-" : contract.subcontract);
+        addDynamicRow("Valoare Estimatata", contract.participationEstimValue +
+                " " + contract.participationCurrency);
+
+        addDynamicText("Depozite si garantii:", contract.deposit);
+        addDynamicText("Modalitati de finantare:", contract.finance);
+    }
+
+
     /* Display Company and Institution buttons */
     private void displayPIButton() {
         View piView = originalView.findViewById(R.id.piInContract);
@@ -221,5 +332,4 @@ public class ContractFragment extends Fragment {
         TextView contractName = (TextView) piView.findViewById(R.id.listTitle);
         contractName.setText(contract.company.name);
     }
-
 }

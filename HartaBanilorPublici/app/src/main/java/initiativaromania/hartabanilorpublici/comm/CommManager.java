@@ -56,6 +56,7 @@ public class CommManager {
     public static final String JSON_CONTRACT_TITLE              = "TitluContract";
     public static final String JSON_CONTRACT_NR                 = "NumarContract";
     public static final String JSON_CONTRACT_VALUE_RON          = "ValoareRON";
+
     public static final String JSON_AD_PROCEDURE_TYPE           = "TipProcedura";
     public static final String JSON_AD_PARTICIP_DATE            = "DataAnuntParticipare";
     public static final String JSON_AD_FINAL_CONTRACT_TYPE      = "TipIncheiereContract";
@@ -69,6 +70,31 @@ public class CommManager {
     public static final String JSON_AD_CPV_CODE                 = "CPVCode";
     public static final String JSON_AD_INSTITUTION_ID           = "InstitutiePublicaID";
     public static final String JSON_AD_COMPANY_ID               = "CompanieId";
+
+    public static final String JSON_TENDER_CONTRACT_TYPE        = "TipContract";
+    public static final String JSON_TENDER_PROCEDURE_TYPE       = "TipProcedura";
+    public static final String JSON_TENDER_ANN_OFFER_NUMBER     = "NumarAnuntAtribuire";
+    public static final String JSON_TENDER_OFFER_DATE           = "DataAnuntAtribuire";
+    public static final String JSON_TENDER_FINAL_CONTRACT_TYPE  = "TipIncheiereContract";
+    public static final String JSON_TENDER_OFFER_CRITERIA       = "TipCriteriiAtribuire";
+    public static final String JSON_TENDER_NUMBER_OFFERS        = "NumarOfertePrimite";
+    public static final String JSON_TENDER_SUBCONTRACT          = "Subcontractat";
+    public static final String JSON_TENDER_NUMBER               = "NumarContract";
+    public static final String JSON_TENDER_DATE                 = "DataContract";
+    public static final String JSON_TENDER_TITLE                = "TitluContract";
+    public static final String JSON_TENDER_VALUE                = "Valoare";
+    public static final String JSON_TENDER_CURRENCY             = "Moneda";
+    public static final String JSON_TENDER_VALUE_EUR            = "ValoareEUR";
+    public static final String JSON_TENDER_VALUE_RON            = "ValoareRON";
+    public static final String JSON_TENDER_CPV_CODE             = "CPVCode";
+    public static final String JSON_TENDER_PARTICIP_NUMBER      = "NumarAnuntParticipare";
+    public static final String JSON_TENDER_PARTICIP_DATE        = "DataAnuntParticipare";
+    public static final String JSON_TENDER_PARTICIP_ESTIM_VALUE = "ValoareEstimataParticipare";
+    public static final String JSON_TENDER_DEPOSITS             = "DepoziteGarantii";
+    public static final String JSON_TENDER_FINANCE              = "ModalitatiFinantare";
+    public static final String JSON_TENDER_PARTICIP_ESTIM_CURR  = "MonedaValoareEstimataParticipare";
+    public static final String JSON_TENDER_INSTITUTION_ID       = "InstitutiePublicaID";
+    public static final String JSON_TENDER_COMPANY_ID           = "CompanieId";
 
 
     public static RequestQueue queue;
@@ -85,7 +111,7 @@ public class CommManager {
     public static void request(final CommManagerResponse commManagerResponse, String URL) {
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
                 (Request.Method.GET, URL,
-                        (String) null, new Response.Listener<JSONArray>() {
+                        (JSONArray) null, new Response.Listener<JSONArray>() {
 
                     @Override
                     public void onResponse(JSONArray response) {

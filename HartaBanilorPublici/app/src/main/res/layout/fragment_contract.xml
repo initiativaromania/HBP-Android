@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/contractView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -39,6 +40,7 @@
 
         <!-- Numar contract line -->
         <LinearLayout
+            android:id="@+id/contractTable"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -292,11 +294,13 @@
                 <TextView
                     android:id="@+id/tipIncheiereContractName"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:text="Tip Incheiere Contract"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     />
 
                 <View
@@ -307,11 +311,13 @@
                 <TextView
                     android:id="@+id/tipIncheiereContract"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:text=""
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     />
             </LinearLayout>
 
@@ -359,7 +365,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Institutie"
             />
         <include

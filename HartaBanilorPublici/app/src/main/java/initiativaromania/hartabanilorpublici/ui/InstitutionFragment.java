@@ -1,15 +1,10 @@
 package initiativaromania.hartabanilorpublici.ui;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -96,7 +91,17 @@ public class InstitutionFragment extends Fragment {
         System.out.println("Institution Arguments: Type" + type );
 
         if (type == CONTRACT_LIST_FOR_COMPANY) {
+            company = new Company();
+            company.id = bundle.getInt(CommManager.BUNDLE_COMPANY_ID);
+            company.type = bundle.getInt(CommManager.BUNDLE_COMPANY_TYPE);
+            company.name = bundle.getString(CommManager.BUNDLE_COMPANY_NAME);
+
             viewPageFragment.setViewPager(CONTRACT_LIST_FOR_COMPANY);
+
+            System.out.println("Company Arguments: id " + company.id + " name " + company.name +
+                    " type " + company.type);
+
+            displayInitCompanyInfo();
         } else {
             pi = new PublicInstitution();
             pi.id = bundle.getInt(CommManager.BUNDLE_PI_ID);
@@ -114,22 +119,59 @@ public class InstitutionFragment extends Fragment {
 
 
         /* Call the server for all the institution info */
-        getServerPIInfo(type);
+        getServerInstitInfo(type);
 
         return originalView;
     }
 
 
     /* Get all the institution info from the server */
-    private void getServerPIInfo(int type) {
+    private void getServerInstitInfo(int type) {
 
-        System.out.println("Get all PI info from server");
+        System.out.println("Get all Institution info from server");
 
-         /* Get Contract List */
+         /* Get Server information for a company */
         if (type == CONTRACT_LIST_FOR_COMPANY) {
-//            CommManager.requestCompanyDetails(this, name);
-//            CommManager.requestBuyersForFirm(this, name);
+            switch (company.type) {
+                case Company.COMPANY_TYPE_AD:
+                    /* Send request to get the init data */
+                    CommManager.requestADCompany(new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveCompanyInfo(response);
+                        }
 
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }, company.id);
+                    break;
+
+                case Company.COMPANY_TYPE_TENDER:
+                    /* Send request to get the init data */
+                    CommManager.requestTenderCompany(new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveCompanyInfo(response);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }, pi.id);
+                    break;
+
+                default:
+                    System.out.println("Unknown company type");
+
+            }
+
+
+            /* Get Server information for a Public Institution */
         } else {
 
              /* Send request to get the init data */
@@ -205,6 +247,23 @@ public class InstitutionFragment extends Fragment {
     }
 
 
+    /* Receive Company information from the server */
+    private void receiveCompanyInfo(JSONArray response) {
+        System.out.println("InstitutionFragment: receiveCompany " + response);
+
+        try {
+            JSONObject companySummary = response.getJSONObject(0);
+            company.address = companySummary.getString(CommManager.JSON_COMPANY_ADDRESS);
+            company.CUI = companySummary.getString(CommManager.JSON_COMPANY_CUI);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Show the info received from the server */
+        displayServerInfo(type);
+    }
+
+
     /* Receive Public Institution information from the server */
     private void receivePIInfo(JSONArray response) {
         System.out.println("InstitutionFragment: receivePIInfo " + response);
@@ -218,7 +277,7 @@ public class InstitutionFragment extends Fragment {
         }
 
         /* Show the info received from the server */
-        displayServerPIInfo();
+        displayServerInfo(type);
     }
 
 
@@ -321,7 +380,7 @@ public class InstitutionFragment extends Fragment {
         ((HomeActivity) getActivity()).setActionBarTitle("Institutie Publica");
 
 
-        TextView text = ((TextView) originalView.findViewById(R.id.publicInstitutionName));
+        TextView text = ((TextView) originalView.findViewById(R.id.institutionName));
         if (text != null)
             text.setText(pi.name);
 
@@ -335,15 +394,37 @@ public class InstitutionFragment extends Fragment {
     }
 
 
-    /* PI CUI, Address */
-    private void displayServerPIInfo() {
+    /* Company name, address */
+    private void displayInitCompanyInfo() {
+        oldTitle = ((HomeActivity) getActivity()).getActionBarTitle();
+        ((HomeActivity) getActivity()).setActionBarTitle("Companie");
+
+
+        TextView text = ((TextView) originalView.findViewById(R.id.institutionName));
+        if (text != null)
+            text.setText(company.name);
+
+        text = ((TextView) originalView.findViewById(R.id.nrDirectAcquisitions));
+        if (text != null)
+            text.setText(0 + "");
+
+        text = ((TextView) originalView.findViewById(R.id.nrTenders));
+        if (text != null)
+            text.setText(0 + "");
+    }
+
+
+    /* Institution CUI, Address */
+    private void displayServerInfo(int type) {
         TextView text = ((TextView) originalView.findViewById(R.id.piCUI));
         if (text != null)
-            text.setText(pi.CUI);
+            text.setText(type == CONTRACT_LIST_FOR_COMPANY ?
+                    company.CUI : pi.CUI);
 
         text = ((TextView) originalView.findViewById(R.id.piAddress));
         if (text != null)
-            text.setText(pi.address);
+            text.setText(type == CONTRACT_LIST_FOR_COMPANY ?
+                    company.address : pi.address);
     }
 
 

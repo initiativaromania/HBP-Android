@@ -2,6 +2,7 @@ package initiativaromania.hartabanilorpublici.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -68,33 +69,34 @@ public class CompanyListAdapter extends BaseAdapter implements AdapterView.OnIte
         return true;
     }
 
+    @Nullable
+    @Override
+    public CharSequence[] getAutofillOptions() {
+        return new CharSequence[0];
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         CompanyListItem companyItem = (CompanyListItem) v.getTag();
 
         System.out.println("Click on company " + companyItem.id + " type " + companyItem.type);
 
-//        Fragment contractFragment = new ContractFragment();
-//        FragmentManager fragmentManager = context.getSupportFragmentManager();
-//
-//        /* Build Fragment Arguments */
-//        Bundle bundle = new Bundle();
-//        bundle.putInt(CommManager.BUNDLE_CONTRACT_ID, contractItem.id);
-//        bundle.putInt(CommManager.BUNDLE_CONTRACT_TYPE, contractItem.type);
-//        bundle.putInt(CommManager.BUNDLE_CONTRACT_PI_ID, contractItem.pi != null ?
-//                contractItem.pi.id : 0);
-//        bundle.putString(CommManager.BUNDLE_CONTRACT_PI_NAME, contractItem.pi != null ?
-//                contractItem.pi.name : "");
-//        bundle.putInt(CommManager.BUNDLE_CONTRACT_COMP_ID, contractItem.company != null ?
-//                contractItem.company.id : 0);
-//        bundle.putString(CommManager.BUNDLE_CONTRACT_COMP_NAME, contractItem.company != null ?
-//                contractItem.company.name : "");
-//        contractFragment.setArguments(bundle);
-//
-//
-//        /* Got the Contract Fragment */
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.add(R.id.fragment_institution_layout, contractFragment).addToBackStack("TAG")
-//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+        Fragment companyFragment = new InstitutionFragment();
+        FragmentManager fragmentManager = context.getSupportFragmentManager();
+
+        /* Build Fragment Arguments */
+        Bundle bundle = new Bundle();
+        bundle.putInt(CommManager.BUNDLE_COMPANY_ID, companyItem.id);
+        bundle.putInt(CommManager.BUNDLE_COMPANY_TYPE, companyItem.type);
+        bundle.putString(CommManager.BUNDLE_COMPANY_NAME, companyItem.name);
+        bundle.putInt(CommManager.BUNDLE_INST_TYPE, InstitutionFragment.CONTRACT_LIST_FOR_COMPANY);
+
+        companyFragment.setArguments(bundle);
+
+        /* Got the Company Fragment */
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.fragment_institution_layout, companyFragment)
+                .addToBackStack(companyFragment.getClass().getName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 }

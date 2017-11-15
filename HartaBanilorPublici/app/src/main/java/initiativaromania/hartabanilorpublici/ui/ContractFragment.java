@@ -316,6 +316,8 @@ public class ContractFragment extends Fragment {
             contract.company = new Company();
             contract.company.id = contract.companyID;
             contract.company.name = companySummary.getString(CommManager.JSON_COMPANY_NAME);
+            contract.company.address = companySummary.getString(CommManager.JSON_COMPANY_ADDRESS);
+            contract.company.CUI = companySummary.getString(CommManager.JSON_COMPANY_CUI);
 
             displayCompanyButton();
 

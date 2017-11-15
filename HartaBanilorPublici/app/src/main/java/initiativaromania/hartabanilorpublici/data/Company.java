@@ -11,10 +11,14 @@ import java.io.Serializable;
 public class Company implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public static int COMPANY_TYPE_AD           = 0;
-    public static int COMPANY_TYPE_TENDER       = 1;
+    public static final int COMPANY_TYPE_AD           = 0;
+    public static final int COMPANY_TYPE_TENDER       = 1;
 
     public int  type;
     public String name;
+    public String CUI;
+    public String country;
+    public String city;
+    public String address;
     public int id;
 }

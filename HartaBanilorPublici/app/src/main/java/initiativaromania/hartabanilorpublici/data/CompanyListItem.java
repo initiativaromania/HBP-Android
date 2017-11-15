@@ -9,4 +9,6 @@ public class CompanyListItem {
         public int id;
         public int type;
         public String name;
+        public String address;
+        public String CUI;
 }

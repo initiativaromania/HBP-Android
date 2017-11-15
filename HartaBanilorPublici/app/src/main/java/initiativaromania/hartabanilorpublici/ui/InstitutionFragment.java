@@ -36,6 +36,7 @@ public class InstitutionFragment extends Fragment {
     public static final String CONTRACT_LIST_EXTRA = "contract list extra";
     public static final int DIRECT_ACQ_FRAGMENT_INDEX               = 0;
     public static final int TENDER_FRAGMENT_INDEX                   = 1;
+    public static final int INSTITUTIONS_FRAGMENT_INDEX             = 2;
 
     private int type = CONTRACT_LIST_FOR_COMPANY;
 
@@ -47,6 +48,7 @@ public class InstitutionFragment extends Fragment {
 
     private ContractListFragment directAcqListFragment;
     private ContractListFragment tendersListFragment;
+    private CompanyListFragment companyListFragment;
 
     private View originalView;
     private Fragment fragmentCopy;
@@ -62,18 +64,19 @@ public class InstitutionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        /* Inflate the layout for this fragment */
         originalView = inflater.inflate(R.layout.fragment_institution, container, false);
         fragmentCopy = this;
-        pi = new PublicInstitution();
 
         /* Init the expandable layout */
         LinearLayout layout = (LinearLayout) originalView.findViewById(R.id.layoutPIName);
-        ExpandableRelativeLayout expandableLayout1 = (ExpandableRelativeLayout) originalView.findViewById(R.id.expandableLayout1);
+        ExpandableRelativeLayout expandableLayout1 = (ExpandableRelativeLayout) originalView
+                .findViewById(R.id.expandableLayout1);
         layout.setOnClickListener(new LinearLayout.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("Expanding view");
-                ExpandableRelativeLayout expandableLayout1 = (ExpandableRelativeLayout) getView().findViewById(R.id.expandableLayout1);
+                ExpandableRelativeLayout expandableLayout1 = (ExpandableRelativeLayout) getView()
+                        .findViewById(R.id.expandableLayout1);
                 expandableLayout1.toggle(); // toggle expand and collapse
             }
         });
@@ -96,6 +99,7 @@ public class InstitutionFragment extends Fragment {
         if (type == CONTRACT_LIST_FOR_COMPANY) {
             viewPageFragment.setViewPager(CONTRACT_LIST_FOR_COMPANY);
         } else {
+            pi = new PublicInstitution();
             pi.id = bundle.getInt(CommManager.BUNDLE_PI_ID);
             pi.name = bundle.getString(CommManager.BUNDLE_PI_NAME);
             pi.directAcqs = bundle.getInt(CommManager.BUNDLE_PI_ACQS);
@@ -162,6 +166,34 @@ public class InstitutionFragment extends Fragment {
                 @Override
                 public void processResponse(JSONArray response) {
                     receivePITenders(response);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }, pi.id);
+
+            /* Send request to get the institution AD companies */
+            CommManager.requestADCompaniesByPI(new CommManagerResponse() {
+                @Override
+                public void processResponse(JSONArray response) {
+                    receivePICompanies(response, Company.COMPANY_TYPE_AD);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }, pi.id);
+
+            /* Send request to get the institution Tender companies */
+            CommManager.requestTenderCompaniesByPI(new CommManagerResponse() {
+                @Override
+                public void processResponse(JSONArray response) {
+                    receivePICompanies(response, Company.COMPANY_TYPE_TENDER);
                 }
 
                 @Override
@@ -257,6 +289,33 @@ public class InstitutionFragment extends Fragment {
     }
 
 
+    /* Receive Companies for this institution from the server */
+    private void receivePICompanies(JSONArray response, int type) {
+        System.out.println("InstitutionFragment: receivePICompanies " +
+                " size " + response.length() + " type " + type);
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject company = response.getJSONObject(i);
+                if (company == null)
+                    continue;
+
+                Company c = new Company();
+                c.type = type;
+                c.id = Integer.parseInt(company.getString(CommManager.JSON_COMPANY_ID));
+                c.name = company.getString(CommManager.JSON_COMPANY_NAME);
+
+                companies.add(c);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Show the info received from the server */
+        displayCompanies();
+    }
+
+
     /* PI name, acq, tenders */
     private void displayInitPIInfo() {
         TextView text = ((TextView) originalView.findViewById(R.id.publicInstitutionName));
@@ -299,7 +358,7 @@ public class InstitutionFragment extends Fragment {
     }
 
 
-    /* Fil lthe list of tenders for this institution */
+    /* Fill the list of tenders for this institution */
     private void displayTenders() {
 
         /* Fill the contract list fragment */
@@ -310,5 +369,19 @@ public class InstitutionFragment extends Fragment {
             tendersListFragment.displayContracts();
         } else
             System.out.println("NULL contract list fragment");
+    }
+
+
+    /* Fil lthe list of companies for this institution */
+    private void displayCompanies() {
+
+        /* Fill the companies list fragment */
+        companyListFragment = (CompanyListFragment) InstitutionViewPageFragment
+                .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
+        if (companyListFragment != null) {
+            companyListFragment.setCompanies(companies);
+            companyListFragment.displayCompanies();
+        } else
+            System.out.println("NULL company list fragment");
     }
 }

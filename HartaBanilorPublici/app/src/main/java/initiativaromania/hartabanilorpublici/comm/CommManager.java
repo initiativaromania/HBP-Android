@@ -31,6 +31,8 @@ public class CommManager {
     private static final String URL_GET_TENDER                  = SERVER_IP + "Tender/";
     private static final String URL_GET_AD_COMPANY              = SERVER_IP + "ADCompany/";
     private static final String URL_GET_TENDER_COMPANY          = SERVER_IP + "TenderCompany/";
+    private static final String URL_GET_AD_COMPANIES_BY_PI      = SERVER_IP + "ADCompaniesByInstitution/";
+    private static final String URL_GET_TENDER_COMPANIES_BY_PI  = SERVER_IP + "TenderCompaniesByInstitution/";
 
 
     /* Bundle keys */
@@ -99,6 +101,7 @@ public class CommManager {
     public static final String JSON_TENDER_COMPANY_ID           = "CompanieId";
 
     public static final String JSON_COMPANY_NAME                = "Nume";
+    public static final String JSON_COMPANY_ID                  = "CompanieId";
 
 
     public static RequestQueue queue;
@@ -190,5 +193,23 @@ public class CommManager {
     public static void requestTenderCompany(final CommManagerResponse commManagerResponse, int companyId) {
         System.out.println("Send TenderCompany request to URL " + URL_GET_TENDER_COMPANY + companyId);
         request(commManagerResponse, URL_GET_TENDER_COMPANY + companyId);
+    }
+
+
+    /* Send a request to the server for all AD Companies in a PI */
+    public static void requestADCompaniesByPI(final CommManagerResponse commManagerResponse,
+                                              int publicInstitutionID) {
+        System.out.println("Send ADCompanyByPI request to URL " +
+                URL_GET_AD_COMPANIES_BY_PI + publicInstitutionID);
+        request(commManagerResponse, URL_GET_AD_COMPANIES_BY_PI + publicInstitutionID);
+    }
+
+
+    /* Send a request to the server for all Tender Companies in a PI */
+    public static void requestTenderCompaniesByPI(final CommManagerResponse commManagerResponse,
+                                                  int publicInstitutionID) {
+        System.out.println("Send TenderCompaniesByPI request to URL " +
+                URL_GET_TENDER_COMPANIES_BY_PI + publicInstitutionID);
+        request(commManagerResponse, URL_GET_TENDER_COMPANIES_BY_PI + publicInstitutionID);
     }
 }

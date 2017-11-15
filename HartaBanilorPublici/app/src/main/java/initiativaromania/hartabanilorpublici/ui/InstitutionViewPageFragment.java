@@ -69,9 +69,9 @@ public class InstitutionViewPageFragment extends Fragment {
         fList.add(ContractListFragment.newInstance());
 
         if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION)
-            fList.add(ContractListFragment.newInstance());
+            fList.add(CompanyListFragment.newInstance());
         else
-            fList.add(ContractListFragment.newInstance());
+            fList.add(CompanyListFragment.newInstance());
 
         return fList;
     }

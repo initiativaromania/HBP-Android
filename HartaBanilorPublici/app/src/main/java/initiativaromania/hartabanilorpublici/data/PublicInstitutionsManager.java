@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.concurrent.Semaphore;
 
 import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 import initiativaromania.hartabanilorpublici.ui.MapFragment;
@@ -20,6 +21,7 @@ public class PublicInstitutionsManager {
 
     /* This list contains all the public institutions */
     private static LinkedList<PublicInstitution> piList;
+    private static Semaphore piSemaphore = new Semaphore(1);
 
 
     /* Fill the list of public institutions */
@@ -29,7 +31,6 @@ public class PublicInstitutionsManager {
             System.out.println("NULL fragment");
         if (mapFragment.getActivity() == null)
             System.out.println("NULL activity fragment");
-        System.out.println("Totul ok");
 
         if (piList != null)
             return;
@@ -43,7 +44,10 @@ public class PublicInstitutionsManager {
                 BufferedReader reader = null;
                 String[] lineArray;
 
+
                 try {
+                    piSemaphore.acquire();
+
                     reader = new BufferedReader(
                             new InputStreamReader(mapFragment.getActivity().getAssets().open(PI_FILENAME)));
 
@@ -60,7 +64,9 @@ public class PublicInstitutionsManager {
                         piList.add(pi);
 
                     }
-                } catch (IOException e) {
+
+                    piSemaphore.release();
+                } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
                     if (reader != null) {
@@ -88,6 +94,12 @@ public class PublicInstitutionsManager {
         LinkedList<PublicInstitution> visiblePIs = new LinkedList<PublicInstitution>();
         int index = 0;
 
+        try {
+            piSemaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         if (piList == null || piList.size() == 0)
             System.out.println("Null piList");
         else
@@ -101,6 +113,8 @@ public class PublicInstitutionsManager {
         }
 
         System.out.println(index + " pis added out of total " + piList.size());
+
+        piSemaphore.release();
 
         return visiblePIs;
     }

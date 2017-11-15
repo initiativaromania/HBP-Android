@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Map;
 
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.comm.CommManager;
@@ -80,7 +81,7 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
         System.out.println("Click on contract " + contractItem.id + " type " + contractItem.type);
 
         Fragment contractFragment = new ContractFragment();
-        FragmentManager fragmentManager = context.getSupportFragmentManager();
+        final FragmentManager fragmentManager = context.getSupportFragmentManager();
 
         /* Build Fragment Arguments */
         Bundle bundle = new Bundle();
@@ -99,7 +100,8 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
 
         /* Got the Contract Fragment */
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.fragment_institution_layout, contractFragment).addToBackStack("TAG")
+        transaction.add(R.id.fragment_institution_layout, contractFragment)
+                .addToBackStack(contractFragment.getClass().getName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 }

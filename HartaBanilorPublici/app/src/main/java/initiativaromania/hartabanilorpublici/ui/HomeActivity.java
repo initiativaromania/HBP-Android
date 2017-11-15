@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.comm.CommManager;
@@ -78,10 +80,30 @@ public class HomeActivity extends AppCompatActivity {
 
     };
 
+
+    public void setActionBarTitle(String title) {
+        TextView titleText = ((TextView) findViewById(R.id.activityTest));
+        if (titleText == null)
+            return;
+
+        titleText.setText(title);
+    }
+
+    public String getActionBarTitle() {
+        TextView titleText = ((TextView) findViewById(R.id.activityTest));
+        if (titleText == null)
+            return "";
+
+        return titleText.getText().toString();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.abs_layout);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(navigation);

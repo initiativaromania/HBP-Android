@@ -58,8 +58,7 @@ public class InstitutionFragment extends Fragment {
     private LinkedList<Company> companies = new LinkedList<Company>();
     private LinkedList<PublicInstitution> pis = new LinkedList<PublicInstitution>();
 
-
-
+    public String oldTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -318,6 +317,10 @@ public class InstitutionFragment extends Fragment {
 
     /* PI name, acq, tenders */
     private void displayInitPIInfo() {
+        oldTitle = ((HomeActivity) getActivity()).getActionBarTitle();
+        ((HomeActivity) getActivity()).setActionBarTitle("Institutie Publica");
+
+
         TextView text = ((TextView) originalView.findViewById(R.id.publicInstitutionName));
         if (text != null)
             text.setText(pi.name);
@@ -383,5 +386,11 @@ public class InstitutionFragment extends Fragment {
             companyListFragment.displayCompanies();
         } else
             System.out.println("NULL company list fragment");
+    }
+
+    @Override
+    public void onStop() {
+        ((HomeActivity) getActivity()).setActionBarTitle(oldTitle);
+        super.onStop();
     }
 }

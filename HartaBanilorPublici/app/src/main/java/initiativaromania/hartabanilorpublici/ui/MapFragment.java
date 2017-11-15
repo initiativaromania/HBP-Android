@@ -299,8 +299,9 @@ public class MapFragment extends android.support.v4.app.Fragment
 
         /* Got the Institution Fragment */
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.content, publicInstitutionFragment).addToBackStack("TAG")
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+        transaction.add(R.id.content, publicInstitutionFragment)
+                .addToBackStack(publicInstitutionFragment.getClass().getName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 
     @Override

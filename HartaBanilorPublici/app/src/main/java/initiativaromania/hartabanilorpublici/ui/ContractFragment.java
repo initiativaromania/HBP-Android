@@ -3,6 +3,7 @@ package initiativaromania.hartabanilorpublici.ui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,11 @@ public class ContractFragment extends Fragment {
     private static int CONTRACT_TABLE_DEFAULT_ROW_NUMBER        = 8;
 
     private View originalView;
-    private Contract contract = null;
+    public Contract contract = null;
     private Fragment fragmentCopy;
     private LayoutInflater inflater;
     private int rowNumber = CONTRACT_TABLE_DEFAULT_ROW_NUMBER;
+    private String oldTitle;
 
 
     @Override
@@ -73,11 +75,32 @@ public class ContractFragment extends Fragment {
         if (contract.pi != null)
             System.out.println("PI " + contract.pi.id + " name " + contract.pi.name);
 
+        /* Change the Activity title */
+        updateActivityTitle();
 
         /* Get contract information from the server */
         getServerContractInfo();
 
         return originalView;
+    }
+
+
+    /* Update the Activity title to match the contract */
+    private void updateActivityTitle() {
+        oldTitle = ((HomeActivity) getActivity()).getActionBarTitle();
+
+        switch (contract.type) {
+            case Contract.CONTRACT_TYPE_DIRECT_ACQUISITION:
+                ((HomeActivity) getActivity()).setActionBarTitle("Achizitie Directa");
+                break;
+
+            case Contract.CONTRACT_TYPE_TENDER:
+                ((HomeActivity) getActivity()).setActionBarTitle("Licitatie");
+                break;
+
+            default:
+                System.out.println("Unknown contract type for id " + contract.id);
+        }
     }
 
 
@@ -440,5 +463,11 @@ public class ContractFragment extends Fragment {
 
         TextView contractName = (TextView) piView.findViewById(R.id.listTitle);
         contractName.setText(contract.company.name);
+    }
+
+    @Override
+    public void onStop() {
+        ((HomeActivity) getActivity()).setActionBarTitle(oldTitle);
+        super.onStop();
     }
 }

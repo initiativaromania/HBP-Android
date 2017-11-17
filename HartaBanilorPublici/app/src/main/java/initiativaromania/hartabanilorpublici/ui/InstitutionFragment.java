@@ -162,7 +162,7 @@ public class InstitutionFragment extends Fragment {
                             Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                     Toast.LENGTH_SHORT).show();
                         }
-                    }, pi.id);
+                    }, company.id);
                     break;
 
                 default:

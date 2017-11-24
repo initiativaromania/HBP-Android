@@ -122,8 +122,9 @@ public class ContractFragment extends Fragment {
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                Toast.LENGTH_SHORT).show();
+                        if (fragmentCopy != null)
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
                     }
                 }, contract.id);
                 break;
@@ -138,8 +139,9 @@ public class ContractFragment extends Fragment {
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                Toast.LENGTH_SHORT).show();
+                        if (fragmentCopy != null)
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
                     }
                 }, contract.id);
                 break;
@@ -167,8 +169,9 @@ public class ContractFragment extends Fragment {
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                            Toast.LENGTH_SHORT).show();
+                    if (fragmentCopy != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
                 }
             }, contract.institutionID);
         }
@@ -188,8 +191,9 @@ public class ContractFragment extends Fragment {
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                Toast.LENGTH_SHORT).show();
+                        if (fragmentCopy != null)
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
                     }
                 }, contract.companyID);
                 break;
@@ -204,8 +208,9 @@ public class ContractFragment extends Fragment {
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                Toast.LENGTH_SHORT).show();
+                        if (fragmentCopy != null)
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
                     }
                 }, contract.companyID);
                 break;

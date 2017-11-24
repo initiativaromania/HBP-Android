@@ -143,8 +143,9 @@ public class InstitutionFragment extends Fragment {
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                    Toast.LENGTH_SHORT).show();
+                            if (fragmentCopy.getContext() != null)
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
                         }
                     }, company.id);
                     break;
@@ -159,8 +160,9 @@ public class InstitutionFragment extends Fragment {
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                    Toast.LENGTH_SHORT).show();
+                            if (fragmentCopy.getContext() != null)
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
                         }
                     }, company.id);
                     break;
@@ -183,8 +185,9 @@ public class InstitutionFragment extends Fragment {
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                            Toast.LENGTH_SHORT).show();
+                    if (fragmentCopy.getContext() != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
                 }
             }, pi.id);
 
@@ -197,8 +200,9 @@ public class InstitutionFragment extends Fragment {
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                            Toast.LENGTH_SHORT).show();
+                    if (fragmentCopy.getContext() != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
                 }
             }, pi.id);
 
@@ -211,8 +215,9 @@ public class InstitutionFragment extends Fragment {
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                            Toast.LENGTH_SHORT).show();
+                    if (fragmentCopy.getContext() != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
                 }
             }, pi.id);
 
@@ -225,8 +230,9 @@ public class InstitutionFragment extends Fragment {
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                            Toast.LENGTH_SHORT).show();
+                    if (fragmentCopy.getContext() != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
                 }
             }, pi.id);
 
@@ -239,8 +245,9 @@ public class InstitutionFragment extends Fragment {
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                            Toast.LENGTH_SHORT).show();
+                    if (fragmentCopy.getContext() != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
                 }
             }, pi.id);
         }

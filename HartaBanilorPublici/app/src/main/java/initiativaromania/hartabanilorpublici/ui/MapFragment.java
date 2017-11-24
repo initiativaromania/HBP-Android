@@ -319,8 +319,9 @@ public class MapFragment extends android.support.v4.app.Fragment
 
             @Override
             public void onErrorOccurred(String errorMsg) {
-                Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                        Toast.LENGTH_SHORT).show();
+                if (fragmentCopy != null)
+                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                            Toast.LENGTH_SHORT).show();
             }
         }, clickedPI.id);
 

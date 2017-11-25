@@ -33,6 +33,10 @@ public class CommManager {
     private static final String URL_GET_TENDER_COMPANY          = SERVER_IP + "TenderCompany/";
     private static final String URL_GET_AD_COMPANIES_BY_PI      = SERVER_IP + "ADCompaniesByInstitution/";
     private static final String URL_GET_TENDER_COMPANIES_BY_PI  = SERVER_IP + "TenderCompaniesByInstitution/";
+    private static final String URL_GET_PI_BY_AD_COMPANY        = SERVER_IP + "InstitutionsByADCompany/";
+    private static final String URL_GET_PI_BY_TENDER_COMPANY    = SERVER_IP + "InsitutionsByTenderCompany/";
+    private static final String URL_GET_AD_COMPANY_CONTRACTS    = SERVER_IP + "ADCompanyContracts/";
+    private static final String URL_GET_TENDER_COMPANY_TENDERS  = SERVER_IP + "TenderCompanyTenders/";
 
 
     /* Bundle keys */
@@ -60,7 +64,9 @@ public class CommManager {
     public static final String JSON_PI_CUI                      = "CUI";
     public static final String JSON_PI_ADDRESS                  = "Adresa";
     public static final String JSON_ACQ_ID                      = "ContracteId";
+    public static final String JSON_COMPANY_ACQ_ID              = "ID";
     public static final String JSON_TENDER_ID                   = "LicitatieID";
+    public static final String JSON_COMPANY_TENDER_ID           = "ID";
     public static final String JSON_CONTRACT_TITLE              = "TitluContract";
     public static final String JSON_CONTRACT_NR                 = "NumarContract";
     public static final String JSON_CONTRACT_VALUE_RON          = "ValoareRON";
@@ -217,5 +223,37 @@ public class CommManager {
         System.out.println("Send TenderCompaniesByPI request to URL " +
                 URL_GET_TENDER_COMPANIES_BY_PI + publicInstitutionID);
         request(commManagerResponse, URL_GET_TENDER_COMPANIES_BY_PI + publicInstitutionID);
+    }
+
+    /* Send a request to the server for all Public Institutions in an AD Company */
+    public static void requestPIsByADCompany(final CommManagerResponse commManagerResponse,
+                                                  int companyID) {
+        System.out.println("Send PISByADCompany request to URL " +
+                URL_GET_PI_BY_AD_COMPANY + companyID);
+        request(commManagerResponse, URL_GET_PI_BY_AD_COMPANY + companyID);
+    }
+
+    /* Send a request to the server for all Public Institutions in a Tender Company */
+    public static void requestPIsByTenderCompany(final CommManagerResponse commManagerResponse,
+                                             int companyID) {
+        System.out.println("Send PISByTenderCompany request to URL " +
+                URL_GET_PI_BY_TENDER_COMPANY + companyID);
+        request(commManagerResponse, URL_GET_PI_BY_TENDER_COMPANY + companyID);
+    }
+
+    /* Send a request to the server for all the Contracts in an AD Company */
+    public static void requestADCompanyContracts(final CommManagerResponse commManagerResponse,
+                                                 int companyID) {
+        System.out.println("Send ADCompanyContracts request to URL " +
+                URL_GET_AD_COMPANY_CONTRACTS + companyID);
+        request(commManagerResponse, URL_GET_AD_COMPANY_CONTRACTS + companyID);
+    }
+
+    /* Send a request to the server for all the Tenders in a Tender Company */
+    public static void requestTenderCompanyTenders(final CommManagerResponse commManagerResponse,
+                                                 int companyID) {
+        System.out.println("Send TenderCompanyTenders request to URL " +
+                URL_GET_TENDER_COMPANY_TENDERS + companyID);
+        request(commManagerResponse, URL_GET_TENDER_COMPANY_TENDERS + companyID);
     }
 }

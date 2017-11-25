@@ -148,6 +148,22 @@ public class InstitutionFragment extends Fragment {
                                         Toast.LENGTH_SHORT).show();
                         }
                     }, company.id);
+
+                    /* Send request to get all the direct acquisitions of an AD Company */
+                    CommManager.requestADCompanyContracts(new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveCompanyAcqs(response);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            if (fragmentCopy.getContext() != null)
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
+                        }
+                    }, company.id);
+
                     break;
 
                 case Company.COMPANY_TYPE_TENDER:
@@ -156,6 +172,22 @@ public class InstitutionFragment extends Fragment {
                         @Override
                         public void processResponse(JSONArray response) {
                             receiveCompanyInfo(response);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            if (fragmentCopy.getContext() != null)
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
+                        }
+                    }, company.id);
+
+
+                    /* Send request to get all the direct acquisitions of an AD Company */
+                    CommManager.requestTenderCompanyTenders(new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveCompanyTenders(response);
                         }
 
                         @Override
@@ -285,6 +317,68 @@ public class InstitutionFragment extends Fragment {
 
         /* Show the info received from the server */
         displayServerInfo(type);
+    }
+
+
+    /* Receive Company Direct Acquisitions from the server */
+    private void receiveCompanyAcqs(JSONArray response) {
+        System.out.println("InstitutionFragment: receiveCompanyAcqs " + response +
+                " size " + response.length());
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject acq = response.getJSONObject(i);
+                if (acq == null)
+                    continue;
+
+                Contract a = new Contract();
+                a.type = Contract.CONTRACT_TYPE_DIRECT_ACQUISITION;
+                a.id = Integer.parseInt(acq.getString(CommManager.JSON_COMPANY_ACQ_ID));
+                a.title = acq.getString(CommManager.JSON_CONTRACT_TITLE);
+                if (type == CONTRACT_LIST_FOR_COMPANY)
+                    a.company = company;
+                else
+                    a.pi = pi;
+
+                directAcqs.add(a);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Show the info received from the server */
+        displayDirectAcqs();
+    }
+
+
+    /* Receive Public Institution Tenders from the server */
+    private void receiveCompanyTenders(JSONArray response) {
+        System.out.println("InstitutionFragment: receiveCompanyTenders " +
+                " size " + response.length());
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject tender = response.getJSONObject(i);
+                if (tender == null)
+                    continue;
+
+                Contract t = new Contract();
+                t.type = Contract.CONTRACT_TYPE_TENDER;
+                t.id = Integer.parseInt(tender.getString(CommManager.JSON_COMPANY_TENDER_ID));
+                t.title = tender.getString(CommManager.JSON_CONTRACT_TITLE);
+                if (type == CONTRACT_LIST_FOR_COMPANY)
+                    t.company = company;
+                else
+                    t.pi = pi;
+
+                tenders.add(t);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Show the info received from the server */
+        displayTenders();
     }
 
 

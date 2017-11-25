@@ -16,6 +16,7 @@ import initiativaromania.hartabanilorpublici.comm.CommManager;
 import initiativaromania.hartabanilorpublici.comm.CommManagerResponse;
 import initiativaromania.hartabanilorpublici.data.Company;
 import initiativaromania.hartabanilorpublici.data.Contract;
+import initiativaromania.hartabanilorpublici.data.InstitutionListItem;
 import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -44,6 +45,7 @@ public class InstitutionFragment extends Fragment {
     private ContractListFragment directAcqListFragment;
     private ContractListFragment tendersListFragment;
     private CompanyListFragment companyListFragment;
+    private InstitutionListFragment piListFragment;
 
     private View originalView;
     private Fragment fragmentCopy;
@@ -164,6 +166,21 @@ public class InstitutionFragment extends Fragment {
                         }
                     }, company.id);
 
+                    /* Send request to get all the public institutions of an AD Company */
+                    CommManager.requestPIsByADCompany(new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveCompanyPIs(response);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            if (fragmentCopy.getContext() != null)
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
+                        }
+                    }, company.id);
+
                     break;
 
                 case Company.COMPANY_TYPE_TENDER:
@@ -197,6 +214,23 @@ public class InstitutionFragment extends Fragment {
                                         Toast.LENGTH_SHORT).show();
                         }
                     }, company.id);
+
+                    /* Send request to get all the public institutions of a Tender Company */
+                    CommManager.requestPIsByTenderCompany(new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveCompanyPIs(response);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            if (fragmentCopy.getContext() != null)
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
+                        }
+                    }, company.id);
+
+
                     break;
 
                 default:
@@ -475,6 +509,34 @@ public class InstitutionFragment extends Fragment {
     }
 
 
+    /* Receive Public Institutions for this company from the server */
+    private void receiveCompanyPIs(JSONArray response) {
+        System.out.println("InstitutionFragment: receiveCompanyPIs " +
+                " size " + response.length());
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject piObj = response.getJSONObject(i);
+                if (piObj == null)
+                    continue;
+
+                PublicInstitution pi = new PublicInstitution();
+                pi.id = Integer.parseInt(piObj.getString(CommManager.JSON_COMPANY_PI_ID));
+                pi.name = piObj.getString(CommManager.JSON_COMPANY_PI_NAME);
+                pi.CUI = piObj.getString(CommManager.JSON_COMPANY_CUI);
+
+                pis.add(pi);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Trying to display public institutions, size " + pis.size());
+        /* Show the info received from the server */
+        displayPIs();
+    }
+
+
     /* PI name, acq, tenders */
     private void displayInitPIInfo() {
         oldTitle = ((HomeActivity) getActivity()).getActionBarTitle();
@@ -568,6 +630,20 @@ public class InstitutionFragment extends Fragment {
             companyListFragment.displayCompanies();
         } else
             System.out.println("NULL company list fragment");
+    }
+
+
+    /* Fil lthe list of public institutions for a company */
+    private void displayPIs() {
+
+        /* Fill the companies list fragment */
+        piListFragment = (InstitutionListFragment) InstitutionViewPageFragment
+                .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
+        if (piListFragment != null) {
+            piListFragment.setPIs(pis);
+            piListFragment.displayPIs();
+        } else
+            System.out.println("NULL pi list fragment");
     }
 
     @Override

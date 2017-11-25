@@ -43,6 +43,7 @@ public class CommManager {
     public static final String BUNDLE_INST_TYPE                 = "bundle_inst_type";
     public static final String BUNDLE_PI_ID                     = "bundle_pi_id";
     public static final String BUNDLE_PI_NAME                   = "bundle_pi_name";
+    public static final String BUNDLE_PI_CUI                    = "bundle_pi_cui";
     public static final String BUNDLE_PI_ACQS                   = "bundle_pi_acqs";
     public static final String BUNDLE_PI_TENDERS                = "bundle_pi_tenders";
     public static final String BUNDLE_CONTRACT_ID               = "bundle contract_id";
@@ -114,6 +115,10 @@ public class CommManager {
     public static final String JSON_COMPANY_ID                  = "CompanieId";
     public static final String JSON_COMPANY_ADDRESS             = "Adresa";
     public static final String JSON_COMPANY_CUI                 = "CUI";
+
+    public static final String JSON_COMPANY_PI_NAME             = "Nume";
+    public static final String JSON_COMPANY_PI_ID               = "Id";
+    public static final String JSON_COMPANY_PI_CUI              = "CUI";
 
 
     public static RequestQueue queue;

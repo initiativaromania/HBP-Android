@@ -1,8 +1,6 @@
 package initiativaromania.hartabanilorpublici.ui;
 
 import android.os.Bundle;
-import android.content.Context;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -46,7 +44,7 @@ public class InstitutionViewPageFragment extends Fragment {
         String tabTitles[];
 
         /* Get the fragments */
-        List<Fragment> fragments = getFragments(fragmentType);
+        List<Fragment> fragments = buildFragments(fragmentType);
 
         /* Set up the viewpager */
         if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION)
@@ -62,7 +60,7 @@ public class InstitutionViewPageFragment extends Fragment {
 
 
     /* Build the viewpager fragments */
-    private List<Fragment> getFragments(int fragmentType) {
+    private List<Fragment> buildFragments(int fragmentType) {
         List<Fragment> fList = new ArrayList<Fragment>();
 
         fList.add(ContractListFragment.newInstance());
@@ -71,7 +69,7 @@ public class InstitutionViewPageFragment extends Fragment {
         if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION)
             fList.add(CompanyListFragment.newInstance());
         else
-            fList.add(CompanyListFragment.newInstance());
+            fList.add(InstitutionListFragment.newInstance());
 
         return fList;
     }

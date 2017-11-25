@@ -88,6 +88,8 @@ public class InstitutionListAdapter extends BaseAdapter implements AdapterView.O
         Bundle bundle = new Bundle();
         bundle.putInt(CommManager.BUNDLE_PI_ID, piItem.id);
         bundle.putString(CommManager.BUNDLE_PI_NAME, piItem.name);
+        bundle.putInt(CommManager.BUNDLE_INST_TYPE,
+                InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION);
 
         piFragment.setArguments(bundle);
 

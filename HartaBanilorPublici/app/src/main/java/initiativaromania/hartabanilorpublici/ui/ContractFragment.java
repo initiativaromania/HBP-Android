@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -323,6 +324,10 @@ public class ContractFragment extends Fragment {
             contract.company.name = companySummary.getString(CommManager.JSON_COMPANY_NAME);
             contract.company.address = companySummary.getString(CommManager.JSON_COMPANY_ADDRESS);
             contract.company.CUI = companySummary.getString(CommManager.JSON_COMPANY_CUI);
+            if (contract.type == Contract.CONTRACT_TYPE_DIRECT_ACQUISITION)
+                contract.company.type = Company.COMPANY_TYPE_AD;
+            else
+                contract.company.type = Company.COMPANY_TYPE_TENDER;
 
             displayCompanyButton();
 
@@ -459,8 +464,32 @@ public class ContractFragment extends Fragment {
     private void displayPIButton() {
         View piView = originalView.findViewById(R.id.piInContract);
 
-        TextView contractName = (TextView) piView.findViewById(R.id.listTitle);
-        contractName.setText(contract.pi.name);
+        TextView piName = (TextView) piView.findViewById(R.id.listTitle);
+        piName.setText(contract.pi.name);
+        piName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Click on pi " + contract.pi.name);
+
+                Fragment piFragment = new InstitutionFragment();
+                FragmentManager fragmentManager = fragmentCopy.getActivity().getSupportFragmentManager();
+
+                /* Build Fragment Arguments */
+                Bundle bundle = new Bundle();
+                bundle.putInt(CommManager.BUNDLE_PI_ID, contract.pi.id);
+                bundle.putString(CommManager.BUNDLE_PI_NAME, contract.pi.name);
+                bundle.putInt(CommManager.BUNDLE_INST_TYPE,
+                        InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION);
+
+                piFragment.setArguments(bundle);
+
+                /* Got the Company Fragment */
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.add(R.id.fragment_institution_layout, piFragment)
+                        .addToBackStack(piFragment.getClass().getName())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+            }
+        });
     }
 
 
@@ -468,8 +497,33 @@ public class ContractFragment extends Fragment {
     private void displayCompanyButton() {
         View piView = originalView.findViewById(R.id.companyInContract);
 
-        TextView contractName = (TextView) piView.findViewById(R.id.listTitle);
-        contractName.setText(contract.company.name);
+        TextView companyName = (TextView) piView.findViewById(R.id.listTitle);
+        companyName.setText(contract.company.name);
+        companyName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                System.out.println("Click on company " + contract.company.name);
+
+                Fragment companyFragment = new InstitutionFragment();
+                FragmentManager fragmentManager = fragmentCopy.getActivity().getSupportFragmentManager();
+
+                /* Build Fragment Arguments */
+                Bundle bundle = new Bundle();
+                bundle.putInt(CommManager.BUNDLE_COMPANY_ID, contract.company.id);
+                bundle.putInt(CommManager.BUNDLE_COMPANY_TYPE, contract.company.type);
+                bundle.putString(CommManager.BUNDLE_COMPANY_NAME, contract.company.name);
+                bundle.putInt(CommManager.BUNDLE_INST_TYPE, InstitutionFragment.CONTRACT_LIST_FOR_COMPANY);
+
+                companyFragment.setArguments(bundle);
+
+                /* Got the Company Fragment */
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.add(R.id.fragment_institution_layout, companyFragment)
+                        .addToBackStack(companyFragment.getClass().getName())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+            }
+        });
     }
 
     @Override

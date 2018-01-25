@@ -16,16 +16,19 @@ import initiativaromania.hartabanilorpublici.R;
  * Created by claudiu on 9/12/17.
  */
 
-public class InstitutionViewPageFragment extends Fragment {
+public class TabbedViewPageFragment extends Fragment {
 
     private String tabTitlesCompany[] = new String[]{"Achizitii directe", "Licitatii", "Institutii publice"};
-    private String tabTitlesBuyer[] = new String[]{"Achizitii directe", "Licitatii", "Companii"};
+    private String tabTitlesInstitution[] = new String[]{"Achizitii directe", "Licitatii", "Companii"};
+    private String tabTitlesSearch[] = new String[]{"Institutii publice", "Companii",
+            "Achizitii directe", "Licitatii"};
+
     public static EntityViewPageAdapter pageAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        System.out.println("On create view InstitutionViewPageFragment fragment");
+        System.out.println("On create view TabbedViewPageFragment fragment");
         return inflater.inflate(R.layout.fragment_viewpager, container, false);
     }
 
@@ -47,14 +50,26 @@ public class InstitutionViewPageFragment extends Fragment {
         List<Fragment> fragments = buildFragments(fragmentType);
 
         /* Set up the viewpager */
-        if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION)
-            tabTitles = tabTitlesBuyer;
-        else
-            tabTitles = tabTitlesCompany;
+        switch (fragmentType) {
+            case InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION:
+                tabTitles = tabTitlesInstitution;
+                break;
+
+            case InstitutionFragment.CONTRACT_LIST_FOR_COMPANY:
+                tabTitles = tabTitlesCompany;
+                break;
+
+            case InstitutionFragment.CONTRACT_LIST_FOR_SEARCH:
+                tabTitles = tabTitlesSearch;
+                break;
+
+            default:
+                tabTitles = null;
+                System.out.println("TabbedViewPageFragment no fragment type");
+        }
 
         pageAdapter = new EntityViewPageAdapter(getFragmentManager(), fragments, tabTitles);
-        ViewPager pager =
-                (ViewPager) getView().findViewById(R.id.viewpager);
+        ViewPager pager = (ViewPager) getView().findViewById(R.id.viewpager);
         pager.setAdapter(pageAdapter);
     }
 
@@ -62,6 +77,14 @@ public class InstitutionViewPageFragment extends Fragment {
     /* Build the viewpager fragments */
     private List<Fragment> buildFragments(int fragmentType) {
         List<Fragment> fList = new ArrayList<Fragment>();
+
+        if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_SEARCH) {
+            fList.add(InstitutionListFragment.newInstance());
+            fList.add(CompanyListFragment.newInstance());
+            fList.add(ContractListFragment.newInstance());
+            fList.add(ContractListFragment.newInstance());
+            return fList;
+        }
 
         fList.add(ContractListFragment.newInstance());
         fList.add(ContractListFragment.newInstance());

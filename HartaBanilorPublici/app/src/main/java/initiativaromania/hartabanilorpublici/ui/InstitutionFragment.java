@@ -16,7 +16,6 @@ import initiativaromania.hartabanilorpublici.comm.CommManager;
 import initiativaromania.hartabanilorpublici.comm.CommManagerResponse;
 import initiativaromania.hartabanilorpublici.data.Company;
 import initiativaromania.hartabanilorpublici.data.Contract;
-import initiativaromania.hartabanilorpublici.data.InstitutionListItem;
 import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -28,6 +27,8 @@ import org.json.JSONObject;
 public class InstitutionFragment extends Fragment {
     public static final int CONTRACT_LIST_FOR_COMPANY               = 1;
     public static final int CONTRACT_LIST_FOR_PUBLIC_INSTITUTION    = 2;
+    public static final int CONTRACT_LIST_FOR_SEARCH                = 3;
+
     public static final String CONTRACT_LIST_TYPE = "contract list type";
     public static final String CONTRACT_LIST_EXTRA = "contract list extra";
     public static final int DIRECT_ACQ_FRAGMENT_INDEX               = 0;
@@ -79,7 +80,7 @@ public class InstitutionFragment extends Fragment {
 
 
         /* Build the View Pager */
-        InstitutionViewPageFragment viewPageFragment = (InstitutionViewPageFragment)
+        TabbedViewPageFragment viewPageFragment = (TabbedViewPageFragment)
                 getChildFragmentManager().findFragmentById(R.id.entity_info_fragment);
 
 
@@ -595,7 +596,7 @@ public class InstitutionFragment extends Fragment {
     private void displayDirectAcqs() {
 
         /* Fill the contract list fragment */
-        directAcqListFragment = (ContractListFragment) InstitutionViewPageFragment
+        directAcqListFragment = (ContractListFragment) TabbedViewPageFragment
                 .pageAdapter.fragments.get(DIRECT_ACQ_FRAGMENT_INDEX);
         if (directAcqListFragment != null) {
             directAcqListFragment.setContracts(directAcqs);
@@ -609,7 +610,7 @@ public class InstitutionFragment extends Fragment {
     private void displayTenders() {
 
         /* Fill the contract list fragment */
-        tendersListFragment = (ContractListFragment) InstitutionViewPageFragment
+        tendersListFragment = (ContractListFragment) TabbedViewPageFragment
                 .pageAdapter.fragments.get(TENDER_FRAGMENT_INDEX);
         if (tendersListFragment != null) {
             tendersListFragment.setContracts(tenders);
@@ -623,7 +624,7 @@ public class InstitutionFragment extends Fragment {
     private void displayCompanies() {
 
         /* Fill the companies list fragment */
-        companyListFragment = (CompanyListFragment) InstitutionViewPageFragment
+        companyListFragment = (CompanyListFragment) TabbedViewPageFragment
                 .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
         if (companyListFragment != null) {
             companyListFragment.setCompanies(companies);
@@ -637,7 +638,7 @@ public class InstitutionFragment extends Fragment {
     private void displayPIs() {
 
         /* Fill the companies list fragment */
-        piListFragment = (InstitutionListFragment) InstitutionViewPageFragment
+        piListFragment = (InstitutionListFragment) TabbedViewPageFragment
                 .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
         if (piListFragment != null) {
             piListFragment.setPIs(pis);

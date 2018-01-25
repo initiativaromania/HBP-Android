@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,35 +6,54 @@
     tools:context="initiativaromania.hartabanilorpublici.ui.SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/searchButton"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cauta" />
-            <AutoCompleteTextView
-                android:id="@+id/autocompleteSearch"
-                android:layout_toLeftOf="@id/searchButton"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="type to search" />
-        </RelativeLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <ExpandableListView
-            android:id="@+id/searchData1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
+        <AutoCompleteTextView
+            android:id="@+id/autocompleteSearch"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corner"
+            android:hint="  Cauta" />
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_alignParentRight="true"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:text="Anuleaza" />
     </LinearLayout>
-    </LinearLayout>
-</FrameLayout>
+
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/expandableLayout1"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/search_fragment"
+            android:name="initiativaromania.hartabanilorpublici.ui.TabbedViewPageFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+    </FrameLayout>
+
+
+
+
+
+
+
+</LinearLayout>

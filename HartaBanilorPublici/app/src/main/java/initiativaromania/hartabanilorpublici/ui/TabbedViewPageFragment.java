@@ -16,20 +16,36 @@ import initiativaromania.hartabanilorpublici.R;
  * Created by claudiu on 9/12/17.
  */
 
-public class TabbedViewPageFragment extends Fragment {
+public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
-    private String tabTitlesCompany[] = new String[]{"Achizitii directe", "Licitatii", "Institutii publice"};
-    private String tabTitlesInstitution[] = new String[]{"Achizitii directe", "Licitatii", "Companii"};
-    private String tabTitlesSearch[] = new String[]{"Institutii publice", "Companii",
-            "Achizitii directe", "Licitatii"};
+    public static final String TAB_ACHIZITII_DIRECTE    = "Achizitii directe";
+    public static final String TAB_LICITATII            = "Licitatii";
+    public static final String TAB_INSTITUTII_PUBLICE   = "Institutii publice";
+    public static final String TAB_COMPANII             = "Companii";
+
+    private String tabTitlesCompany[] = new String[]{TAB_ACHIZITII_DIRECTE, TAB_LICITATII,
+            TAB_INSTITUTII_PUBLICE};
+    private String tabTitlesInstitution[] = new String[]{TAB_ACHIZITII_DIRECTE, TAB_LICITATII,
+            TAB_COMPANII};
+    public String tabTitlesSearch[] = new String[]{TAB_INSTITUTII_PUBLICE, TAB_COMPANII,
+            TAB_ACHIZITII_DIRECTE, TAB_LICITATII};
 
     public static EntityViewPageAdapter pageAdapter;
+    public static ViewPager pager;
+    public int pagePosition;
+    private ArrayList<TabbedViewPageListener> pageListeners = new ArrayList<TabbedViewPageListener>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         System.out.println("On create view TabbedViewPageFragment fragment");
-        return inflater.inflate(R.layout.fragment_viewpager, container, false);
+        View tabbedView = inflater.inflate(R.layout.fragment_viewpager, container, false);
+
+        /* This has the actual pages */
+        pager = (ViewPager) tabbedView.findViewById(R.id.viewpager);
+        pager.setOnPageChangeListener(this);
+
+        return tabbedView;
     }
 
 
@@ -69,7 +85,6 @@ public class TabbedViewPageFragment extends Fragment {
         }
 
         pageAdapter = new EntityViewPageAdapter(getFragmentManager(), fragments, tabTitles);
-        ViewPager pager = (ViewPager) getView().findViewById(R.id.viewpager);
         pager.setAdapter(pageAdapter);
     }
 
@@ -95,5 +110,29 @@ public class TabbedViewPageFragment extends Fragment {
             fList.add(InstitutionListFragment.newInstance());
 
         return fList;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        pagePosition = position;
+
+        for (TabbedViewPageListener pageListener : pageListeners)
+            pageListener.onPageChanged(position);
+
+        System.out.println("Page position is now " + position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    public void registerPageListener(TabbedViewPageListener pageListener) {
+        pageListeners.add(pageListener);
     }
 }

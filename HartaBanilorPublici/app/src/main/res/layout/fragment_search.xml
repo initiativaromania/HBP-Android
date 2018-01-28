@@ -11,17 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorPrimary"
-        android:paddingTop="10dp"
+        android:paddingTop="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:paddingBottom="5dp"
         android:orientation="horizontal">
-        <AutoCompleteTextView
-            android:id="@+id/autocompleteSearch"
+        <SearchView
+            android:id="@+id/searchText"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
+            android:queryHint="Cauta"
             android:background="@drawable/rounded_corner"
-            android:hint="  Cauta" />
+            android:clickable="true" />
 
         <Button
             android:id="@+id/searchButton"

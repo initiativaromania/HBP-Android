@@ -14,6 +14,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * Created by claudiu on 9/16/17.
  */
@@ -37,6 +40,10 @@ public class CommManager {
     private static final String URL_GET_PI_BY_TENDER_COMPANY    = SERVER_IP + "InsitutionsByTenderCompany/";
     private static final String URL_GET_AD_COMPANY_CONTRACTS    = SERVER_IP + "ADCompanyContracts/";
     private static final String URL_GET_TENDER_COMPANY_TENDERS  = SERVER_IP + "TenderCompanyTenders/";
+    private static final String URL_SEARCH_PUBLIC_INSTITUTION   = SERVER_IP + "SearchInstitution/";
+    private static final String URL_SEARCH_COMPANY              = SERVER_IP + "SearchCompany/";
+    private static final String URL_SEARCH_AD                   = SERVER_IP + "SearchContract/";
+    private static final String URL_SEARCH_TENDERS              = SERVER_IP + "SearchTenders/";
 
 
     /* Bundle keys */
@@ -260,5 +267,57 @@ public class CommManager {
         System.out.println("Send TenderCompanyTenders request to URL " +
                 URL_GET_TENDER_COMPANY_TENDERS + companyID);
         request(commManagerResponse, URL_GET_TENDER_COMPANY_TENDERS + companyID);
+    }
+
+    /* Send a request to the server to search for a public institution */
+    public static void searchPublicInstitution(final CommManagerResponse commManagerResponse, String pi) {
+        String encodedURL = URL_SEARCH_PUBLIC_INSTITUTION;
+
+        try {
+            encodedURL += URLEncoder.encode(pi, "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Search Public Institutions with URL " + encodedURL);
+        request(commManagerResponse, encodedURL);
+    }
+
+    /* Send a request to the server to search for a company */
+    public static void searchCompany(final CommManagerResponse commManagerResponse, String company) {
+        String encodedURL = URL_SEARCH_COMPANY;
+
+        try {
+            encodedURL += URLEncoder.encode(company, "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Search Companies with URL " + encodedURL);
+        request(commManagerResponse, encodedURL);
+    }
+
+    /* Send a request to the server to search for direct acquisitions */
+    public static void searchAD(final CommManagerResponse commManagerResponse, String ad) {
+        String encodedURL = URL_SEARCH_AD;
+
+        try {
+            encodedURL += URLEncoder.encode(ad, "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Search ADs with URL " + encodedURL);
+        request(commManagerResponse, encodedURL);
+    }
+
+    /* Send a request to the server to search for a public institution */
+    public static void searchTender(final CommManagerResponse commManagerResponse, String tender) {
+        String encodedURL = URL_SEARCH_TENDERS;
+
+        try {
+            encodedURL += URLEncoder.encode(tender, "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Search Tenders with URL " + encodedURL);
+        request(commManagerResponse, encodedURL);
     }
 }

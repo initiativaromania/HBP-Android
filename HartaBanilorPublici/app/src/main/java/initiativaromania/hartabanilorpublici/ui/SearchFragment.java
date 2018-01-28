@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,6 +35,8 @@ import com.android.volley.toolbox.Volley;
 */
 
 import initiativaromania.hartabanilorpublici.R;
+import initiativaromania.hartabanilorpublici.comm.CommManager;
+import initiativaromania.hartabanilorpublici.comm.CommManagerResponse;
 import initiativaromania.hartabanilorpublici.data.Contract;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener,
@@ -41,8 +44,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     public String oldTitle;
     public String currentQuerry;
+    public int currentPosition;
     public SearchView searchView;
     TabbedViewPageFragment viewPageFragment;
+    private Fragment fragmentCopy;
 
     private Object[] searchFragments = new Object[4];
     private ContractListFragment directAcqListFragment;
@@ -55,6 +60,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_search, container, false);
+        fragmentCopy = this;
 
         /* Build the tabbed View Pager */
         viewPageFragment = (TabbedViewPageFragment)
@@ -99,16 +105,23 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         return false;
     }
 
+
     @Override
     public boolean onQueryTextChange(String newText) {
         System.out.println("SearchView Change " + newText);
         return false;
     }
 
+
     @Override
     public void onPageChanged(int position) {
         System.out.println("SearchFragment: position has changed to " + position);
         Object searchFragment = searchFragments[position];
+        currentPosition = position;
+
+        /* Nothing to do if we have no query */
+        if (currentQuerry == null)
+            return;
 
         /* If it hadn't been searched for before, search now */
         if (searchFragment == null)
@@ -124,30 +137,87 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
         switch (position) {
             case 0:
-                /* Public Institutions */
-                piListFragment = new InstitutionListFragment();
+                /* Search the public institution using the server */
+                CommManager.searchPublicInstitution(new CommManagerResponse() {
+                    @Override
+                    public void processResponse(JSONArray response) {
+                        receivePISearchResults(response);
+                    }
 
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
+                        if (fragmentCopy.getContext() != null) {
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, query);
+
+                piListFragment = new InstitutionListFragment();
                 searchFragments[position] = piListFragment;
+
                 break;
 
             case 1:
-                /* Companies */
-                companyListFragment = new CompanyListFragment();
+                /* Search the Company using the server */
+                CommManager.searchCompany(new CommManagerResponse() {
+                    @Override
+                    public void processResponse(JSONArray response) {
+                        receiveCompanySearchResults(response);
+                    }
 
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
+                        if (fragmentCopy.getContext() != null) {
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, query);
+
+                companyListFragment = new CompanyListFragment();
                 searchFragments[position] = companyListFragment;
                 break;
 
             case 2:
                 /* Direct Acquisitions */
-                directAcqListFragment = new ContractListFragment();
+                /* Search the direct acquisitions using the server */
+                CommManager.searchAD(new CommManagerResponse() {
+                    @Override
+                    public void processResponse(JSONArray response) {
+                        receiveADSearchResults(response);
+                    }
 
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
+                        if (fragmentCopy.getContext() != null)
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                    }
+                }, query);
+
+                directAcqListFragment = new ContractListFragment();
                 searchFragments[position] = directAcqListFragment;
                 break;
 
             case 3:
                 /* Tenders */
-                tendersListFragment = new ContractListFragment();
+                /* Search the tenders using the server */
+                CommManager.searchTender(new CommManagerResponse() {
+                    @Override
+                    public void processResponse(JSONArray response) {
+                        receiveTenderSearchResults(response);
+                    }
 
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
+                        if (fragmentCopy.getContext() != null)
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                    }
+                }, query);
+
+                tendersListFragment = new ContractListFragment();
                 searchFragments[position] = tendersListFragment;
                 break;
 
@@ -155,5 +225,37 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 System.out.println("SearchFragment: unknown page index");
                 return;
         }
+    }
+
+
+    /* Receive PI search response from server */
+    private void receivePISearchResults(JSONArray response) {
+        /* Public Institutions */
+        System.out.println("Search Result " + response);
+
+    }
+
+
+    /* Receive PI search response from server */
+    private void receiveCompanySearchResults(JSONArray response) {
+        /* Public Institutions */
+        System.out.println("Search Result " + response);
+
+    }
+
+
+    /* Receive PI search response from server */
+    private void receiveADSearchResults(JSONArray response) {
+        /* Public Institutions */
+        System.out.println("Search Result " + response);
+
+    }
+
+
+    /* Receive PI search response from server */
+    private void receiveTenderSearchResults(JSONArray response) {
+        /* Public Institutions */
+        System.out.println("Search Result " + response);
+
     }
 }

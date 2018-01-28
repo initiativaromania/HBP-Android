@@ -17,11 +17,13 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /*
@@ -37,10 +39,18 @@ import com.android.volley.toolbox.Volley;
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.comm.CommManager;
 import initiativaromania.hartabanilorpublici.comm.CommManagerResponse;
+import initiativaromania.hartabanilorpublici.data.Company;
 import initiativaromania.hartabanilorpublici.data.Contract;
+import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener,
         TabbedViewPageListener {
+
+    public static final int INSTITUTIONS_FRAGMENT_INDEX             = 0;
+    public static final int COMPANIES_FRAGMENT_INDEX                = 1;
+    public static final int DIRECT_ACQ_FRAGMENT_INDEX               = 2;
+    public static final int TENDER_FRAGMENT_INDEX                   = 3;
+
 
     public String oldTitle;
     public String currentQuerry;
@@ -54,6 +64,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private ContractListFragment tendersListFragment;
     private CompanyListFragment companyListFragment;
     private InstitutionListFragment piListFragment;
+
+    private LinkedList<Contract> directAcqs = new LinkedList<Contract>();
+    private LinkedList<Contract> tenders = new LinkedList<Contract>();
+    private LinkedList<Company> companies = new LinkedList<Company>();
+    private LinkedList<PublicInstitution> pis = new LinkedList<PublicInstitution>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,7 +151,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         System.out.println("Search " + position + " " + query);
 
         switch (position) {
-            case 0:
+            case INSTITUTIONS_FRAGMENT_INDEX:
                 /* Search the public institution using the server */
                 CommManager.searchPublicInstitution(new CommManagerResponse() {
                     @Override
@@ -158,7 +173,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                 break;
 
-            case 1:
+            case COMPANIES_FRAGMENT_INDEX:
                 /* Search the Company using the server */
                 CommManager.searchCompany(new CommManagerResponse() {
                     @Override
@@ -179,7 +194,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 searchFragments[position] = companyListFragment;
                 break;
 
-            case 2:
+            case DIRECT_ACQ_FRAGMENT_INDEX:
                 /* Direct Acquisitions */
                 /* Search the direct acquisitions using the server */
                 CommManager.searchAD(new CommManagerResponse() {
@@ -200,7 +215,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 searchFragments[position] = directAcqListFragment;
                 break;
 
-            case 3:
+            case TENDER_FRAGMENT_INDEX:
                 /* Tenders */
                 /* Search the tenders using the server */
                 CommManager.searchTender(new CommManagerResponse() {
@@ -233,20 +248,39 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         /* Public Institutions */
         System.out.println("Search Result " + response);
 
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject piObj = response.getJSONObject(i);
+                if (piObj == null)
+                    continue;
+
+                PublicInstitution pi = new PublicInstitution();
+                pi.id = Integer.parseInt(piObj.getString(CommManager.JSON_SEARCH_INSTITUTION_ID));
+                pi.name = piObj.getString(CommManager.JSON_COMPANY_PI_NAME);
+                pi.CUI = piObj.getString(CommManager.JSON_COMPANY_CUI);
+
+                pis.add(pi);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Trying to display public institutions, size " + pis.size());
+
+        /* Show the info received from the server */
+        displayPIs();
     }
 
 
     /* Receive PI search response from server */
     private void receiveCompanySearchResults(JSONArray response) {
-        /* Public Institutions */
-        System.out.println("Search Result " + response);
+
 
     }
 
 
     /* Receive PI search response from server */
     private void receiveADSearchResults(JSONArray response) {
-        /* Public Institutions */
         System.out.println("Search Result " + response);
 
     }
@@ -254,8 +288,21 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     /* Receive PI search response from server */
     private void receiveTenderSearchResults(JSONArray response) {
-        /* Public Institutions */
         System.out.println("Search Result " + response);
 
+    }
+
+
+    /* Fill the list of public institutions */
+    private void displayPIs() {
+
+        /* Fill the companies list fragment */
+        piListFragment = (InstitutionListFragment) TabbedViewPageFragment
+                .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
+        if (piListFragment != null) {
+            piListFragment.setPIs(pis);
+            piListFragment.displayPIs();
+        } else
+            System.out.println("NULL pi list fragment");
     }
 }

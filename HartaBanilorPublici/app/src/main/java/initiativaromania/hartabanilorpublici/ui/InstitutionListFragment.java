@@ -60,7 +60,7 @@ public class InstitutionListFragment  extends Fragment {
         }
 
         ListView orderList = (ListView) v.findViewById(R.id.list_entities);
-        InstitutionListAdapter adapter = new InstitutionListAdapter(getActivity(), orderDetailsList);
+        InstitutionListAdapter adapter = new InstitutionListAdapter(getActivity(), this, orderDetailsList);
         orderList.setAdapter(adapter);
         orderList.setOnItemClickListener(adapter);
     }

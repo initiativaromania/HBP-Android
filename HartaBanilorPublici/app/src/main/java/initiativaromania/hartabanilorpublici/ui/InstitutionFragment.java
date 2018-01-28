@@ -533,6 +533,7 @@ public class InstitutionFragment extends Fragment {
         }
 
         System.out.println("Trying to display public institutions, size " + pis.size());
+
         /* Show the info received from the server */
         displayPIs();
     }

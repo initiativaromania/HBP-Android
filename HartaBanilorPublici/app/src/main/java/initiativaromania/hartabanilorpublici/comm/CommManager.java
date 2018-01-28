@@ -126,6 +126,7 @@ public class CommManager {
     public static final String JSON_COMPANY_PI_NAME             = "Nume";
     public static final String JSON_COMPANY_PI_ID               = "Id";
     public static final String JSON_COMPANY_PI_CUI              = "CUI";
+    public static final String JSON_SEARCH_INSTITUTION_ID       = "InstitutiePublicaId";
 
 
     public static RequestQueue queue;

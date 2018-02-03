@@ -48,6 +48,8 @@ public class InstitutionFragment extends Fragment {
     private CompanyListFragment companyListFragment;
     private InstitutionListFragment piListFragment;
 
+    TabbedViewPageFragment viewPageFragment;
+
     private View originalView;
     private Fragment fragmentCopy;
 
@@ -80,7 +82,7 @@ public class InstitutionFragment extends Fragment {
 
 
         /* Build the View Pager */
-        TabbedViewPageFragment viewPageFragment = (TabbedViewPageFragment)
+        viewPageFragment = (TabbedViewPageFragment)
                 getChildFragmentManager().findFragmentById(R.id.entity_info_fragment);
 
 
@@ -597,7 +599,7 @@ public class InstitutionFragment extends Fragment {
     private void displayDirectAcqs() {
 
         /* Fill the contract list fragment */
-        directAcqListFragment = (ContractListFragment) TabbedViewPageFragment
+        directAcqListFragment = (ContractListFragment) viewPageFragment
                 .pageAdapter.fragments.get(DIRECT_ACQ_FRAGMENT_INDEX);
         if (directAcqListFragment != null) {
             directAcqListFragment.setContracts(directAcqs);
@@ -611,7 +613,7 @@ public class InstitutionFragment extends Fragment {
     private void displayTenders() {
 
         /* Fill the contract list fragment */
-        tendersListFragment = (ContractListFragment) TabbedViewPageFragment
+        tendersListFragment = (ContractListFragment) viewPageFragment
                 .pageAdapter.fragments.get(TENDER_FRAGMENT_INDEX);
         if (tendersListFragment != null) {
             tendersListFragment.setContracts(tenders);
@@ -625,7 +627,7 @@ public class InstitutionFragment extends Fragment {
     private void displayCompanies() {
 
         /* Fill the companies list fragment */
-        companyListFragment = (CompanyListFragment) TabbedViewPageFragment
+        companyListFragment = (CompanyListFragment) viewPageFragment
                 .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
         if (companyListFragment != null) {
             companyListFragment.setCompanies(companies);
@@ -639,7 +641,7 @@ public class InstitutionFragment extends Fragment {
     private void displayPIs() {
 
         /* Fill the companies list fragment */
-        piListFragment = (InstitutionListFragment) TabbedViewPageFragment
+        piListFragment = (InstitutionListFragment) viewPageFragment
                 .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
         if (piListFragment != null) {
             piListFragment.setPIs(pis);

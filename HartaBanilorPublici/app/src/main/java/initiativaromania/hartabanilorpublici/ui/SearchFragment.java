@@ -1,18 +1,10 @@
 package initiativaromania.hartabanilorpublici.ui;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -20,11 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 /*
 import com.android.volley.JsonArrayRequest;
@@ -44,7 +32,9 @@ import initiativaromania.hartabanilorpublici.data.Contract;
 import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener,
-        TabbedViewPageListener {
+        SearchView.OnCloseListener, TabbedViewPageListener {
+
+    public static final String SEARCH_NO_RESULT_MSG                 = "Niciun rezultat";
 
     public static final int INSTITUTIONS_FRAGMENT_INDEX             = 0;
     public static final int COMPANIES_FRAGMENT_INDEX                = 1;
@@ -76,10 +66,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
         View root = inflater.inflate(R.layout.fragment_search, container, false);
         fragmentCopy = this;
+        currentQuerry = null;
 
         /* Build the tabbed View Pager */
         viewPageFragment = (TabbedViewPageFragment)
-                getChildFragmentManager().findFragmentById(R.id.search_fragment);
+                getChildFragmentManager().findFragmentById(R.id.search_results_fragment);
         viewPageFragment.setViewPager(InstitutionFragment.CONTRACT_LIST_FOR_SEARCH);
         viewPageFragment.registerPageListener(this);
 
@@ -95,6 +86,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             return null;
         }
         searchView.setOnQueryTextListener(this);
+        searchView.setOnCloseListener(this);
+
+        piListFragment = null;
+        directAcqListFragment = null;
+        tendersListFragment = null;
+        companyListFragment = null;
+
         return root;
     }
 
@@ -124,6 +122,20 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public boolean onQueryTextChange(String newText) {
         System.out.println("SearchView Change " + newText);
+        if (newText.equals(""))
+            onClose();
+
+        return false;
+    }
+
+
+    @Override
+    public boolean onClose() {
+        System.out.println("Pressed search close");
+        currentQuerry = "";
+        pis.clear();
+        displayPIs();
+
         return false;
     }
 
@@ -248,6 +260,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         /* Public Institutions */
         System.out.println("Search Result " + response);
 
+        pis.clear();
         try {
             for (int i = 0; i < response.length(); i++) {
                 JSONObject piObj = response.getJSONObject(i);
@@ -266,6 +279,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         }
 
         System.out.println("Trying to display public institutions, size " + pis.size());
+
+        /* Show toast if no results */
+        if (pis.size() == 0 && fragmentCopy.getContext() != null)
+            Toast.makeText(fragmentCopy.getContext(), SEARCH_NO_RESULT_MSG,
+                    Toast.LENGTH_SHORT).show();
 
         /* Show the info received from the server */
         displayPIs();
@@ -297,12 +315,14 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private void displayPIs() {
 
         /* Fill the companies list fragment */
-        piListFragment = (InstitutionListFragment) TabbedViewPageFragment
+        piListFragment = (InstitutionListFragment) viewPageFragment
                 .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
         if (piListFragment != null) {
+            piListFragment.clearPIs();
             piListFragment.setPIs(pis);
             piListFragment.displayPIs();
         } else
             System.out.println("NULL pi list fragment");
     }
+
 }

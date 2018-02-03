@@ -25,12 +25,14 @@ public class InstitutionListFragment  extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     private View v;
     public LinkedList<PublicInstitution> pis;
+    public int parentID;
 
-    public static InstitutionListFragment newInstance() {
+    public static InstitutionListFragment newInstance(int parentID) {
         InstitutionListFragment f = new InstitutionListFragment();
         Bundle bdl = new Bundle(1);
         bdl.putString(EXTRA_MESSAGE, "InstitutionListFragment");
         f.setArguments(bdl);
+        f.parentID = parentID;
         return f;
     }
 
@@ -60,14 +62,20 @@ public class InstitutionListFragment  extends Fragment {
         }
 
         ListView orderList = (ListView) v.findViewById(R.id.list_entities);
-        InstitutionListAdapter adapter = new InstitutionListAdapter(getActivity(), this, orderDetailsList);
+        InstitutionListAdapter adapter = new InstitutionListAdapter(getActivity(), parentID, orderDetailsList);
         orderList.setAdapter(adapter);
         orderList.setOnItemClickListener(adapter);
     }
 
 
-    /* Set companies in the fragment */
+    /* Set public institutions in the fragment */
     public void setPIs(LinkedList<PublicInstitution> pis) {
         this.pis = pis;
     };
+
+
+    /* Clear the list of public institutions */
+    public void clearPIs() {
+        this.pis = new LinkedList<>();
+    }
 }

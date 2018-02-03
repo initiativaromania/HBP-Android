@@ -28,12 +28,13 @@ import initiativaromania.hartabanilorpublici.data.InstitutionListItem;
 public class InstitutionListAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
     private final FragmentActivity context;
-    private final Fragment frag;
     private List<InstitutionListItem> pis;
+    private int parentID;
 
-    public InstitutionListAdapter(FragmentActivity context, Fragment frag, List<InstitutionListItem> companies) {
+    public InstitutionListAdapter(FragmentActivity context, int parentID,
+                                  List<InstitutionListItem> companies) {
         this.context = context;
-        this.frag = frag;
+        this.parentID = parentID;
         this.pis = companies;
     }
 
@@ -103,8 +104,8 @@ public class InstitutionListAdapter extends BaseAdapter implements AdapterView.O
         System.out.println("Test7");
         /* Got the Company Fragment */
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        System.out.println("Test8");
-        transaction.add(R.id.fragment_institution_layout, piFragment)
+        System.out.println("Test8 " + parentID + " " + R.id.fragment_institution_layout);
+        transaction.add(parentID, piFragment)
                 .addToBackStack(piFragment.getClass().getName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }

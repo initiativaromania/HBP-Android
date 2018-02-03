@@ -30,8 +30,8 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
     public String tabTitlesSearch[] = new String[]{TAB_INSTITUTII_PUBLICE, TAB_COMPANII,
             TAB_ACHIZITII_DIRECTE, TAB_LICITATII};
 
-    public static EntityViewPageAdapter pageAdapter;
-    public static ViewPager pager;
+    public EntityViewPageAdapter pageAdapter;
+    public ViewPager pager;
     public int pagePosition;
     private ArrayList<TabbedViewPageListener> pageListeners = new ArrayList<TabbedViewPageListener>();
 
@@ -94,7 +94,7 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
         List<Fragment> fList = new ArrayList<Fragment>();
 
         if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_SEARCH) {
-            fList.add(InstitutionListFragment.newInstance());
+            fList.add(InstitutionListFragment.newInstance(R.id.fragment_search_layout));
             fList.add(CompanyListFragment.newInstance());
             fList.add(ContractListFragment.newInstance());
             fList.add(ContractListFragment.newInstance());
@@ -107,7 +107,7 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
         if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION)
             fList.add(CompanyListFragment.newInstance());
         else
-            fList.add(InstitutionListFragment.newInstance());
+            fList.add(InstitutionListFragment.newInstance(R.id.fragment_institution_layout));
 
         return fList;
     }

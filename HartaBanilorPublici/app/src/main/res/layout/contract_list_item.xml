@@ -17,15 +17,17 @@
         <TextView
             android:id="@+id/listTitle"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/list_height"
             android:layout_weight="2"
-            android:textColor="#000000"
+            android:paddingTop="@dimen/list_pad_top"
+            android:paddingBottom="@dimen/list_pad_bot"
+            android:textColor="@color/colorListText"
             android:text="">
         </TextView>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/list_height"
             android:layout_weight="6"
             android:layout_gravity="center_vertical"
             android:id="@+id/listPrice">

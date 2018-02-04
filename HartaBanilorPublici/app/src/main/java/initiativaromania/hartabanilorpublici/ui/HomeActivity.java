@@ -17,8 +17,11 @@ import initiativaromania.hartabanilorpublici.comm.CommManager;
 public class HomeActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
+
     private MapFragment mapFragment = null;
     private SearchFragment searchFragment = null;
+    private StatsFragment statsFragment = null;
+    private InfoFragment infoFragment = null;
 
 
     /* Set the current content of the bottom navigation view */
@@ -61,15 +64,15 @@ public class HomeActivity extends AppCompatActivity {
                     break;
 
                 case R.id.navigation_top:
-                    if (searchFragment == null)
-                        searchFragment = new SearchFragment();
-                    fragment = searchFragment;
+                    if (statsFragment == null)
+                        statsFragment = new StatsFragment();
+                    fragment = statsFragment;
                     break;
 
                 case R.id.navigation_info:
-                    if (searchFragment == null)
-                        searchFragment = new SearchFragment();
-                    fragment = searchFragment;
+                    if (infoFragment == null)
+                        infoFragment = new InfoFragment();
+                    fragment = infoFragment;
                     break;
             }
 

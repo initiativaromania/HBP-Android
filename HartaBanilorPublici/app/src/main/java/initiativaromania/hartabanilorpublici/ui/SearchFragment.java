@@ -34,6 +34,7 @@ import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener,
         SearchView.OnCloseListener, TabbedViewPageListener {
 
+    private static final String SEARCH_FRAGMENT_NAME                = "Cautare";
     public static final String SEARCH_NO_RESULT_MSG                 = "Niciun rezultat";
 
     public static final int INSTITUTIONS_FRAGMENT_INDEX             = 0;
@@ -76,7 +77,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
         /* Update the main activity title */
         oldTitle = ((HomeActivity) getActivity()).getActionBarTitle();
-        ((HomeActivity) getActivity()).setActionBarTitle("Cautare");
+        ((HomeActivity) getActivity()).setActionBarTitle(SEARCH_FRAGMENT_NAME);
 
 
         /* Get the SearchView */
@@ -147,7 +148,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         currentPosition = position;
 
         /* Nothing to do if we have no query */
-        if (currentQuerry == null)
+        if (currentQuerry == null || currentQuerry.equals(""))
             return;
 
         /* If it hadn't been searched for before, search now */
@@ -195,10 +196,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy.getContext() != null) {
-                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                    Toast.LENGTH_SHORT).show();
-                        }
+//                        if (fragmentCopy.getContext() != null) {
+//                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
                     }
                 }, query);
 
@@ -217,9 +218,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy.getContext() != null)
-                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                    Toast.LENGTH_SHORT).show();
+//                        if (fragmentCopy.getContext() != null)
+//                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+//                                    Toast.LENGTH_SHORT).show();
                     }
                 }, query);
 
@@ -238,9 +239,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy.getContext() != null)
-                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                    Toast.LENGTH_SHORT).show();
+//                        if (fragmentCopy.getContext() != null)
+//                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+//                                    Toast.LENGTH_SHORT).show();
                     }
                 }, query);
 

@@ -1,8 +1,10 @@
 package initiativaromania.hartabanilorpublici.ui;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +16,8 @@ import android.widget.TextView;
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.comm.CommManager;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity
+        implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private FragmentManager fragmentManager;
 
@@ -117,5 +120,27 @@ public class HomeActivity extends AppCompatActivity {
 
         mapFragment = new MapFragment();
         setFragment(mapFragment);
+    }
+
+    /**
+     * Permission handler for GPS location
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MapFragment.HBP_PERMISSION_ACCESS_COURSE_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    System.out.println("GPS permissions granted");
+                    mapFragment.mLocationPermissionGranted = true;
+                } else {
+                    System.out.println("GPS permissions denied");
+                    mapFragment.mLocationPermissionGranted = false;
+                }
+            }
+        }
+
+        mapFragment.updateLocationUI();
     }
 }

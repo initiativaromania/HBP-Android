@@ -1,10 +1,14 @@
 package initiativaromania.hartabanilorpublici.ui;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -13,7 +17,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.location.Location;
+import android.content.pm.PackageManager;
 
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,8 +38,12 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.android.gms.location.places.GeoDataClient;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +55,7 @@ import java.util.LinkedList;
 
 import initiativaromania.hartabanilorpublici.comm.CommManager;
 import initiativaromania.hartabanilorpublici.comm.CommManagerResponse;
+import initiativaromania.hartabanilorpublici.comm.HBPLocationListener;
 import initiativaromania.hartabanilorpublici.data.PublicInstitutionsManager;
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.data.PublicInstitution;
@@ -45,8 +66,11 @@ public class MapFragment extends android.support.v4.app.Fragment
         GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener,
         ClusterManager.OnClusterItemClickListener {
 
-    private static final int MAP_DEFAULT_ZOOM       = 10;
-
+    private static final int MAP_DEFAULT_ZOOM                           = 10;
+    private static final int MAP_DETAILED_ZOOM                          = 13;
+    public static final int HBP_PERMISSION_ACCESS_COURSE_LOCATION       = 19;
+    private static final int LOCATION_UPDATE_INTERVAL                   = 30;
+    private static final int LOCATION_UPDATE_INTERVAL_MIN               = 10;
 
     /* Setup Objects */
     public ClusterManager<PublicInstitution> clusterManager = null;
@@ -68,9 +92,20 @@ public class MapFragment extends android.support.v4.app.Fragment
     boolean dataInited = false;
     PublicInstitution clickedPI;
     Marker clickedMarker;
+    Location currentLocation;
+    boolean mLocationPermissionGranted;
+
+    /* Location objects */
+    GeoDataClient mGeoDataClient;
+    PlaceDetectionClient mPlaceDetectionClient;
+    FusedLocationProviderClient mFusedLocationProviderClient;
+    Location mLastLocation;
+    LocationRequest mLocationRequest;
 
 
-    public MapFragment(){};
+
+    public MapFragment() {
+    };
 
 
     /**
@@ -80,6 +115,9 @@ public class MapFragment extends android.support.v4.app.Fragment
         if (dataInited == true)
             return;
 
+        /* Initialize location objects */
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
+
         System.out.println("Getting all the data from server");
 
         /* Init the hashmap Marker - Buyer */
@@ -87,6 +125,7 @@ public class MapFragment extends android.support.v4.app.Fragment
 
         /* Read the list of public institutions */
         PublicInstitutionsManager.populatePIs(this);
+
 
         dataInited = true;
     }
@@ -111,7 +150,6 @@ public class MapFragment extends android.support.v4.app.Fragment
     }
 
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         System.out.println("ON MAP READY");
@@ -123,19 +161,36 @@ public class MapFragment extends android.support.v4.app.Fragment
 
         /* Build an empty cluster of markers */
         if (clusterManager == null) {
-            System.out.println("Cluster manager is null");
+            System.out.println("Cluster manager is not null");
             clusterManager = new ClusterManager<PublicInstitution>(this.getContext(), mMap);
             clusterManager.setOnClusterItemClickListener(this);
             mMap.setOnMarkerClickListener(clusterManager);
             //clusterManager.setRenderer(new PublicInstitutionRenderer());
             System.out.println("MAP IS READY");
-
-            // TODO get the current location
-            LatLng bucharest = new LatLng(44.435503, 26.102513);
-            //mMap.addMarker(new MarkerOptions().position(bucharest).title("Locatia ta"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(bucharest));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bucharest, MAP_DEFAULT_ZOOM));
         }
+
+
+
+
+        LatLng bucharest = HBPLocationListener.BUCHAREST_LOCATION;
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(bucharest));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bucharest, MAP_DEFAULT_ZOOM));
+
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(LOCATION_UPDATE_INTERVAL); // two minute interval
+        mLocationRequest.setFastestInterval(LOCATION_UPDATE_INTERVAL_MIN);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        // Create LocationSettingsRequest object using location request
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        SettingsClient settingsClient = LocationServices.getSettingsClient(this.getActivity());
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        getLocationPermission();
     }
 
 
@@ -170,6 +225,7 @@ public class MapFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onCameraIdle() {
+
         System.out.println("CAMERA IS IDLE");
         if (clusterManager != null) {
             clusterManager.onCameraIdle();
@@ -328,48 +384,72 @@ public class MapFragment extends android.support.v4.app.Fragment
         return false;
     }
 
-//    private class PublicInstitutionRenderer extends DefaultClusterRenderer<PublicInstitution> {
-//        private final IconGenerator mIconGenerator = new IconGenerator(getContext());
-//        private final IconGenerator mClusterIconGenerator = new IconGenerator(getContext());
-//        private final ImageView mImageView;
-//        private final ImageView mClusterImageView;
-//        private final int mDimension;
-//
-//        public PublicInstitutionRenderer() {
-//            super(getContext(), mMap, clusterManager);
-//
-//            View multiProfile = layoutInflater.inflate(R.layout.multi_profile, null);
-//            mClusterIconGenerator.setContentView(multiProfile);
-//            mClusterImageView = (ImageView) multiProfile.findViewById(R.id.image);
-//
-//            mImageView = new ImageView(getContext());
-//            mDimension = (int) 50;
-//            mImageView.setLayoutParams(new ViewGroup.LayoutParams(mDimension, mDimension));
-//            int padding = (int) 2;
-//            mImageView.setPadding(padding, padding, padding, padding);
-//            mIconGenerator.setContentView(mImageView);
-//        }
-//
-//        @Override
-//        protected void onBeforeClusterItemRendered(PublicInstitution pi, MarkerOptions markerOptions) {
-//            // Draw a single person.
-//            // Set the info window to show their name.
-//            mImageView.setImageResource(R.drawable.parliament50);
-//            Bitmap icon = mIconGenerator.makeIcon();
-//            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(pi.name);
-//        }
-//
-//        @Override
-//        protected void onBeforeClusterRendered(Cluster<PublicInstitution> cluster, MarkerOptions markerOptions) {
-//            mClusterImageView.setImageResource(R.drawable.parliament50);
-//            Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
-//            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
-//        }
-//
-//        @Override
-//        protected boolean shouldRenderAsCluster(Cluster cluster) {
-//            // Always render clusters.
-//            return cluster.getSize() > 1;
-//        }
-//    }
+
+    /* Check and/or ask for location permission*/
+    private void getLocationPermission() {
+    /*
+     * Request location permission, so that we can get the location of the
+     * device. The result of the permission request is handled by a callback,
+     * onRequestPermissionsResult.
+     */
+    System.out.println("MapFragment: Get Location Permission");
+        if (ContextCompat.checkSelfPermission(this.getContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+            System.out.println("MapFragment: we got permissions");
+            updateLocationUI();
+        } else {
+            ActivityCompat.requestPermissions((Activity) this.getContext(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    HBP_PERMISSION_ACCESS_COURSE_LOCATION);
+        }
+    }
+
+
+    LocationCallback mLocationCallback = new LocationCallback(){
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            System.out.println("MapFragment: On location result");
+            for (Location location : locationResult.getLocations()) {
+
+
+
+                System.out.println("Lat " + location.getLatitude() + " lng " + location.getLongitude());
+                if (mLastLocation == null) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(
+                            new LatLng(location.getLatitude(),
+                                    location.getLongitude())));
+
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
+                            location.getLongitude()), MAP_DETAILED_ZOOM));
+                }
+
+                mLastLocation = location;
+            }
+        };
+
+    };
+
+    /* Initialize Google Maps location specific UI */
+    public void updateLocationUI() {
+        if (mMap == null) {
+            return;
+        }
+        System.out.println("MapFragment: Update Location UI, requesting location");
+        try {
+            if (mLocationPermissionGranted) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+            } else {
+                mMap.setMyLocationEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                currentLocation = null;
+            }
+        } catch (SecurityException e) {
+            System.out.println("Exception: %s" + e.getMessage());
+        }
+    }
 }

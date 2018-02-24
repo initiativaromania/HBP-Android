@@ -29,9 +29,11 @@ public class CompanyListAdapter extends BaseAdapter implements AdapterView.OnIte
 
     private final FragmentActivity context;
     private List<CompanyListItem> companies;
+    private int parentID;
 
-    public CompanyListAdapter(FragmentActivity context, List<CompanyListItem> companies) {
+    public CompanyListAdapter(FragmentActivity context, int parentID, List<CompanyListItem> companies) {
         this.context = context;
+        this.parentID = parentID;
         this.companies = companies;
     }
 
@@ -95,7 +97,8 @@ public class CompanyListAdapter extends BaseAdapter implements AdapterView.OnIte
 
         /* Got the Company Fragment */
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.fragment_institution_layout, companyFragment)
+        //transaction.add(R.id.fragment_institution_layout, companyFragment)
+        transaction.add(parentID, companyFragment)
                 .addToBackStack(companyFragment.getClass().getName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }

@@ -84,13 +84,10 @@ public class InstitutionListAdapter extends BaseAdapter implements AdapterView.O
 
         System.out.println("Click on pi " + piItem.id + " name " + piItem.name);
 
-        System.out.println("Test1 " + context.getComponentName() + " " + context.getLocalClassName());
         Fragment piFragment = new InstitutionFragment();
-        System.out.println("Test2");
         FragmentManager fragmentManager = context.getSupportFragmentManager();
         //FragmentManager fragmentManager = frag.getChildFragmentManager();
 
-        System.out.println("Test3");
         /* Build Fragment Arguments */
         Bundle bundle = new Bundle();
         bundle.putInt(CommManager.BUNDLE_PI_ID, piItem.id);
@@ -98,13 +95,10 @@ public class InstitutionListAdapter extends BaseAdapter implements AdapterView.O
         bundle.putInt(CommManager.BUNDLE_INST_TYPE,
                 InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION);
 
-        System.out.println("Test6");
         piFragment.setArguments(bundle);
 
-        System.out.println("Test7");
-        /* Got the Company Fragment */
+        /* Got the Public Institution Fragment */
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        System.out.println("Test8 " + parentID + " " + R.id.fragment_institution_layout);
         transaction.add(parentID, piFragment)
                 .addToBackStack(piFragment.getClass().getName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();

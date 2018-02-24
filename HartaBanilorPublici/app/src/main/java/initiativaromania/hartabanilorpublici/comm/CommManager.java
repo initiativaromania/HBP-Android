@@ -41,7 +41,8 @@ public class CommManager {
     private static final String URL_GET_AD_COMPANY_CONTRACTS    = SERVER_IP + "ADCompanyContracts/";
     private static final String URL_GET_TENDER_COMPANY_TENDERS  = SERVER_IP + "TenderCompanyTenders/";
     private static final String URL_SEARCH_PUBLIC_INSTITUTION   = SERVER_IP + "SearchInstitution/";
-    private static final String URL_SEARCH_COMPANY              = SERVER_IP + "SearchCompany/";
+    private static final String URL_SEARCH_AD_COMPANY           = SERVER_IP + "SearchADCompany/";
+    private static final String URL_SEARCH_TENDER_COMPANY       = SERVER_IP + "SearchTenderCompany/";
     private static final String URL_SEARCH_AD                   = SERVER_IP + "SearchContract/";
     private static final String URL_SEARCH_TENDERS              = SERVER_IP + "SearchTenders/";
 
@@ -283,16 +284,29 @@ public class CommManager {
         request(commManagerResponse, encodedURL);
     }
 
-    /* Send a request to the server to search for a company */
-    public static void searchCompany(final CommManagerResponse commManagerResponse, String company) {
-        String encodedURL = URL_SEARCH_COMPANY;
+    /* Send a request to the server to search for an AD company */
+    public static void searchADCompany(final CommManagerResponse commManagerResponse, String company) {
+        String encodedURL = URL_SEARCH_AD_COMPANY;
 
         try {
             encodedURL += URLEncoder.encode(company, "UTF-8").replaceAll("\\+", "%20");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        System.out.println("Search Companies with URL " + encodedURL);
+        System.out.println("Search AD Companies with URL " + encodedURL);
+        request(commManagerResponse, encodedURL);
+    }
+
+    /* Send a request to the server to search for a tender company */
+    public static void searchTenderCompany(final CommManagerResponse commManagerResponse, String company) {
+        String encodedURL = URL_SEARCH_TENDER_COMPANY;
+
+        try {
+            encodedURL += URLEncoder.encode(company, "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Search Tender Companies with URL " + encodedURL);
         request(commManagerResponse, encodedURL);
     }
 

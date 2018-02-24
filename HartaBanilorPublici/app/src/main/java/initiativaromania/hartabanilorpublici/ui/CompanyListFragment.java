@@ -25,12 +25,14 @@ public class CompanyListFragment  extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     private View v;
     public LinkedList<Company> companies;
+    private int parentID;
 
-    public static CompanyListFragment newInstance() {
+    public static CompanyListFragment newInstance(int parentID) {
         CompanyListFragment f = new CompanyListFragment();
         Bundle bdl = new Bundle(1);
         bdl.putString(EXTRA_MESSAGE, "CompanyListFragment");
         f.setArguments(bdl);
+        f.parentID = parentID;
         return f;
     }
 
@@ -61,7 +63,7 @@ public class CompanyListFragment  extends Fragment {
         }
 
         ListView orderList = (ListView) v.findViewById(R.id.list_entities);
-        CompanyListAdapter adapter = new CompanyListAdapter(getActivity(), orderDetailsList);
+        CompanyListAdapter adapter = new CompanyListAdapter(getActivity(), parentID, orderDetailsList);
         orderList.setAdapter(adapter);
         orderList.setOnItemClickListener(adapter);
     }
@@ -71,4 +73,9 @@ public class CompanyListFragment  extends Fragment {
     public void setCompanies(LinkedList<Company> companies) {
         this.companies = companies;
     };
+
+    /* Clear the list of companies in the fragment */
+    public void clearCompanies() {
+        this.companies = new LinkedList<>();
+    }
 }

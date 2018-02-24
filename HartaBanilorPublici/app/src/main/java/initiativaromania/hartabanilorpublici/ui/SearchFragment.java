@@ -36,6 +36,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     private static final String SEARCH_FRAGMENT_NAME                = "Cautare";
     public static final String SEARCH_NO_RESULT_MSG                 = "Niciun rezultat";
+    public static final String SEARCH_NO_AD_COMPANY                 = "Nicio o companie cu achizitii directe";
+    public static final String SEARCH_NO_TENDER_COMPANY             = "Nicio o companie cu licitatii";
 
     public static final int INSTITUTIONS_FRAGMENT_INDEX             = 0;
     public static final int COMPANIES_FRAGMENT_INDEX                = 1;
@@ -134,8 +136,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public boolean onClose() {
         System.out.println("Pressed search close");
         currentQuerry = "";
-        pis.clear();
-        displayPIs();
+
+        /* Clear all search results */
+        clearSearchPIs();
+
+        clearSearchCompanies();
 
         return false;
     }
@@ -165,6 +170,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
         switch (position) {
             case INSTITUTIONS_FRAGMENT_INDEX:
+
+                /* Clear previous search results */
+                clearSearchPIs();
+
                 /* Search the public institution using the server */
                 CommManager.searchPublicInstitution(new CommManagerResponse() {
                     @Override
@@ -187,19 +196,39 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 break;
 
             case COMPANIES_FRAGMENT_INDEX:
-                /* Search the Company using the server */
-                CommManager.searchCompany(new CommManagerResponse() {
+
+                /* Clear previous search results */
+                clearSearchCompanies();
+
+                /* Search AD Companies using the server */
+                CommManager.searchADCompany(new CommManagerResponse() {
                     @Override
                     public void processResponse(JSONArray response) {
-                        receiveCompanySearchResults(response);
+                        receiveADCompanySearchResults(response);
                     }
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-//                        if (fragmentCopy.getContext() != null) {
-//                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-//                                    Toast.LENGTH_SHORT).show();
-//                        }
+                        if (fragmentCopy.getContext() != null) {
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, query);
+
+                /* Search Tender Companies using the server */
+                CommManager.searchTenderCompany(new CommManagerResponse() {
+                    @Override
+                    public void processResponse(JSONArray response) {
+                        receiveTenderCompanySearchResults(response);
+                    }
+
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
+                        if (fragmentCopy.getContext() != null) {
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }, query);
 
@@ -259,7 +288,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     /* Receive PI search response from server */
     private void receivePISearchResults(JSONArray response) {
         /* Public Institutions */
-        System.out.println("Search Result " + response);
+        System.out.println("PI Search Result " + response);
 
         pis.clear();
         try {
@@ -291,23 +320,74 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
 
-    /* Receive PI search response from server */
-    private void receiveCompanySearchResults(JSONArray response) {
+    /* Generic function to receive and list company search results */
+    private void receiveCompanySearchResults(JSONArray response, int companyType) {
 
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject cObj = response.getJSONObject(i);
+                if (cObj == null)
+                    continue;
+
+                Company company = new Company();
+                company.id = Integer.parseInt(cObj.getString(CommManager.JSON_COMPANY_ID));
+                company.name = cObj.getString(CommManager.JSON_COMPANY_NAME);
+                company.type = companyType;
+
+                companies.add(company);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Trying to display companies, size " + companies.size());
+
+        /* Show toast if no results */
+        if (companies.size() == 0 && fragmentCopy.getContext() != null) {
+            if (companyType == Company.COMPANY_TYPE_AD)
+                Toast.makeText(fragmentCopy.getContext(), SEARCH_NO_AD_COMPANY,
+                        Toast.LENGTH_SHORT).show();
+            if (companyType == Company.COMPANY_TYPE_TENDER)
+                Toast.makeText(fragmentCopy.getContext(), SEARCH_NO_TENDER_COMPANY,
+                        Toast.LENGTH_SHORT).show();
+        }
+
+        /* Show the info received from the server */
+        displayCompanies();
 
     }
 
 
-    /* Receive PI search response from server */
+    /* Receive Tender company search response from server */
+    private void receiveTenderCompanySearchResults(JSONArray response) {
+
+        /* Tender Companies */
+        System.out.println("Tender Company Search Result " + response);
+
+        receiveCompanySearchResults(response, Company.COMPANY_TYPE_TENDER);
+    }
+
+
+    /* Receive Ad Company search response from server */
+    private void receiveADCompanySearchResults(JSONArray response) {
+
+        /* AD Companies */
+        System.out.println("AD Company Search Result " + response);
+
+        receiveCompanySearchResults(response, Company.COMPANY_TYPE_AD);
+    }
+
+
+    /* Receive AD Contract search response from server */
     private void receiveADSearchResults(JSONArray response) {
-        System.out.println("Search Result " + response);
+        System.out.println("AD Contract Search Result " + response);
 
     }
 
 
     /* Receive PI search response from server */
     private void receiveTenderSearchResults(JSONArray response) {
-        System.out.println("Search Result " + response);
+        System.out.println("Tender Contract Search Result " + response);
 
     }
 
@@ -315,7 +395,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     /* Fill the list of public institutions */
     private void displayPIs() {
 
-        /* Fill the companies list fragment */
+        /* Fill the public institutions list fragment */
         piListFragment = (InstitutionListFragment) viewPageFragment
                 .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
         if (piListFragment != null) {
@@ -324,6 +404,41 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             piListFragment.displayPIs();
         } else
             System.out.println("NULL pi list fragment");
+    }
+
+
+    /* Clear all the public institutions from the search fragment */
+    private void clearSearchPIs() {
+        pis.clear();;
+
+        if (piListFragment != null) {
+            piListFragment.clearPIs();
+            piListFragment.displayPIs();
+        }
+    }
+
+    /* Clear all the companies from the search fragment */
+    private void clearSearchCompanies() {
+        companies.clear();;
+
+        if (companyListFragment != null) {
+            companyListFragment.clearCompanies();
+            companyListFragment.displayCompanies();
+        }
+    }
+
+    /* Fill the list of Companies */
+    private void displayCompanies() {
+
+        /* Add companies in the companies list fragment */
+        companyListFragment = (CompanyListFragment) viewPageFragment
+                .pageAdapter.fragments.get(COMPANIES_FRAGMENT_INDEX);
+
+        if (companyListFragment != null) {
+            companyListFragment.setCompanies(companies);
+            companyListFragment.displayCompanies();
+        } else
+            System.out.println("NULL company list fragment");
     }
 
 }

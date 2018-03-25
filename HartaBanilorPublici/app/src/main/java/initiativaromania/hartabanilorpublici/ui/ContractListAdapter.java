@@ -31,9 +31,12 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
 
     private final FragmentActivity context;
     private List<ContractListItem> contracts;
+    private int parentID;
 
-    public ContractListAdapter(FragmentActivity context, List<ContractListItem> contracts) {
+    public ContractListAdapter(FragmentActivity context, int parentID,
+                               List<ContractListItem> contracts) {
         this.context = context;
+        this.parentID = parentID;
         this.contracts = contracts;
     }
 
@@ -100,7 +103,7 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
 
         /* Got the Contract Fragment */
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.fragment_institution_layout, contractFragment)
+        transaction.add(parentID, contractFragment)
                 .addToBackStack(contractFragment.getClass().getName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }

@@ -43,8 +43,8 @@ public class CommManager {
     private static final String URL_SEARCH_PUBLIC_INSTITUTION   = SERVER_IP + "SearchInstitution/";
     private static final String URL_SEARCH_AD_COMPANY           = SERVER_IP + "SearchADCompany/";
     private static final String URL_SEARCH_TENDER_COMPANY       = SERVER_IP + "SearchTenderCompany/";
-    private static final String URL_SEARCH_AD                   = SERVER_IP + "SearchContract/";
-    private static final String URL_SEARCH_TENDERS              = SERVER_IP + "SearchTenders/";
+    private static final String URL_SEARCH_AD                   = SERVER_IP + "SearchAD/";
+    private static final String URL_SEARCH_TENDERS              = SERVER_IP + "SearchTender/";
 
 
     /* Bundle keys */

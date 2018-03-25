@@ -23,12 +23,14 @@ public class ContractListFragment extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     private View v;
     public LinkedList<Contract> contracts;
+    public int parentID;
 
-    public static ContractListFragment newInstance() {
+    public static ContractListFragment newInstance(int parentID) {
         ContractListFragment f = new ContractListFragment();
         Bundle bdl = new Bundle(1);
         bdl.putString(EXTRA_MESSAGE, "ContractListFragment");
         f.setArguments(bdl);
+        f.parentID = parentID;
         return f;
     }
 
@@ -63,7 +65,8 @@ public class ContractListFragment extends Fragment {
 
 
         ListView orderList = (ListView) v.findViewById(R.id.list_entities);
-        ContractListAdapter adapter = new ContractListAdapter(getActivity(), orderDetailsList);
+        ContractListAdapter adapter = new ContractListAdapter(getActivity(), parentID,
+                orderDetailsList);
         orderList.setAdapter(adapter);
         orderList.setOnItemClickListener(adapter);
     }
@@ -71,6 +74,11 @@ public class ContractListFragment extends Fragment {
 
     /* Set contracts in the fragment */
     public void setContracts(LinkedList<Contract> contracts) {
-       this.contracts = contracts;
-    };
+        this.contracts = contracts;
+    }
+
+    /* Clear the contracts in the fragment */
+    public void clearContracts() {
+        this.contracts = new LinkedList<>();
+    }
 }

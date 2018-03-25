@@ -96,13 +96,13 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
         if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_SEARCH) {
             fList.add(InstitutionListFragment.newInstance(R.id.fragment_search_layout));
             fList.add(CompanyListFragment.newInstance(R.id.fragment_search_layout));
-            fList.add(ContractListFragment.newInstance());
-            fList.add(ContractListFragment.newInstance());
+            fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout));
+            fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout));
             return fList;
         }
 
-        fList.add(ContractListFragment.newInstance());
-        fList.add(ContractListFragment.newInstance());
+        fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout));
+        fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout));
 
         if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION)
             fList.add(CompanyListFragment.newInstance(R.id.fragment_institution_layout));

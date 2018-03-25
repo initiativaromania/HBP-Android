@@ -4,13 +4,12 @@
         android:width="2dp"
         android:color="@color/colorPrimary" />
 
-    <solid android:color="#FFFFFF" />
-
+    <solid android:color="@color/tab_selected_background" />
 
     <padding
         android:left="1dp"
         android:right="1dp"
         android:top="1dp" />
 
-    <corners android:radius="10dp" />
+    <corners android:radius="0dp" />
 </shape>

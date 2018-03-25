@@ -312,7 +312,7 @@ public class MapFragment extends android.support.v4.app.Fragment
 
         TextView ad = ((TextView) view.findViewById(R.id.textAchizitiiDirecte));
         if (ad != null) {
-            SpannableString text = new SpannableString("Achizitii Directe");
+            SpannableString text = new SpannableString("Achizitii Directe ");
             text.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
             ad.setText(text);
         }
@@ -326,7 +326,7 @@ public class MapFragment extends android.support.v4.app.Fragment
 
         TextView lic = ((TextView) view.findViewById(R.id.textLicitatii));
         if (lic != null) {
-            SpannableString text = new SpannableString("Licitatii");
+            SpannableString text = new SpannableString("Licitatii ");
             text.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
             lic.setText(text);
         }

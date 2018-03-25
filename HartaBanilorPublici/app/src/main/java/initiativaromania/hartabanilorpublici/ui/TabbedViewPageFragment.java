@@ -1,6 +1,7 @@
 package initiativaromania.hartabanilorpublici.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -18,9 +19,9 @@ import initiativaromania.hartabanilorpublici.R;
 
 public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
-    public static final String TAB_ACHIZITII_DIRECTE    = "Achizitii directe";
+    public static final String TAB_ACHIZITII_DIRECTE    = "Achizitii";
     public static final String TAB_LICITATII            = "Licitatii";
-    public static final String TAB_INSTITUTII_PUBLICE   = "Institutii publice";
+    public static final String TAB_INSTITUTII_PUBLICE   = "Institutii";
     public static final String TAB_COMPANII             = "Companii";
 
     private String tabTitlesCompany[] = new String[]{TAB_ACHIZITII_DIRECTE, TAB_LICITATII,
@@ -32,6 +33,7 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
 
     public EntityViewPageAdapter pageAdapter;
     public ViewPager pager;
+    private View tabbedView;
     public int pagePosition;
     private ArrayList<TabbedViewPageListener> pageListeners = new ArrayList<TabbedViewPageListener>();
 
@@ -39,7 +41,7 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         System.out.println("On create view TabbedViewPageFragment fragment");
-        View tabbedView = inflater.inflate(R.layout.fragment_viewpager, container, false);
+        tabbedView = inflater.inflate(R.layout.fragment_viewpager, container, false);
 
         /* This has the actual pages */
         pager = (ViewPager) tabbedView.findViewById(R.id.viewpager);
@@ -86,6 +88,9 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
 
         pageAdapter = new EntityViewPageAdapter(getFragmentManager(), fragments, tabTitles);
         pager.setAdapter(pageAdapter);
+
+        TabLayout tabLayout = (TabLayout) tabbedView.findViewById(R.id.viewpager_tabs);
+        tabLayout.setupWithViewPager(pager);
     }
 
 

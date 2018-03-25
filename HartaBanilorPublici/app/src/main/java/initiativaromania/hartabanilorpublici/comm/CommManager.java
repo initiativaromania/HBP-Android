@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.Normalizer;
 
 /**
  * Created by claudiu on 9/16/17.
@@ -274,6 +275,8 @@ public class CommManager {
     /* Send a request to the server to search for a public institution */
     public static void searchPublicInstitution(final CommManagerResponse commManagerResponse, String pi) {
         String encodedURL = URL_SEARCH_PUBLIC_INSTITUTION;
+        pi = Normalizer.normalize(pi, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 
         try {
             encodedURL += URLEncoder.encode(pi, "UTF-8").replaceAll("\\+", "%20");
@@ -287,6 +290,8 @@ public class CommManager {
     /* Send a request to the server to search for an AD company */
     public static void searchADCompany(final CommManagerResponse commManagerResponse, String company) {
         String encodedURL = URL_SEARCH_AD_COMPANY;
+        company = Normalizer.normalize(company, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 
         try {
             encodedURL += URLEncoder.encode(company, "UTF-8").replaceAll("\\+", "%20");
@@ -300,6 +305,8 @@ public class CommManager {
     /* Send a request to the server to search for a tender company */
     public static void searchTenderCompany(final CommManagerResponse commManagerResponse, String company) {
         String encodedURL = URL_SEARCH_TENDER_COMPANY;
+        company = Normalizer.normalize(company, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 
         try {
             encodedURL += URLEncoder.encode(company, "UTF-8").replaceAll("\\+", "%20");
@@ -313,6 +320,8 @@ public class CommManager {
     /* Send a request to the server to search for direct acquisitions */
     public static void searchAD(final CommManagerResponse commManagerResponse, String ad) {
         String encodedURL = URL_SEARCH_AD;
+        ad = Normalizer.normalize(ad, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 
         try {
             encodedURL += URLEncoder.encode(ad, "UTF-8").replaceAll("\\+", "%20");
@@ -326,6 +335,8 @@ public class CommManager {
     /* Send a request to the server to search for a public institution */
     public static void searchTender(final CommManagerResponse commManagerResponse, String tender) {
         String encodedURL = URL_SEARCH_TENDERS;
+        tender = Normalizer.normalize(tender, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 
         try {
             encodedURL += URLEncoder.encode(tender, "UTF-8").replaceAll("\\+", "%20");

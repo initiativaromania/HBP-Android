@@ -35,6 +35,7 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
     public ViewPager pager;
     private View tabbedView;
     public int pagePosition;
+    public TabLayout tabLayout;
     private ArrayList<TabbedViewPageListener> pageListeners = new ArrayList<TabbedViewPageListener>();
 
     @Override
@@ -89,7 +90,7 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
         pageAdapter = new EntityViewPageAdapter(getFragmentManager(), fragments, tabTitles);
         pager.setAdapter(pageAdapter);
 
-        TabLayout tabLayout = (TabLayout) tabbedView.findViewById(R.id.viewpager_tabs);
+        tabLayout = (TabLayout) tabbedView.findViewById(R.id.viewpager_tabs);
         tabLayout.setupWithViewPager(pager);
     }
 

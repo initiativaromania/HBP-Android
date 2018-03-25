@@ -37,6 +37,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -159,6 +160,9 @@ public class MapFragment extends android.support.v4.app.Fragment
         mMap.setInfoWindowAdapter(this);
         mMap.setOnInfoWindowClickListener(this);
 
+        /* Set the style */
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getActivity(), R.raw.silver_style));
+
         /* Build an empty cluster of markers */
         if (clusterManager == null) {
             System.out.println("Cluster manager is not null");
@@ -168,9 +172,6 @@ public class MapFragment extends android.support.v4.app.Fragment
             //clusterManager.setRenderer(new PublicInstitutionRenderer());
             System.out.println("MAP IS READY");
         }
-
-
-
 
         LatLng bucharest = HBPLocationListener.BUCHAREST_LOCATION;
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bucharest));

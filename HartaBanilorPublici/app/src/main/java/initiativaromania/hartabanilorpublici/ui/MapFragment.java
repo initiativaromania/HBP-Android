@@ -69,7 +69,6 @@ public class MapFragment extends android.support.v4.app.Fragment
         ClusterManager.OnClusterItemClickListener, ClusterManager.OnClusterClickListener {
 
     private static final int MAP_DEFAULT_ZOOM                           = 10;
-    private static final int CLUSTER_DEFAULT_ZOOM                       = 15;
     private static final int MAP_DETAILED_ZOOM                          = 13;
     public static final int HBP_PERMISSION_ACCESS_COURSE_LOCATION       = 19;
     private static final int LOCATION_UPDATE_INTERVAL                   = 30;
@@ -392,14 +391,22 @@ public class MapFragment extends android.support.v4.app.Fragment
     @Override
     public boolean onClusterClick(Cluster cluster) {
         ArrayList<PublicInstitution> piMarkers = (ArrayList<PublicInstitution>)cluster.getItems();
+        LatLngBounds.Builder builder = LatLngBounds.builder();
 
         if (piMarkers.size() < 1)
             return false;
-        
-        PublicInstitution pi = piMarkers.get(0);
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pi.getPosition(),
-                mMap.getCameraPosition().zoom + 2));
+        for (PublicInstitution pi : piMarkers) {
+            builder.include(pi.getPosition());
+        }
+
+        final LatLngBounds bounds = builder.build();
+
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+        } catch (Exception error) {
+            System.out.println(error.getMessage());
+        }
 
         return true;
     }

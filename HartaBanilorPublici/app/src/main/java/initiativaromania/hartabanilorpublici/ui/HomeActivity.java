@@ -39,7 +39,6 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction ft = manager.beginTransaction();
             ft.replace(R.id.content, fragment, fragmentTag);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.addToBackStack(backStateName);
             ft.commit();
         }
     }

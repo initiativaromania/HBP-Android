@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -65,9 +66,10 @@ import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 public class MapFragment extends android.support.v4.app.Fragment
         implements OnMapReadyCallback, GoogleMap.OnMapLoadedCallback, GoogleMap.OnCameraIdleListener,
         GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener,
-        ClusterManager.OnClusterItemClickListener {
+        ClusterManager.OnClusterItemClickListener, ClusterManager.OnClusterClickListener {
 
     private static final int MAP_DEFAULT_ZOOM                           = 10;
+    private static final int CLUSTER_DEFAULT_ZOOM                       = 15;
     private static final int MAP_DETAILED_ZOOM                          = 13;
     public static final int HBP_PERMISSION_ACCESS_COURSE_LOCATION       = 19;
     private static final int LOCATION_UPDATE_INTERVAL                   = 30;
@@ -167,9 +169,11 @@ public class MapFragment extends android.support.v4.app.Fragment
         if (clusterManager == null) {
             System.out.println("Cluster manager is not null");
             clusterManager = new ClusterManager<PublicInstitution>(this.getContext(), mMap);
+
             clusterManager.setOnClusterItemClickListener(this);
+            clusterManager.setOnClusterClickListener(this);
+            clusterManager.setRenderer(new PinClusterRenderer(this.getActivity(), mMap, clusterManager));
             mMap.setOnMarkerClickListener(clusterManager);
-            //clusterManager.setRenderer(new PublicInstitutionRenderer());
             System.out.println("MAP IS READY");
         }
 
@@ -383,6 +387,21 @@ public class MapFragment extends android.support.v4.app.Fragment
         }, clickedPI.id);
 
         return false;
+    }
+
+    @Override
+    public boolean onClusterClick(Cluster cluster) {
+        ArrayList<PublicInstitution> piMarkers = (ArrayList<PublicInstitution>)cluster.getItems();
+
+        if (piMarkers.size() < 1)
+            return false;
+        
+        PublicInstitution pi = piMarkers.get(0);
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pi.getPosition(),
+                mMap.getCameraPosition().zoom + 2));
+
+        return true;
     }
 
 

@@ -32,11 +32,44 @@
     ]
   },
   {
+    "featureType": "administrative.country",
+    "stylers": [
+      {
+        "color": "#a5a59f"
+      },
+      {
+        "lightness": -5
+      },
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
     "featureType": "administrative.land_parcel",
     "elementType": "labels.text.fill",
     "stylers": [
       {
         "color": "#bdbdbd"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.locality",
+    "stylers": [
+      {
+        "color": "#5f5f5d"
+      },
+      {
+        "visibility": "simplified"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.province",
+    "stylers": [
+      {
+        "color": "#bcbcbc"
       }
     ]
   },

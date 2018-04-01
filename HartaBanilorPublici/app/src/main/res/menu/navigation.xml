@@ -3,21 +3,21 @@
 
     <item
         android:id="@+id/navigation_map"
-        android:icon="@drawable/placeholder3x"
+        android:icon="@drawable/map50"
         android:title="@string/title_map" />
 
     <item
         android:id="@+id/navigation_search"
-        android:icon="@drawable/search3x"
+        android:icon="@drawable/search50"
         android:title="@string/title_search" />
 
     <item
         android:id="@+id/navigation_top"
-        android:icon="@drawable/barchart3x"
+        android:icon="@drawable/stats50"
         android:title="@string/title_top" />
 
     <item
         android:id="@+id/navigation_info"
-        android:icon="@drawable/info3x"
+        android:icon="@drawable/info50"
         android:title="@string/title_info" />
 </menu>

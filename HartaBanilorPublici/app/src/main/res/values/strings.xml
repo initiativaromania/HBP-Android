@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Harta Banilor Publici</string>
-    <string name="title_map">Harta</string>
-    <string name="title_search">Cauta</string>
-    <string name="title_top">Top</string>
+    <string name="title_map">Hartă</string>
+    <string name="title_search">Caută</string>
+    <string name="title_top">Statistici</string>
     <string name="title_info">Info</string>
     <string name="title_activity_map">Map</string>
 

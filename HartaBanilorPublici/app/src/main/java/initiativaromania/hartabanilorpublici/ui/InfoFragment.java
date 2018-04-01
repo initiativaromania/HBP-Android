@@ -15,6 +15,7 @@ import initiativaromania.hartabanilorpublici.R;
 public class InfoFragment extends Fragment{
 
     private static final String INFO_FRAGMENT_NAME          = "Info";
+    public static final int INFO_NAVIGATION_ID              = 3;
 
     private Fragment fragmentCopy;
     public String oldTitle;

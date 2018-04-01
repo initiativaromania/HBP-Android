@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentTransaction;;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.comm.CommManager;
 
@@ -25,6 +27,9 @@ public class HomeActivity extends AppCompatActivity
     private SearchFragment searchFragment = null;
     private StatsFragment statsFragment = null;
     private InfoFragment infoFragment = null;
+    private Fragment currentFragment = null;
+    BottomNavigationView navigation;
+    ArrayList<Fragment> tabbedFragments;
 
 
     /* Set the current content of the bottom navigation view */
@@ -38,6 +43,7 @@ public class HomeActivity extends AppCompatActivity
         if (!fragmentPopped && manager.findFragmentByTag(fragmentTag) == null){ //fragment not in back stack, create it.
             FragmentTransaction ft = manager.beginTransaction();
             ft.replace(R.id.content, fragment, fragmentTag);
+            ft.addToBackStack(backStateName);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
         }
@@ -49,36 +55,43 @@ public class HomeActivity extends AppCompatActivity
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            Fragment fragment = null;
-
             switch (item.getItemId()) {
                 case R.id.navigation_map:
-                    if (mapFragment == null)
+                    if (mapFragment == null) {
                         mapFragment = new MapFragment();
-                    fragment = mapFragment;
+                        tabbedFragments.add(MapFragment.MAP_NAVIGATION_ID, mapFragment);
+                    }
+                    currentFragment = mapFragment;
                     break;
 
                 case R.id.navigation_search:
-                    if (searchFragment == null)
+                    if (searchFragment == null) {
                         searchFragment = new SearchFragment();
-                    fragment = searchFragment;
+                        tabbedFragments.add(SearchFragment.SEARCH_NAVIGATION_ID, searchFragment);
+                    }
+                    currentFragment = searchFragment;
                     System.out.println("Search");
                     break;
 
                 case R.id.navigation_top:
-                    if (statsFragment == null)
+                    if (statsFragment == null) {
                         statsFragment = new StatsFragment();
-                    fragment = statsFragment;
+                        tabbedFragments.add(StatsFragment.STATS_NAVIGATION_ID, statsFragment);
+                    }
+                    currentFragment = statsFragment;
                     break;
 
                 case R.id.navigation_info:
-                    if (infoFragment == null)
+                    if (infoFragment == null) {
                         infoFragment = new InfoFragment();
-                    fragment = infoFragment;
+                        tabbedFragments.add(InfoFragment.INFO_NAVIGATION_ID, infoFragment);
+                    }
+                    currentFragment = infoFragment;
                     break;
             }
 
-            setFragment(fragment);
+            System.out.println("Current is now " + currentFragment.getClass().getName());
+            setFragment(currentFragment);
 
             return true;
         }
@@ -110,14 +123,17 @@ public class HomeActivity extends AppCompatActivity
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.abs_layout);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         /* Initialize communication with the server */
         CommManager.init(this);
 
+        tabbedFragments = new ArrayList<Fragment>(4);
         mapFragment = new MapFragment();
+        tabbedFragments.add(MapFragment.MAP_NAVIGATION_ID, mapFragment);
+
         setFragment(mapFragment);
     }
 
@@ -141,5 +157,48 @@ public class HomeActivity extends AppCompatActivity
         }
 
         mapFragment.updateLocationUI();
+    }
+
+    private Fragment getCurrentFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager
+                .getBackStackEntryCount() - 1).getName();
+        Fragment currentFragment = fragmentManager.findFragmentByTag(fragmentTag);
+
+        return currentFragment;
+    }
+
+    private Fragment getPreviousFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager
+                .getBackStackEntryCount() - 2).getName();
+        Fragment currentFragment = fragmentManager.findFragmentByTag(fragmentTag);
+
+        return currentFragment;
+    }
+
+    @Override
+    /* Some hack to make the bottom navigation bar tabs enabled on back press.
+     * They don't do it by default
+     */
+    public void onBackPressed() {
+        Fragment prevFragment;
+        int i;
+
+        if (getCurrentFragment() == mapFragment)
+            System.exit(0);
+
+        prevFragment = getPreviousFragment();
+
+        for (i = 0; i < tabbedFragments.size(); i++) {
+            if (tabbedFragments.get(i) == prevFragment)
+                break;
+        }
+
+        navigation.getMenu().getItem(i).setCheckable(true).setChecked(true);
+
+        super.onBackPressed();
     }
 }

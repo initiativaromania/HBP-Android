@@ -73,6 +73,7 @@ public class MapFragment extends android.support.v4.app.Fragment
     public static final int HBP_PERMISSION_ACCESS_COURSE_LOCATION       = 19;
     private static final int LOCATION_UPDATE_INTERVAL                   = 30;
     private static final int LOCATION_UPDATE_INTERVAL_MIN               = 10;
+    public static final int MAP_NAVIGATION_ID                           = 0;
 
     /* Setup Objects */
     public ClusterManager<PublicInstitution> clusterManager = null;

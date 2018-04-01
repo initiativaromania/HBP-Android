@@ -15,6 +15,7 @@ import initiativaromania.hartabanilorpublici.R;
 public class StatsFragment extends Fragment{
 
     private static final String STATS_FRAGMENT_NAME         = "Statistici";
+    public static final int STATS_NAVIGATION_ID            = 2;
 
     private Fragment fragmentCopy;
     private String oldTitle;

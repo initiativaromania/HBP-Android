@@ -41,6 +41,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private static final String SEARCH_NO_AD                        = "Nicio achizitie directa";
     private static final String SEARCH_NO_TENDER                    = "Nicio licitatie";
 
+    public static final int SEARCH_NAVIGATION_ID                    = 1;
+
     public static final int INSTITUTIONS_FRAGMENT_INDEX             = 0;
     public static final int COMPANIES_FRAGMENT_INDEX                = 1;
     public static final int DIRECT_ACQ_FRAGMENT_INDEX               = 2;

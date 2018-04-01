@@ -111,8 +111,10 @@ public class InstitutionFragment extends Fragment {
             pi = new PublicInstitution();
             pi.id = bundle.getInt(CommManager.BUNDLE_PI_ID);
             pi.name = bundle.getString(CommManager.BUNDLE_PI_NAME);
-            pi.directAcqs = bundle.getInt(CommManager.BUNDLE_PI_ACQS);
-            pi.tenders = bundle.getInt(CommManager.BUNDLE_PI_TENDERS);
+            pi.directAcqs = bundle.containsKey(CommManager.BUNDLE_PI_ACQS) ?
+                    bundle.getInt(CommManager.BUNDLE_PI_ACQS) : -1;
+            pi.tenders = bundle.containsKey(CommManager.BUNDLE_PI_ACQS) ?
+                    bundle.getInt(CommManager.BUNDLE_PI_TENDERS) : - 1;
 
             viewPageFragment.setViewPager(CONTRACT_LIST_FOR_PUBLIC_INSTITUTION);
             System.out.println("Institution Arguments: id " + pi.id + " name " + pi.name +

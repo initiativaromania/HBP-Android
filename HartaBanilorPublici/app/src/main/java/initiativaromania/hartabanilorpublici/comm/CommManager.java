@@ -3,6 +3,7 @@ package initiativaromania.hartabanilorpublici.comm;
 import android.content.Context;
 import android.view.View;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -160,9 +161,14 @@ public class CommManager {
                         System.out.println("GOT ERRROR " + error + " " + error.toString());
                         error.printStackTrace();
                         if (commManagerResponse != null)
-                            commManagerResponse.onErrorOccurred("Eroare conectare la server");
+                            commManagerResponse.onErrorOccurred("Nu s-a găsit niciun rezultat");
                     }
                 });
+
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        10000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add(jsObjRequest);
     }

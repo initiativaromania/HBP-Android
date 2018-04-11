@@ -24,7 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class InstitutionFragment extends Fragment {
+public class InstitutionFragment extends Fragment implements TabbedViewPageListener{
     public static final int CONTRACT_LIST_FOR_COMPANY               = 1;
     public static final int CONTRACT_LIST_FOR_PUBLIC_INSTITUTION    = 2;
     public static final int CONTRACT_LIST_FOR_SEARCH                = 3;
@@ -84,6 +84,7 @@ public class InstitutionFragment extends Fragment {
         /* Build the View Pager */
         viewPageFragment = (TabbedViewPageFragment)
                 getChildFragmentManager().findFragmentById(R.id.entity_info_fragment);
+        viewPageFragment.registerPageListener(this);
 
 
         /* Get fragment parameters */
@@ -125,19 +126,20 @@ public class InstitutionFragment extends Fragment {
         }
 
 
-        /* Call the server for all the institution info */
-        getServerInstitInfo(type);
+        /* Call the server to get all the direct acquisitions.
+         * The rest of the data will be retrieved when the tab is changed */
+        getInitInfo();
+        getServerTabInfo(DIRECT_ACQ_FRAGMENT_INDEX);
 
         return originalView;
     }
 
 
-    /* Get all the institution info from the server */
-    private void getServerInstitInfo(int type) {
+    /* Get initial information for this institution */
+    public void getInitInfo() {
 
-        System.out.println("Get all Institution info from server");
+        System.out.println("InstitutionFragment: Get initial info");
 
-         /* Get Server information for a company */
         if (type == CONTRACT_LIST_FOR_COMPANY) {
             switch (company.type) {
                 case Company.COMPANY_TYPE_AD:
@@ -145,7 +147,7 @@ public class InstitutionFragment extends Fragment {
                     CommManager.requestADCompany(new CommManagerResponse() {
                         @Override
                         public void processResponse(JSONArray response) {
-                            receiveCompanyInfo(response);
+                            receiveCompanyInitInfo(response);
                         }
 
                         @Override
@@ -155,6 +157,86 @@ public class InstitutionFragment extends Fragment {
                                         Toast.LENGTH_SHORT).show();
                         }
                     }, company.id);
+                    break;
+
+                case Company.COMPANY_TYPE_TENDER:
+                    /* Send request to get the init data */
+                    CommManager.requestTenderCompany(new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveCompanyInitInfo(response);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            if (fragmentCopy.getContext() != null)
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
+                        }
+                    }, company.id);
+                    break;
+
+                default:
+                    System.out.println("InstitutionFragment: Unknown company type at init");
+            }
+
+        } else {
+
+             /* Send request to get the init data for a public institution */
+            CommManager.requestPIInfo(new CommManagerResponse() {
+                @Override
+                public void processResponse(JSONArray response) {
+                    receivePIInitInfo(response);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    if (fragmentCopy.getContext() != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
+                }
+            }, pi.id);
+        }
+    }
+
+
+    /* Get server info for a tab */
+    private void getServerTabInfo(int position) {
+
+        System.out.println("InstitutionFragment: Get Server Info for tab " + position);
+
+        /* Call the server to fill each tab with data */
+        switch (position) {
+            case DIRECT_ACQ_FRAGMENT_INDEX:
+                if (directAcqs == null || directAcqs.size() == 0)
+                    getServerADInfo();
+                break;
+
+            case TENDER_FRAGMENT_INDEX:
+                if (tenders == null || tenders.size() == 0)
+                    getServerTenderInfo();
+                break;
+
+            case INSTITUTIONS_FRAGMENT_INDEX:
+                if ((type == CONTRACT_LIST_FOR_COMPANY && (pis == null || pis.size() == 0)) ||
+                        (type == CONTRACT_LIST_FOR_PUBLIC_INSTITUTION && (companies == null || companies.size() == 0)))
+                    getServerInstitutionInfo();
+                break;
+
+            default:
+                System.out.println("InstitutionFragment: Error retrieving data for tab " + position);
+        }
+    }
+
+
+    /* Get server info for Direct Acquisitions */
+    public void getServerADInfo() {
+
+        System.out.println("InstitutionFragment: Get Server Info for ADs");
+
+        if (type == CONTRACT_LIST_FOR_COMPANY) {
+            switch (company.type) {
+                case Company.COMPANY_TYPE_AD:
 
                     /* Send request to get all the direct acquisitions of an AD Company */
                     CommManager.requestADCompanyContracts(new CommManagerResponse() {
@@ -170,6 +252,99 @@ public class InstitutionFragment extends Fragment {
                                         Toast.LENGTH_SHORT).show();
                         }
                     }, company.id);
+                    break;
+
+                case Company.COMPANY_TYPE_TENDER:
+                    /* An AD Company doesn't have Tenders */
+                    break;
+
+                default:
+                    System.out.println("InstitutionFragment: Unknown company type at ads");
+
+            }
+
+        } else {
+
+            /* Send request to get the PI's direct acquisitions */
+            CommManager.requestPIAcqs(new CommManagerResponse() {
+                @Override
+                public void processResponse(JSONArray response) {
+                    receivePIAcqs(response);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    if (fragmentCopy.getContext() != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
+                }
+            }, pi.id);
+        }
+    }
+
+
+    /* Get server info for Tenders */
+    public void getServerTenderInfo() {
+
+        System.out.println("InstitutionFragment: Get Server Info for Tenders");
+
+        if (type == CONTRACT_LIST_FOR_COMPANY) {
+            switch (company.type) {
+                case Company.COMPANY_TYPE_AD:
+                    /* A Tender Company doesn't have ADs */
+                    break;
+
+                case Company.COMPANY_TYPE_TENDER:
+
+                    /* Send request to get all the tenders of an AD Company */
+                    CommManager.requestTenderCompanyTenders(new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveCompanyTenders(response);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            if (fragmentCopy.getContext() != null)
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
+                        }
+                    }, company.id);
+                    break;
+
+                default:
+                    System.out.println("InstitutionFragment: Unknown company type at tenders");
+
+            }
+
+        } else {
+            /* Send request to get the PI's tenders */
+            CommManager.requestPITenders(new CommManagerResponse() {
+                @Override
+                public void processResponse(JSONArray response) {
+                    receivePITenders(response);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    if (fragmentCopy.getContext() != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
+                }
+            }, pi.id);
+        }
+    }
+
+
+    /* Get server info for companies/instituions */
+    public void getServerInstitutionInfo() {
+
+        System.out.println("InstitutionFragment: Get Server Info for Companies/Institutions");
+
+         /* Get Server information for a company */
+        if (type == CONTRACT_LIST_FOR_COMPANY) {
+            switch (company.type) {
+                case Company.COMPANY_TYPE_AD:
 
                     /* Send request to get all the public institutions of an AD Company */
                     CommManager.requestPIsByADCompany(new CommManagerResponse() {
@@ -185,40 +360,9 @@ public class InstitutionFragment extends Fragment {
                                         Toast.LENGTH_SHORT).show();
                         }
                     }, company.id);
-
                     break;
 
                 case Company.COMPANY_TYPE_TENDER:
-                    /* Send request to get the init data */
-                    CommManager.requestTenderCompany(new CommManagerResponse() {
-                        @Override
-                        public void processResponse(JSONArray response) {
-                            receiveCompanyInfo(response);
-                        }
-
-                        @Override
-                        public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null)
-                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                        Toast.LENGTH_SHORT).show();
-                        }
-                    }, company.id);
-
-
-                    /* Send request to get all the direct acquisitions of an AD Company */
-                    CommManager.requestTenderCompanyTenders(new CommManagerResponse() {
-                        @Override
-                        public void processResponse(JSONArray response) {
-                            receiveCompanyTenders(response);
-                        }
-
-                        @Override
-                        public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null)
-                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                        Toast.LENGTH_SHORT).show();
-                        }
-                    }, company.id);
 
                     /* Send request to get all the public institutions of a Tender Company */
                     CommManager.requestPIsByTenderCompany(new CommManagerResponse() {
@@ -234,63 +378,13 @@ public class InstitutionFragment extends Fragment {
                                         Toast.LENGTH_SHORT).show();
                         }
                     }, company.id);
-
-
                     break;
 
                 default:
-                    System.out.println("Unknown company type");
-
+                    System.out.println("InstitutionFragment: Unknown company type for institutions tab");
             }
 
-
-            /* Get Server information for a Public Institution */
         } else {
-
-             /* Send request to get the init data */
-            CommManager.requestPIInfo(new CommManagerResponse() {
-                @Override
-                public void processResponse(JSONArray response) {
-                    receivePIInfo(response);
-                }
-
-                @Override
-                public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null)
-                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                Toast.LENGTH_SHORT).show();
-                }
-            }, pi.id);
-
-             /* Send request to get the institution direct acquisitions */
-            CommManager.requestPIAcqs(new CommManagerResponse() {
-                @Override
-                public void processResponse(JSONArray response) {
-                    receivePIAcqs(response);
-                }
-
-                @Override
-                public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null)
-                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                Toast.LENGTH_SHORT).show();
-                }
-            }, pi.id);
-
-             /* Send request to get the institution tenders */
-            CommManager.requestPITenders(new CommManagerResponse() {
-                @Override
-                public void processResponse(JSONArray response) {
-                    receivePITenders(response);
-                }
-
-                @Override
-                public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null)
-                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                Toast.LENGTH_SHORT).show();
-                }
-            }, pi.id);
 
             /* Send request to get the institution AD companies */
             CommManager.requestADCompaniesByPI(new CommManagerResponse() {
@@ -326,7 +420,7 @@ public class InstitutionFragment extends Fragment {
 
 
     /* Receive Company information from the server */
-    private void receiveCompanyInfo(JSONArray response) {
+    private void receiveCompanyInitInfo(JSONArray response) {
         System.out.println("InstitutionFragment: receiveCompany " + response);
 
         try {
@@ -343,8 +437,8 @@ public class InstitutionFragment extends Fragment {
 
 
     /* Receive Public Institution information from the server */
-    private void receivePIInfo(JSONArray response) {
-        System.out.println("InstitutionFragment: receivePIInfo " + response);
+    private void receivePIInitInfo(JSONArray response) {
+        System.out.println("InstitutionFragment: receivePIInitInfo " + response);
 
         try {
             JSONObject piSummary = response.getJSONObject(0);
@@ -656,5 +750,16 @@ public class InstitutionFragment extends Fragment {
     public void onStop() {
         ((HomeActivity) getActivity()).setActionBarTitle(oldTitle);
         super.onStop();
+    }
+
+    /**
+     * Used to determine when a tab page is changed
+     * @param position
+     */
+    @Override
+    public void onPageChanged(int position) {
+        System.out.println("InstitutionFragment: position has changed to " + position);
+
+        getServerTabInfo(position);
     }
 }

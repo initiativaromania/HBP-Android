@@ -1,10 +1,12 @@
 package initiativaromania.hartabanilorpublici.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -34,8 +36,8 @@ import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener,
         SearchView.OnCloseListener, TabbedViewPageListener {
 
-    private static final String SEARCH_FRAGMENT_NAME                = "Cautare";
-    private static final String SEARCH_NO_PI                        = "Nicio institutie publica";
+    private static final String SEARCH_FRAGMENT_NAME                = "Căutare";
+    private static final String SEARCH_NO_PI                        = "Nicio instituție publica";
     private static final String SEARCH_NO_AD_COMPANY                = "Nicio o companie cu achizitii directe";
     private static final String SEARCH_NO_TENDER_COMPANY            = "Nicio o companie cu licitatii";
     private static final String SEARCH_NO_AD                        = "Nicio achizitie directa";
@@ -51,7 +53,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     public String oldTitle;
     public String currentQuerry;
-    public int currentPosition;
     public SearchView searchView;
     TabbedViewPageFragment viewPageFragment;
     private Fragment fragmentCopy;
@@ -94,6 +95,17 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         }
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                System.out.println("Focus");
+                if (hasFocus){
+                    InputMethodManager imm = (InputMethodManager) getActivity()
+                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                }
+            }
+        });
 
         piListFragment = null;
         directAcqListFragment = null;
@@ -158,7 +170,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public void onPageChanged(int position) {
         System.out.println("SearchFragment: position has changed to " + position);
         Object searchFragment = searchFragments[position];
-        currentPosition = position;
 
         /* Nothing to do if we have no query */
         if (currentQuerry == null || currentQuerry.equals(""))

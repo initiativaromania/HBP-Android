@@ -133,6 +133,9 @@ public class HomeActivity extends AppCompatActivity
         tabbedFragments = new ArrayList<Fragment>(4);
         mapFragment = new MapFragment();
         tabbedFragments.add(MapFragment.MAP_NAVIGATION_ID, mapFragment);
+        tabbedFragments.add(SearchFragment.SEARCH_NAVIGATION_ID, null);
+        tabbedFragments.add(StatsFragment.STATS_NAVIGATION_ID, null);
+        tabbedFragments.add(InfoFragment.INFO_NAVIGATION_ID, null);
 
         setFragment(mapFragment);
     }

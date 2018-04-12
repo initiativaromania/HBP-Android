@@ -468,6 +468,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                 a.type = Contract.CONTRACT_TYPE_DIRECT_ACQUISITION;
                 a.id = Integer.parseInt(acq.getString(CommManager.JSON_COMPANY_ACQ_ID));
                 a.title = acq.getString(CommManager.JSON_CONTRACT_TITLE);
+                a.valueRON = acq.getInt(CommManager.JSON_AD_VALUE_RON);
                 if (type == CONTRACT_LIST_FOR_COMPANY)
                     a.company = company;
                 else
@@ -499,6 +500,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                 t.type = Contract.CONTRACT_TYPE_TENDER;
                 t.id = Integer.parseInt(tender.getString(CommManager.JSON_COMPANY_TENDER_ID));
                 t.title = tender.getString(CommManager.JSON_CONTRACT_TITLE);
+                t.valueRON = tender.getInt(CommManager.JSON_TENDER_VALUE_RON);
                 if (type == CONTRACT_LIST_FOR_COMPANY)
                     t.company = company;
                 else

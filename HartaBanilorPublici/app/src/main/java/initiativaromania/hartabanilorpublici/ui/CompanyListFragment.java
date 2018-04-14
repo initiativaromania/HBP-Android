@@ -21,7 +21,7 @@ import initiativaromania.hartabanilorpublici.data.ContractListItem;
  * Created by claudiu on 11/15/17.
  */
 
-public class CompanyListFragment  extends Fragment {
+public class CompanyListFragment  extends LoadableListFragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     private View v;
     public LinkedList<Company> companies;
@@ -39,6 +39,12 @@ public class CompanyListFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_list, container, false);
+
+        System.out.println("On create view CompanyListFragment");
+
+        initProgressBar(v);
+        if (startLoading)
+            displayProgressBar();
 
         displayCompanies();
 
@@ -77,5 +83,14 @@ public class CompanyListFragment  extends Fragment {
     /* Clear the list of companies in the fragment */
     public void clearCompanies() {
         this.companies = new LinkedList<>();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser){
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && !startLoading){
+            hideProgressBar();
+            System.out.println("CompanyFragment is visible now");
+        }
     }
 }

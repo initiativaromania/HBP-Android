@@ -234,9 +234,14 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
         System.out.println("InstitutionFragment: Get Server Info for ADs");
 
+        directAcqListFragment = (ContractListFragment) viewPageFragment
+                .pageAdapter.fragments.get(DIRECT_ACQ_FRAGMENT_INDEX);
+
         if (type == CONTRACT_LIST_FOR_COMPANY) {
             switch (company.type) {
                 case Company.COMPANY_TYPE_AD:
+
+                    directAcqListFragment.displayProgressBar();
 
                     /* Send request to get all the direct acquisitions of an AD Company */
                     CommManager.requestADCompanyContracts(new CommManagerResponse() {
@@ -247,9 +252,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null)
+                            if (fragmentCopy.getContext() != null) {
+                                directAcqListFragment.hideProgressBar();
                                 Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                         Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }, company.id);
                     break;
@@ -265,6 +272,8 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
         } else {
 
+            directAcqListFragment.displayProgressBar();
+
             /* Send request to get the PI's direct acquisitions */
             CommManager.requestPIAcqs(new CommManagerResponse() {
                 @Override
@@ -274,9 +283,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null)
+                    if (fragmentCopy.getContext() != null) {
+                        directAcqListFragment.hideProgressBar();
                         Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                 Toast.LENGTH_SHORT).show();
+                    }
                 }
             }, pi.id);
         }
@@ -288,6 +299,9 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
         System.out.println("InstitutionFragment: Get Server Info for Tenders");
 
+        tendersListFragment = (ContractListFragment) viewPageFragment
+                .pageAdapter.fragments.get(TENDER_FRAGMENT_INDEX);
+
         if (type == CONTRACT_LIST_FOR_COMPANY) {
             switch (company.type) {
                 case Company.COMPANY_TYPE_AD:
@@ -295,6 +309,8 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                     break;
 
                 case Company.COMPANY_TYPE_TENDER:
+
+                    tendersListFragment.displayProgressBar();
 
                     /* Send request to get all the tenders of an AD Company */
                     CommManager.requestTenderCompanyTenders(new CommManagerResponse() {
@@ -305,9 +321,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null)
+                            if (fragmentCopy.getContext() != null) {
+                                tendersListFragment.hideProgressBar();
                                 Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                         Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }, company.id);
                     break;
@@ -318,6 +336,8 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
             }
 
         } else {
+            tendersListFragment.displayProgressBar();
+
             /* Send request to get the PI's tenders */
             CommManager.requestPITenders(new CommManagerResponse() {
                 @Override
@@ -327,9 +347,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null)
+                    if (fragmentCopy.getContext() != null) {
+                        tendersListFragment.hideProgressBar();
                         Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                 Toast.LENGTH_SHORT).show();
+                    }
                 }
             }, pi.id);
         }
@@ -343,6 +365,10 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
          /* Get Server information for a company */
         if (type == CONTRACT_LIST_FOR_COMPANY) {
+            piListFragment = (InstitutionListFragment) viewPageFragment
+                    .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
+            piListFragment.displayProgressBar();
+
             switch (company.type) {
                 case Company.COMPANY_TYPE_AD:
 
@@ -355,9 +381,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null)
+                            if (fragmentCopy.getContext() != null) {
+                                piListFragment.hideProgressBar();
                                 Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                         Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }, company.id);
                     break;
@@ -373,9 +401,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null)
+                            if (fragmentCopy.getContext() != null) {
+                                piListFragment.hideProgressBar();
                                 Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                         Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }, company.id);
                     break;
@@ -386,6 +416,10 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
         } else {
 
+            companyListFragment = (CompanyListFragment) viewPageFragment
+                    .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
+            companyListFragment.displayProgressBar();
+
             /* Send request to get the institution AD companies */
             CommManager.requestADCompaniesByPI(new CommManagerResponse() {
                 @Override
@@ -395,9 +429,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null)
+                    if (fragmentCopy.getContext() != null) {
+                        companyListFragment.hideProgressBar();
                         Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                 Toast.LENGTH_SHORT).show();
+                    }
                 }
             }, pi.id);
 
@@ -410,9 +446,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null)
+                    if (fragmentCopy.getContext() != null) {
+                        companyListFragment.hideProgressBar();
                         Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                 Toast.LENGTH_SHORT).show();
+                    }
                 }
             }, pi.id);
         }
@@ -697,13 +735,14 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
     private void displayDirectAcqs() {
 
         /* Fill the contract list fragment */
-        directAcqListFragment = (ContractListFragment) viewPageFragment
-                .pageAdapter.fragments.get(DIRECT_ACQ_FRAGMENT_INDEX);
-        if (directAcqListFragment != null) {
-            directAcqListFragment.setContracts(directAcqs);
-            directAcqListFragment.displayContracts();
-        } else
+        if (directAcqListFragment == null) {
             System.out.println("NULL contract list fragment");
+            return;
+        }
+
+        directAcqListFragment.hideProgressBar();
+        directAcqListFragment.setContracts(directAcqs);
+        directAcqListFragment.displayContracts();
     }
 
 
@@ -711,13 +750,14 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
     private void displayTenders() {
 
         /* Fill the contract list fragment */
-        tendersListFragment = (ContractListFragment) viewPageFragment
-                .pageAdapter.fragments.get(TENDER_FRAGMENT_INDEX);
-        if (tendersListFragment != null) {
-            tendersListFragment.setContracts(tenders);
-            tendersListFragment.displayContracts();
-        } else
+        if (tendersListFragment == null) {
             System.out.println("NULL contract list fragment");
+            return;
+        }
+        tendersListFragment.hideProgressBar();
+        tendersListFragment.setContracts(tenders);
+        tendersListFragment.displayContracts();
+
     }
 
 
@@ -725,13 +765,13 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
     private void displayCompanies() {
 
         /* Fill the companies list fragment */
-        companyListFragment = (CompanyListFragment) viewPageFragment
-                .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
-        if (companyListFragment != null) {
-            companyListFragment.setCompanies(companies);
-            companyListFragment.displayCompanies();
-        } else
+        if (companyListFragment == null) {
             System.out.println("NULL company list fragment");
+            return;
+        }
+        companyListFragment.hideProgressBar();
+        companyListFragment.setCompanies(companies);
+        companyListFragment.displayCompanies();
     }
 
 
@@ -739,13 +779,14 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
     private void displayPIs() {
 
         /* Fill the companies list fragment */
-        piListFragment = (InstitutionListFragment) viewPageFragment
-                .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
-        if (piListFragment != null) {
-            piListFragment.setPIs(pis);
-            piListFragment.displayPIs();
-        } else
+        if (piListFragment == null) {
             System.out.println("NULL pi list fragment");
+            return;
+        }
+
+        piListFragment.hideProgressBar();
+        piListFragment.setPIs(pis);
+        piListFragment.displayPIs();
     }
 
     @Override

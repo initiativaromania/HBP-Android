@@ -19,7 +19,7 @@ import initiativaromania.hartabanilorpublici.data.ContractListItem;
  * Created by claudiu on 9/12/17.
  */
 
-public class ContractListFragment extends Fragment {
+public class ContractListFragment extends LoadableListFragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     private View v;
     public LinkedList<Contract> contracts;
@@ -37,6 +37,11 @@ public class ContractListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_list, container, false);
+
+        System.out.println("On create view ContractListFragment");
+        initProgressBar(v);
+        if (startLoading)
+            displayProgressBar();
 
         displayContracts();
 
@@ -69,6 +74,9 @@ public class ContractListFragment extends Fragment {
                 orderDetailsList);
         orderList.setAdapter(adapter);
         orderList.setOnItemClickListener(adapter);
+
+        /* Make sure you get no loading progress bar */
+        startLoading = false;
     }
 
 
@@ -80,5 +88,14 @@ public class ContractListFragment extends Fragment {
     /* Clear the contracts in the fragment */
     public void clearContracts() {
         this.contracts = new LinkedList<>();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser){
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && !startLoading){
+            hideProgressBar();
+            System.out.println("ContractFragment is visible now");
+        }
     }
 }

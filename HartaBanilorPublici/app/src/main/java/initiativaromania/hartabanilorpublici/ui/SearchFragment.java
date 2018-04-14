@@ -193,6 +193,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 /* Clear previous search results */
                 clearSearchPIs();
 
+                piListFragment = (InstitutionListFragment) viewPageFragment
+                        .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
+                searchFragments[position] = piListFragment;
+                piListFragment.displayProgressBar();
+
                 /* Search the public institution using the server */
                 CommManager.searchPublicInstitution(new CommManagerResponse() {
                     @Override
@@ -203,14 +208,12 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                     @Override
                     public void onErrorOccurred(String errorMsg) {
                         if (fragmentCopy.getContext() != null) {
+                            piListFragment.hideProgressBar();
                             Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, query);
-
-                piListFragment = new InstitutionListFragment();
-                searchFragments[position] = piListFragment;
 
                 break;
 
@@ -218,6 +221,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                 /* Clear previous search results */
                 clearSearchCompanies();
+
+                companyListFragment = (CompanyListFragment) viewPageFragment
+                        .pageAdapter.fragments.get(COMPANIES_FRAGMENT_INDEX);
+                searchFragments[position] = companyListFragment;
+                companyListFragment.displayProgressBar();
 
                 /* Search AD Companies using the server */
                 CommManager.searchADCompany(new CommManagerResponse() {
@@ -229,6 +237,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                     @Override
                     public void onErrorOccurred(String errorMsg) {
                         if (fragmentCopy.getContext() != null) {
+                            companyListFragment.hideProgressBar();
                             Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -245,14 +254,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                     @Override
                     public void onErrorOccurred(String errorMsg) {
                         if (fragmentCopy.getContext() != null) {
+                            companyListFragment.hideProgressBar();
                             Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, query);
 
-                companyListFragment = new CompanyListFragment();
-                searchFragments[position] = companyListFragment;
                 break;
 
             case DIRECT_ACQ_FRAGMENT_INDEX:
@@ -260,6 +268,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                 /* Clear previous search results */
                 clearSearchADs();
+
+                directAcqListFragment = (ContractListFragment) viewPageFragment
+                        .pageAdapter.fragments.get(DIRECT_ACQ_FRAGMENT_INDEX);
+                searchFragments[position] = directAcqListFragment;
+                directAcqListFragment.displayProgressBar();
 
                 /* Search the direct acquisitions using the server */
                 CommManager.searchAD(new CommManagerResponse() {
@@ -270,14 +283,14 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-//                        if (fragmentCopy.getContext() != null)
-//                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-//                                    Toast.LENGTH_SHORT).show();
+                        if (fragmentCopy.getContext() != null) {
+                            directAcqListFragment.hideProgressBar();
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }, query);
 
-                directAcqListFragment = new ContractListFragment();
-                searchFragments[position] = directAcqListFragment;
                 break;
 
             case TENDER_FRAGMENT_INDEX:
@@ -285,6 +298,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                 /* Clear previous search results */
                 clearSearchTenders();
+
+                tendersListFragment = (ContractListFragment) viewPageFragment
+                        .pageAdapter.fragments.get(TENDER_FRAGMENT_INDEX);
+                searchFragments[position] = tendersListFragment;
+                tendersListFragment.displayProgressBar();
 
                 /* Search the tenders using the server */
                 CommManager.searchTender(new CommManagerResponse() {
@@ -295,14 +313,15 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-//                        if (fragmentCopy.getContext() != null)
-//                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-//                                    Toast.LENGTH_SHORT).show();
+                        if (fragmentCopy.getContext() != null) {
+                            tendersListFragment.hideProgressBar();
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }, query);
 
-                tendersListFragment = new ContractListFragment();
-                searchFragments[position] = tendersListFragment;
+
                 break;
 
             default:
@@ -518,9 +537,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private void displayPIs() {
 
         /* Fill the public institutions list fragment */
-        piListFragment = (InstitutionListFragment) viewPageFragment
-                .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
+
         if (piListFragment != null) {
+            piListFragment.hideProgressBar();
             piListFragment.clearPIs();
             piListFragment.setPIs(pis);
             piListFragment.displayPIs();
@@ -532,10 +551,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private void displayCompanies() {
 
         /* Add companies in the companies list fragment */
-        companyListFragment = (CompanyListFragment) viewPageFragment
-                .pageAdapter.fragments.get(COMPANIES_FRAGMENT_INDEX);
 
         if (companyListFragment != null) {
+            companyListFragment.hideProgressBar();
             companyListFragment.setCompanies(companies);
             companyListFragment.displayCompanies();
         } else
@@ -546,10 +564,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private void displayADs() {
 
         /* Add ADs in the ADs list fragment */
-        directAcqListFragment = (ContractListFragment) viewPageFragment
-                .pageAdapter.fragments.get(DIRECT_ACQ_FRAGMENT_INDEX);
 
         if (directAcqListFragment != null) {
+            directAcqListFragment.hideProgressBar();
             directAcqListFragment.setContracts(ads);
             directAcqListFragment.displayContracts();
         } else
@@ -560,10 +577,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private void displayTenders() {
 
         /* Add Tenders in the Tender list fragment */
-        tendersListFragment = (ContractListFragment) viewPageFragment
-                .pageAdapter.fragments.get(TENDER_FRAGMENT_INDEX);
 
         if (tendersListFragment != null) {
+            tendersListFragment.hideProgressBar();
             tendersListFragment.setContracts(tenders);
             tendersListFragment.displayContracts();
         } else

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -21,7 +22,7 @@ import initiativaromania.hartabanilorpublici.data.PublicInstitution;
  * Created by claudiu on 25/11/17.
  */
 
-public class InstitutionListFragment  extends Fragment {
+public class InstitutionListFragment extends LoadableListFragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     private View v;
     public LinkedList<PublicInstitution> pis;
@@ -39,6 +40,11 @@ public class InstitutionListFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_list, container, false);
+
+        System.out.println("On create view InstitutionListFragment");
+        initProgressBar(v);
+        if (startLoading)
+            displayProgressBar();
 
         displayPIs();
 
@@ -77,5 +83,14 @@ public class InstitutionListFragment  extends Fragment {
     /* Clear the list of public institutions */
     public void clearPIs() {
         this.pis = new LinkedList<>();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser){
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && !startLoading){
+            hideProgressBar();
+            System.out.println("InstitutionListFragment is visible now");
+        }
     }
 }

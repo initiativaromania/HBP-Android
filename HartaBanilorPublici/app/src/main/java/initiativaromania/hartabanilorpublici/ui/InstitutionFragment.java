@@ -28,6 +28,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
     public static final int CONTRACT_LIST_FOR_COMPANY               = 1;
     public static final int CONTRACT_LIST_FOR_PUBLIC_INSTITUTION    = 2;
     public static final int CONTRACT_LIST_FOR_SEARCH                = 3;
+    public static final int CONTRACT_LIST_FOR_STATS                 = 4;
 
     public static final String CONTRACT_LIST_TYPE = "contract list type";
     public static final String CONTRACT_LIST_EXTRA = "contract list extra";

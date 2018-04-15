@@ -19,10 +19,11 @@ import initiativaromania.hartabanilorpublici.R;
 
 public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
-    public static final String TAB_ACHIZITII_DIRECTE    = "Achizitii";
-    public static final String TAB_LICITATII            = "Licitatii";
-    public static final String TAB_INSTITUTII_PUBLICE   = "Institutii";
+    public static final String TAB_ACHIZITII_DIRECTE    = "Achiziții";
+    public static final String TAB_LICITATII            = "Licitații";
+    public static final String TAB_INSTITUTII_PUBLICE   = "Instituții";
     public static final String TAB_COMPANII             = "Companii";
+    public static final String TAB_CONTRACTE            = "Contracte";
 
     private String tabTitlesCompany[] = new String[]{TAB_ACHIZITII_DIRECTE, TAB_LICITATII,
             TAB_INSTITUTII_PUBLICE};
@@ -30,6 +31,7 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
             TAB_COMPANII};
     public String tabTitlesSearch[] = new String[]{TAB_INSTITUTII_PUBLICE, TAB_COMPANII,
             TAB_ACHIZITII_DIRECTE, TAB_LICITATII};
+    public String tabTitlesStats[] = new String[]{TAB_CONTRACTE, TAB_INSTITUTII_PUBLICE, TAB_COMPANII};
 
     public EntityViewPageAdapter pageAdapter;
     public ViewPager pager;
@@ -82,6 +84,10 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
                 tabTitles = tabTitlesSearch;
                 break;
 
+            case InstitutionFragment.CONTRACT_LIST_FOR_STATS:
+                tabTitles = tabTitlesStats;
+                break;
+
             default:
                 tabTitles = null;
                 System.out.println("TabbedViewPageFragment no fragment type");
@@ -99,21 +105,38 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
     private List<Fragment> buildFragments(int fragmentType) {
         List<Fragment> fList = new ArrayList<Fragment>();
 
-        if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_SEARCH) {
-            fList.add(InstitutionListFragment.newInstance(R.id.fragment_search_layout));
-            fList.add(CompanyListFragment.newInstance(R.id.fragment_search_layout));
-            fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout));
-            fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout));
-            return fList;
+        switch (fragmentType) {
+
+            /* Create the tab fragments for an institution (company or pi) */
+            case InstitutionFragment.CONTRACT_LIST_FOR_COMPANY:
+            case InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION:
+                fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout));
+                fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout));
+
+                if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION)
+                    fList.add(CompanyListFragment.newInstance(R.id.fragment_institution_layout));
+                else
+                    fList.add(InstitutionListFragment.newInstance(R.id.fragment_institution_layout));
+                break;
+
+            /* Create the tab fragments for the search view */
+            case InstitutionFragment.CONTRACT_LIST_FOR_SEARCH:
+                fList.add(InstitutionListFragment.newInstance(R.id.fragment_search_layout));
+                fList.add(CompanyListFragment.newInstance(R.id.fragment_search_layout));
+                fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout));
+                fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout));
+                break;
+
+            /* Create the tab fragments for the stats view */
+            case InstitutionFragment.CONTRACT_LIST_FOR_STATS:
+                fList.add(ContractListFragment.newInstance(R.id.fragment_stats_layout));
+                fList.add(InstitutionListFragment.newInstance(R.id.fragment_stats_layout));
+                fList.add(CompanyListFragment.newInstance(R.id.fragment_stats_layout));
+                break;
+
+            default:
+                System.out.println("TabbedViewPageFragment Unknown fragment type");
         }
-
-        fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout));
-        fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout));
-
-        if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION)
-            fList.add(CompanyListFragment.newInstance(R.id.fragment_institution_layout));
-        else
-            fList.add(InstitutionListFragment.newInstance(R.id.fragment_institution_layout));
 
         return fList;
     }

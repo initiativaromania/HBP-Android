@@ -252,7 +252,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null) {
+                            if (fragmentCopy.getContext() != null&& directAcqListFragment != null) {
                                 directAcqListFragment.hideProgressBar();
                                 Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                         Toast.LENGTH_SHORT).show();
@@ -283,7 +283,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null) {
+                    if (fragmentCopy.getContext() != null && directAcqListFragment != null) {
                         directAcqListFragment.hideProgressBar();
                         Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                 Toast.LENGTH_SHORT).show();
@@ -321,7 +321,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null) {
+                            if (fragmentCopy.getContext() != null && tendersListFragment != null) {
                                 tendersListFragment.hideProgressBar();
                                 Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                         Toast.LENGTH_SHORT).show();
@@ -347,7 +347,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null) {
+                    if (fragmentCopy.getContext() != null && tendersListFragment != null) {
                         tendersListFragment.hideProgressBar();
                         Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                 Toast.LENGTH_SHORT).show();
@@ -381,7 +381,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null) {
+                            if (fragmentCopy.getContext() != null && piListFragment != null) {
                                 piListFragment.hideProgressBar();
                                 Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                         Toast.LENGTH_SHORT).show();
@@ -401,7 +401,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null) {
+                            if (fragmentCopy.getContext() != null && piListFragment != null) {
                                 piListFragment.hideProgressBar();
                                 Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                         Toast.LENGTH_SHORT).show();
@@ -429,7 +429,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null) {
+                    if (fragmentCopy.getContext() != null && companyListFragment != null) {
                         companyListFragment.hideProgressBar();
                         Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                 Toast.LENGTH_SHORT).show();
@@ -446,7 +446,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
                 @Override
                 public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null) {
+                    if (fragmentCopy.getContext() != null && companyListFragment != null) {
                         companyListFragment.hideProgressBar();
                         Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                 Toast.LENGTH_SHORT).show();

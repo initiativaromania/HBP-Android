@@ -95,17 +95,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         }
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                System.out.println("Focus");
-                if (hasFocus){
-                    InputMethodManager imm = (InputMethodManager) getActivity()
-                            .getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-                }
-            }
-        });
+        searchView.setIconified(false);
 
         piListFragment = null;
         directAcqListFragment = null;
@@ -207,7 +197,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy.getContext() != null) {
+                        if (fragmentCopy.getContext() != null && piListFragment != null) {
                             piListFragment.hideProgressBar();
                             Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                     Toast.LENGTH_SHORT).show();
@@ -236,7 +226,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy.getContext() != null) {
+                        if (fragmentCopy.getContext() != null && companyListFragment != null) {
                             companyListFragment.hideProgressBar();
                             Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                     Toast.LENGTH_SHORT).show();
@@ -253,7 +243,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy.getContext() != null) {
+                        if (fragmentCopy.getContext() != null && companyListFragment != null) {
                             companyListFragment.hideProgressBar();
                             Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                     Toast.LENGTH_SHORT).show();
@@ -283,7 +273,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy.getContext() != null) {
+                        if (fragmentCopy.getContext() != null && directAcqListFragment != null) {
                             directAcqListFragment.hideProgressBar();
                             Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                     Toast.LENGTH_SHORT).show();
@@ -313,7 +303,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                     @Override
                     public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy.getContext() != null) {
+                        if (fragmentCopy.getContext() != null && tendersListFragment != null) {
                             tendersListFragment.hideProgressBar();
                             Toast.makeText(fragmentCopy.getContext(), errorMsg,
                                     Toast.LENGTH_SHORT).show();

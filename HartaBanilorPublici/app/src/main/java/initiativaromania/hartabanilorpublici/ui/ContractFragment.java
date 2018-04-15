@@ -1,5 +1,6 @@
 package initiativaromania.hartabanilorpublici.ui;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,7 +37,11 @@ public class ContractFragment extends Fragment {
     private LayoutInflater inflater;
     private int rowNumber = CONTRACT_TABLE_DEFAULT_ROW_NUMBER;
     private String oldTitle;
+    private int parentID;
 
+    public void setParentID(int parentID) {
+        this.parentID = parentID;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -485,7 +490,7 @@ public class ContractFragment extends Fragment {
 
                 /* Got the Company Fragment */
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.add(R.id.fragment_institution_layout, piFragment)
+                transaction.add(parentID, piFragment)
                         .addToBackStack(piFragment.getClass().getName())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
             }
@@ -519,7 +524,7 @@ public class ContractFragment extends Fragment {
 
                 /* Got the Company Fragment */
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.add(R.id.fragment_institution_layout, companyFragment)
+                transaction.add(parentID, companyFragment)
                         .addToBackStack(companyFragment.getClass().getName())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
             }

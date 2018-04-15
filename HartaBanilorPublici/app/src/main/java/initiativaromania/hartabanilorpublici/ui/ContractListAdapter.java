@@ -83,7 +83,9 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
 
         System.out.println("Click on contract " + contractItem.id + " type " + contractItem.type);
 
-        Fragment contractFragment = new ContractFragment();
+        ContractFragment contractFragment = new ContractFragment();
+        contractFragment.setParentID(parentID);
+
         final FragmentManager fragmentManager = context.getSupportFragmentManager();
 
         /* Build Fragment Arguments */

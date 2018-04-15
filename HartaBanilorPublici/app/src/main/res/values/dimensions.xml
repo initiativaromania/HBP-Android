@@ -4,6 +4,7 @@
     <dimen name="custom_profile_padding">2dp</dimen>
     <dimen name="contract_padding">14dp</dimen>
     <dimen name="list_height">40dp</dimen>
+    <dimen name="list_date_height">20dp</dimen>
     <dimen name="list_pad_top">2dp</dimen>
     <dimen name="list_pad_bot">2dp</dimen>
 

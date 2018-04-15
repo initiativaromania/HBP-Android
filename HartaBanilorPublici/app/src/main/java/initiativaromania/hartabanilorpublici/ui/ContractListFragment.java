@@ -65,6 +65,7 @@ public class ContractListFragment extends LoadableListFragment {
                 price = contract.valueRON;
                 pi = contract.pi;
                 company = contract.company;
+                date = contract.date != null ? contract.date : "-";
             }});
         }
 

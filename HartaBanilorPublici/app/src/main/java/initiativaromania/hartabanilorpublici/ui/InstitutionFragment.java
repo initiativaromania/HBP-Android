@@ -508,6 +508,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                 a.id = Integer.parseInt(acq.getString(CommManager.JSON_COMPANY_ACQ_ID));
                 a.title = acq.getString(CommManager.JSON_CONTRACT_TITLE);
                 a.valueRON = acq.getInt(CommManager.JSON_AD_VALUE_RON);
+                a.date = acq.getString(CommManager.JSON_AD_DATE);
                 if (type == CONTRACT_LIST_FOR_COMPANY)
                     a.company = company;
                 else
@@ -540,6 +541,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                 t.id = Integer.parseInt(tender.getString(CommManager.JSON_COMPANY_TENDER_ID));
                 t.title = tender.getString(CommManager.JSON_CONTRACT_TITLE);
                 t.valueRON = tender.getInt(CommManager.JSON_TENDER_VALUE_RON);
+                t.date = tender.getString(CommManager.JSON_TENDER_DATE);
                 if (type == CONTRACT_LIST_FOR_COMPANY)
                     t.company = company;
                 else
@@ -573,6 +575,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                 a.title = acq.getString(CommManager.JSON_CONTRACT_TITLE);
                 a.number = acq.getString(CommManager.JSON_CONTRACT_NR);
                 a.valueRON = Double.parseDouble(acq.getString(CommManager.JSON_CONTRACT_VALUE_RON));
+                a.date = acq.getString(CommManager.JSON_AD_DATE);
                 if (type == CONTRACT_LIST_FOR_COMPANY)
                     a.company = company;
                 else
@@ -606,6 +609,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                 t.title = tender.getString(CommManager.JSON_CONTRACT_TITLE);
                 t.number = tender.getString(CommManager.JSON_CONTRACT_NR);
                 t.valueRON = Double.parseDouble(tender.getString(CommManager.JSON_CONTRACT_VALUE_RON));
+                t.date = tender.getString(CommManager.JSON_TENDER_DATE);
                 if (type == CONTRACT_LIST_FOR_COMPANY)
                     t.company = company;
                 else

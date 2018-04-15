@@ -8,6 +8,7 @@ public class ContractListItem {
     public int id;
     public int type;
     public String title;
+    public String date;
     public double price;
     public PublicInstitution pi;
     public Company company;

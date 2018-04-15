@@ -15,6 +15,10 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +56,25 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
 
         TextView contractValue = (TextView) convertView.findViewById(R.id.listPrice);
         contractValue.setText(contracts.get(position).price + " RON");
+
+        TextView contractYear = (TextView) convertView.findViewById(R.id.listDate);
+        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+        Date contractDate = null;
+        try {
+            if (contracts.get(position).date != null &&
+                    contracts.get(position).date.equals("-") == false) {
+                System.out.println(contracts.get(position).date + "    data");
+                contractDate = parser.parse(contracts.get(position).date);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(contractDate);
+                contractYear.setText(calendar.get(Calendar.YEAR) + "");
+            } else
+                contractYear.setText("-");
+        } catch (ParseException e) {
+            contractYear.setText("-");
+            e.printStackTrace();
+        }
+
 
         convertView.setTag(contracts.get(position));
 

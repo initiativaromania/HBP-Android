@@ -21,4 +21,6 @@ public class Company implements Serializable {
     public String city;
     public String address;
     public int id;
+    public String nrADs;
+    public String nrTenders;
 }

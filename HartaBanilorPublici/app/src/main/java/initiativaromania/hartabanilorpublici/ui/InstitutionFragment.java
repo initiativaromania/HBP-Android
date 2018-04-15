@@ -466,12 +466,20 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
             JSONObject companySummary = response.getJSONObject(0);
             company.address = companySummary.getString(CommManager.JSON_COMPANY_ADDRESS);
             company.CUI = companySummary.getString(CommManager.JSON_COMPANY_CUI);
+            if (company.type == Company.COMPANY_TYPE_AD) {
+                company.nrADs = companySummary.getString(CommManager.JSON_COMPANY_NR_CONTRACTS);
+                company.nrTenders = "0";
+            } else {
+                company.nrADs = "0";
+                company.nrTenders = companySummary.getString(CommManager.JSON_COMPANY_NR_CONTRACTS);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         /* Show the info received from the server */
         displayServerInfo(type);
+        displayInitCompanyInfo();
     }
 
 
@@ -714,11 +722,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
         text = ((TextView) originalView.findViewById(R.id.nrDirectAcquisitions));
         if (text != null)
-            text.setText(0 + "");
+            text.setText(company.nrADs);
 
         text = ((TextView) originalView.findViewById(R.id.nrTenders));
         if (text != null)
-            text.setText(0 + "");
+            text.setText(company.nrTenders);
     }
 
 

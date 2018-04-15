@@ -125,6 +125,7 @@ public class CommManager {
     public static final String JSON_COMPANY_ID                  = "CompanieId";
     public static final String JSON_COMPANY_ADDRESS             = "Adresa";
     public static final String JSON_COMPANY_CUI                 = "CUI";
+    public static final String JSON_COMPANY_NR_CONTRACTS        = "NrContracte";
 
     public static final String JSON_COMPANY_PI_NAME             = "Nume";
     public static final String JSON_COMPANY_PI_ID               = "Id";

@@ -197,6 +197,26 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                                 Toast.LENGTH_SHORT).show();
                 }
             }, pi.id);
+
+            /* Make sure we have the number of ADs and Tenders */
+            if (pi.directAcqs == -1 && pi.tenders == -1) {
+                System.out.println("InstitutionFragment making a separate request for ADs and tenders");
+
+                /* Send request to get the PI summary */
+                CommManager.requestPISummary(new CommManagerResponse() {
+                    @Override
+                    public void processResponse(JSONArray response) {
+                        receivePISummary(response);
+                    }
+
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
+                        if (fragmentCopy != null)
+                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                    Toast.LENGTH_SHORT).show();
+                    }
+                }, pi.id);
+            }
         }
     }
 
@@ -497,6 +517,21 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
         /* Show the info received from the server */
         displayServerInfo(type);
+    }
+
+    /* Receive Public Institution Summary from the server */
+    public void receivePISummary(JSONArray response) {
+        System.out.println("InstitutionFragment: receivePISummary " + response);
+
+        try {
+            JSONObject piSummary = response.getJSONObject(0);
+            pi.directAcqs = Integer.parseInt(piSummary.getString(CommManager.JSON_PI_NO_ACQS));
+            pi.tenders = Integer.parseInt(piSummary.getString(CommManager.JSON_PI_NO_TENDERS));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        displayInitPIInfo();
     }
 
 

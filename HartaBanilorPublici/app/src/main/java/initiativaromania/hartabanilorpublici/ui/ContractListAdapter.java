@@ -63,7 +63,6 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
         try {
             if (contracts.get(position).date != null &&
                     contracts.get(position).date.equals("-") == false) {
-                System.out.println(contracts.get(position).date + "    data");
                 contractDate = parser.parse(contracts.get(position).date);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(contractDate);

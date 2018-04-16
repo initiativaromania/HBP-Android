@@ -428,6 +428,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 con.id       = Integer.parseInt(conObj.getString(CommManager.JSON_ACQ_ID));
                 con.title    = conObj.getString(CommManager.JSON_CONTRACT_TITLE);
                 con.valueRON = Double.parseDouble(conObj.getString(CommManager.JSON_CONTRACT_VALUE_RON));
+                con.date     = conObj.getString(CommManager.JSON_AD_DATE);
 
                 ads.add(con);
             }
@@ -462,6 +463,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 con.id       = Integer.parseInt(conObj.getString(CommManager.JSON_TENDER_ID));
                 con.title    = conObj.getString(CommManager.JSON_CONTRACT_TITLE);
                 con.valueRON = Double.parseDouble(conObj.getString(CommManager.JSON_CONTRACT_VALUE_RON));
+                con.date     = conObj.getString(CommManager.JSON_TENDER_DATE);
 
                 tenders.add(con);
             }

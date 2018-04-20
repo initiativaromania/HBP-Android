@@ -3,6 +3,7 @@
     <color name="colorPrimary">#500014</color>
     <color name="colorPrimaryDark">#500014</color>
     <color name="colorAccent">#FFFFFF</color>
+    <color name="colorLightGray">#E6E6E6</color>
     <color name="colorListText">#000000</color>
     <color name="tab_selected_background">@color/colorPrimary</color>
 </resources>

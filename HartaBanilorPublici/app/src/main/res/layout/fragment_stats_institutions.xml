@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ScrollView
@@ -15,21 +15,21 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/topADsValue"
+                android:id="@+id/topInstitAD"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/top_name_height"
                 android:gravity="center_vertical|left|start"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/top_name_text_size"
                 android:textStyle="bold"
-                android:text="Top 10 achiziții directe după valoare"
+                android:text="Top 10 instituții dupa numărul de achiziții directe"
                 android:background="@color/colorLightGray"
                 android:textColor="@color/colorPrimaryDark"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"/>
 
             <ListView
-                android:id="@+id/top_ADs_value"
+                android:id="@+id/top_Instit_AD"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_weight="1"
@@ -41,21 +41,21 @@
             </ListView>
 
             <TextView
-                android:id="@+id/topTendersValue"
+                android:id="@+id/topInstitTender"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/top_name_height"
                 android:gravity="center_vertical|left|start"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/top_name_text_size"
                 android:textStyle="bold"
-                android:text="Top 10 licitații după valoare"
+                android:text="Top 10 instituții după numărul de licitații"
                 android:background="@color/colorLightGray"
                 android:textColor="@color/colorPrimaryDark"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"/>
 
             <ListView
-                android:id="@+id/top_Tenders_value"
+                android:id="@+id/top_Instit_Tender"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_weight="1"
@@ -67,34 +67,32 @@
             </ListView>
 
             <TextView
-                android:id="@+id/topContractsViewed"
+                android:id="@+id/topInstitViewd"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/top_name_height"
                 android:gravity="center_vertical|left|start"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/top_name_text_size"
                 android:textStyle="bold"
-                android:text="Top 10 cele mai vizualizate contracte"
+                android:text="Top 10 cele mai vizualizate instituții"
                 android:background="@color/colorLightGray"
                 android:textColor="@color/colorPrimaryDark"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"/>
 
             <TextView
-                android:id="@+id/topContractsFlagged"
+                android:id="@+id/topInstitFlagged"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/top_name_height"
                 android:gravity="center_vertical|left|start"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/top_name_text_size"
                 android:textStyle="bold"
-                android:text="Top 10 cele mai semnalate contracte"
+                android:text="Top 10 instituții cu cele mai semnalate contracte"
                 android:background="@color/colorLightGray"
                 android:textColor="@color/colorPrimaryDark"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"/>
-
-
 
         </LinearLayout>
 

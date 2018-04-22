@@ -24,7 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class InstitutionFragment extends Fragment implements TabbedViewPageListener{
+public class InstitutionFragment extends Fragment implements TabbedViewPageListener {
     public static final int CONTRACT_LIST_FOR_COMPANY               = 1;
     public static final int CONTRACT_LIST_FOR_PUBLIC_INSTITUTION    = 2;
     public static final int CONTRACT_LIST_FOR_SEARCH                = 3;

@@ -1,7 +1,6 @@
 package initiativaromania.hartabanilorpublici.comm;
 
 import android.content.Context;
-import android.view.View;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -9,11 +8,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -39,14 +36,24 @@ public class CommManager {
     private static final String URL_GET_AD_COMPANIES_BY_PI      = SERVER_IP + "ADCompaniesByInstitution/";
     private static final String URL_GET_TENDER_COMPANIES_BY_PI  = SERVER_IP + "TenderCompaniesByInstitution/";
     private static final String URL_GET_PI_BY_AD_COMPANY        = SERVER_IP + "InstitutionsByADCompany/";
-    private static final String URL_GET_PI_BY_TENDER_COMPANY    = SERVER_IP + "InsitutionsByTenderCompany/";
+    private static final String URL_GET_PI_BY_TENDER_COMPANY    = SERVER_IP + "InstitutionsByTenderCompany/";
     private static final String URL_GET_AD_COMPANY_CONTRACTS    = SERVER_IP + "ADCompanyContracts/";
     private static final String URL_GET_TENDER_COMPANY_TENDERS  = SERVER_IP + "TenderCompanyTenders/";
+
+    /* Search */
     private static final String URL_SEARCH_PUBLIC_INSTITUTION   = SERVER_IP + "SearchInstitution/";
     private static final String URL_SEARCH_AD_COMPANY           = SERVER_IP + "SearchADCompany/";
     private static final String URL_SEARCH_TENDER_COMPANY       = SERVER_IP + "SearchTenderCompany/";
     private static final String URL_SEARCH_AD                   = SERVER_IP + "SearchAD/";
     private static final String URL_SEARCH_TENDERS              = SERVER_IP + "SearchTender/";
+
+    /* Statistics */
+    private static final String URL_STATS_ADS_BY_VALUE          = SERVER_IP + "report/Contracte_AD_ValoareEUR_top10";
+    private static final String URL_STATS_TENDERS_BY_VALUE      = SERVER_IP + "report/Contracte_Tenders_ValoareEUR_top10";
+    private static final String URL_STATS_INSTIT_BY_AD_NR       = SERVER_IP + "report/Institutii_AD_top10";
+    private static final String URL_STATS_INSTIT_BY_TENDER_NR   = SERVER_IP + "report/Institutii_Tenders_top10";
+    private static final String URL_STATS_COMPAN_BY_AD_NR       = SERVER_IP + "report/Company_AD_countAD_top10";
+    private static final String URL_STATS_COMPAN_BY_TENDER_NR   = SERVER_IP + "report/Company_Tender_countTenders_top10";
 
 
     /* Bundle keys */
@@ -77,6 +84,7 @@ public class CommManager {
     public static final String JSON_ACQ_ID                      = "ContracteId";
     public static final String JSON_COMPANY_ACQ_ID              = "ID";
     public static final String JSON_TENDER_ID                   = "LicitatieID";
+    public static final String JSON_TENDER_ID_STAT              = "LicitatiiId";
     public static final String JSON_COMPANY_TENDER_ID           = "ID";
     public static final String JSON_CONTRACT_TITLE              = "TitluContract";
     public static final String JSON_CONTRACT_NR                 = "NumarContract";
@@ -131,6 +139,9 @@ public class CommManager {
     public static final String JSON_COMPANY_PI_ID               = "Id";
     public static final String JSON_COMPANY_PI_CUI              = "CUI";
     public static final String JSON_SEARCH_INSTITUTION_ID       = "InstitutiePublicaId";
+
+    public static final String JSON_PI_NR_AD                    = "nrAD";
+    public static final String JSON_PI_NR_TENDERS = "nrTenders";
 
 
     public static RequestQueue queue;
@@ -279,6 +290,12 @@ public class CommManager {
         request(commManagerResponse, URL_GET_TENDER_COMPANY_TENDERS + companyID);
     }
 
+
+
+    /*
+     * SEARCH
+     */
+
     /* Send a request to the server to search for a public institution */
     public static void searchPublicInstitution(final CommManagerResponse commManagerResponse, String pi) {
         String encodedURL = URL_SEARCH_PUBLIC_INSTITUTION;
@@ -352,5 +369,46 @@ public class CommManager {
         }
         System.out.println("Search Tenders with URL " + encodedURL);
         request(commManagerResponse, encodedURL);
+    }
+
+
+    /*
+     * STATISTICS
+     */
+
+    /* Send a request to the server to get the TOP 10 ADs by value */
+    public static void requestStatsADsByValue(final CommManagerResponse commManagerResponse) {
+        System.out.println("Send StatsADsByValue request to URL " + URL_STATS_ADS_BY_VALUE);
+        request(commManagerResponse, URL_STATS_ADS_BY_VALUE);
+    }
+
+    /* Send a request to the server to get the TOP 10 Tenders by value */
+    public static void requestStatsTenderssByValue(final CommManagerResponse commManagerResponse) {
+        System.out.println("Send StatsTendersByValue request to URL " + URL_STATS_TENDERS_BY_VALUE);
+        request(commManagerResponse, URL_STATS_TENDERS_BY_VALUE);
+    }
+
+    /* Send a request to the server to get the TOP 10 Institutions by AD count */
+    public static void requestStatsInstitutionsByADCount(final CommManagerResponse commManagerResponse) {
+        System.out.println("Send StatsInstitutionsByADCount request to URL " + URL_STATS_INSTIT_BY_AD_NR);
+        request(commManagerResponse, URL_STATS_INSTIT_BY_AD_NR);
+    }
+
+    /* Send a request to the server to get the TOP 10 Institutions by Tender count */
+    public static void requestStatsInstitutionsByTenderCount(final CommManagerResponse commManagerResponse) {
+        System.out.println("Send StatsInstitutionsByTenderCount request to URL " + URL_STATS_INSTIT_BY_TENDER_NR);
+        request(commManagerResponse, URL_STATS_INSTIT_BY_TENDER_NR);
+    }
+
+    /* Send a request to the server to get the TOP 10 Companies by AD count */
+    public static void requestStatsCompaniesByADCount(final CommManagerResponse commManagerResponse) {
+        System.out.println("Send StatsCompaniesByADCount request to URL " + URL_STATS_COMPAN_BY_AD_NR);
+        request(commManagerResponse, URL_STATS_COMPAN_BY_AD_NR);
+    }
+
+    /* Send a request to the server to get the TOP 10 Companies by Tender count */
+    public static void requestStatsCompaniesByTenderCount(final CommManagerResponse commManagerResponse) {
+        System.out.println("Send StatsCompaniesByTenderCount request to URL " + URL_STATS_COMPAN_BY_TENDER_NR);
+        request(commManagerResponse, URL_STATS_COMPAN_BY_TENDER_NR);
     }
 }

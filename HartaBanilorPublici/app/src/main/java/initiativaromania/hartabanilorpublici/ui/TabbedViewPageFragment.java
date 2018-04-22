@@ -130,8 +130,8 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
             /* Create the tab fragments for the stats view */
             case InstitutionFragment.CONTRACT_LIST_FOR_STATS:
                 fList.add(StatsContractsFragment.newInstance(R.id.fragment_stats_layout));
-                fList.add(InstitutionListFragment.newInstance(R.id.fragment_stats_layout));
-                fList.add(CompanyListFragment.newInstance(R.id.fragment_stats_layout));
+                fList.add(StatsInstitutionsFragment.newInstance(R.id.fragment_stats_layout));
+                fList.add(StatsCompaniesFragment.newInstance(R.id.fragment_stats_layout));
                 break;
 
             default:

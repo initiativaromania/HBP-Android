@@ -18,6 +18,7 @@ import java.util.List;
 
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.comm.CommManager;
+import initiativaromania.hartabanilorpublici.data.Company;
 import initiativaromania.hartabanilorpublici.data.CompanyListItem;
 import initiativaromania.hartabanilorpublici.data.InstitutionListItem;
 
@@ -47,6 +48,14 @@ public class InstitutionListAdapter extends BaseAdapter implements AdapterView.O
 
         TextView piName = (TextView) convertView.findViewById(R.id.institutionListName);
         piName.setText((position + 1) + ". " + pis.get(position).name);
+
+        TextView piCounter1 = (TextView) convertView.findViewById(R.id.institutionCounter1);
+        TextView piCounter2 = (TextView) convertView.findViewById(R.id.institutionCounter2);
+
+        if (pis.get(position).nrADs != 0)
+            piCounter1.setText(pis.get(position).nrADs + " ADs");
+        if (pis.get(position).nrTenders != 0)
+            piCounter2.setText(pis.get(position).nrTenders + " licitații");
 
         convertView.setTag(pis.get(position));
 

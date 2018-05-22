@@ -18,11 +18,38 @@
             android:id="@+id/institutionListName"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/list_height"
+            android:layout_weight="2"
             android:paddingTop="@dimen/list_pad_top"
             android:paddingBottom="@dimen/list_pad_bot"
             android:textColor="@color/colorListText"
             android:text="">
         </TextView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_date_height"
+                android:layout_gravity="end"
+                android:textAlignment="textEnd"
+                android:layout_weight="1"
+                android:id="@+id/institutionCounter1">
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_date_height"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"
+                android:id="@+id/institutionCounter2">
+            </TextView>
+
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

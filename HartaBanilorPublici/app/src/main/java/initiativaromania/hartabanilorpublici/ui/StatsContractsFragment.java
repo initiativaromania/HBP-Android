@@ -43,11 +43,17 @@ public class StatsContractsFragment extends Fragment{
         v = inflater.inflate(R.layout.fragment_stats_contracts, container, false);
         System.out.println("StatsContractsFragment on create View");
 
+        displayStats();
+
         return v;
     }
 
     /* Display all the available contracts in this stats fragment */
     public void displayStats() {
+
+        if (v == null)
+            return;
+
         if (ads != null)
             displayContracts(ads, R.id.top_ADs_value);
 

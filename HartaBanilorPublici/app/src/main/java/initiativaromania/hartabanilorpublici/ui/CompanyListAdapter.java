@@ -18,6 +18,7 @@ import java.util.List;
 
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.comm.CommManager;
+import initiativaromania.hartabanilorpublici.data.Company;
 import initiativaromania.hartabanilorpublici.data.CompanyListItem;
 import initiativaromania.hartabanilorpublici.data.ContractListItem;
 
@@ -46,6 +47,14 @@ public class CompanyListAdapter extends BaseAdapter implements AdapterView.OnIte
 
         TextView companyName = (TextView) convertView.findViewById(R.id.companyListName);
         companyName.setText((position + 1) + ". " + companies.get(position).name);
+
+        TextView companyCounter = (TextView) convertView.findViewById(R.id.companyCounter1);
+        if (companies.get(position).type == Company.COMPANY_TYPE_AD &&
+                companies.get(position).nrAds != 0)
+            companyCounter.setText(companies.get(position).nrAds + " ADs");
+        if (companies.get(position).type == Company.COMPANY_TYPE_TENDER &&
+                companies.get(position).nrTenders != 0)
+            companyCounter.setText(companies.get(position).nrTenders + " licitații");
 
         convertView.setTag(companies.get(position));
 

@@ -41,11 +41,17 @@ public class StatsInstitutionsFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_stats_institutions, container, false);
         System.out.println("StatsInstitutionsFragment on create View");
 
+        displayStats();
+
         return v;
     }
 
     /* Display all the available institutions in this stats fragment */
     public void displayStats() {
+
+        if (v == null)
+            return;
+
         if (piADs != null)
             displayInstitutions(piADs, R.id.top_Instit_AD);
 
@@ -65,6 +71,8 @@ public class StatsInstitutionsFragment extends Fragment {
             orderDetailsList.add(new InstitutionListItem() {{
                 id = pi.id;
                 name = pi.name;
+                nrADs = pi.directAcqs;
+                nrTenders = pi.tenders;
             }});
         }
 

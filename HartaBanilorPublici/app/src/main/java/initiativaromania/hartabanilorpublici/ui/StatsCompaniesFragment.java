@@ -41,11 +41,17 @@ public class StatsCompaniesFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_stats_companies, container, false);
         System.out.println("StatsCompaniesFragment on create View");
 
+        displayStats();
+
         return v;
     }
 
     /* Display all the available institutions in this stats fragment */
     public void displayStats() {
+
+        if (v == null)
+            return;
+
         if (companyADs != null)
             displayCompanies(companyADs, R.id.top_Companies_AD);
 
@@ -65,6 +71,8 @@ public class StatsCompaniesFragment extends Fragment {
                 id = company.id;
                 type = company.type;
                 name = company.name;
+                nrAds = company.nrADs != null ? Integer.parseInt(company.nrADs) : 0;
+                nrTenders = company.nrTenders != null ? Integer.parseInt(company.nrTenders) : 0;
             }});
         }
 

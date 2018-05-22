@@ -460,7 +460,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                 Contract con = new Contract();
                 con.type     = Contract.CONTRACT_TYPE_TENDER;
-                con.id       = Integer.parseInt(conObj.getString(CommManager.JSON_TENDER_ID));
+                con.id       = Integer.parseInt(conObj.getString(CommManager.JSON_TENDER_ID_SEARCH));
                 con.title    = conObj.getString(CommManager.JSON_CONTRACT_TITLE);
                 con.valueRON = Double.parseDouble(conObj.getString(CommManager.JSON_CONTRACT_VALUE_RON));
                 con.date     = conObj.getString(CommManager.JSON_TENDER_DATE);

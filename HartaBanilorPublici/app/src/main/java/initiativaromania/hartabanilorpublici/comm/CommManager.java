@@ -21,8 +21,9 @@ import java.text.Normalizer;
  */
 
 public class CommManager {
-
-    private static final String SERVER_IP = "http://hbp-api.azurewebsites.net/api/";
+    private static final String SERVER_IP1                      = "http://hbp-api.azurewebsites.net/api/";
+    private static final String SERVER_IP2                      = "https://hbp-api2.azurewebsites.net/api/";
+    private static final String SERVER_IP                       = SERVER_IP2;
 
     /* Requests to server */
     private static final String URL_GET_PI_SUMMARY              = SERVER_IP + "PublicInstitutionSummary/";
@@ -85,6 +86,7 @@ public class CommManager {
     public static final String JSON_COMPANY_ACQ_ID              = "ID";
     public static final String JSON_TENDER_ID                   = "LicitatieID";
     public static final String JSON_TENDER_ID_STAT              = "LicitatiiId";
+    public static final String JSON_TENDER_ID_SEARCH            = "LicitatieId";
     public static final String JSON_COMPANY_TENDER_ID           = "ID";
     public static final String JSON_CONTRACT_TITLE              = "TitluContract";
     public static final String JSON_CONTRACT_NR                 = "NumarContract";

@@ -1,10 +1,17 @@
 package initiativaromania.hartabanilorpublici.ui;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import initiativaromania.hartabanilorpublici.R;
 
@@ -30,6 +37,7 @@ public class InfoFragment extends Fragment{
         /* Update the main activity title */
         oldTitle = ((HomeActivity) getActivity()).getActionBarTitle();
         ((HomeActivity) getActivity()).setActionBarTitle(INFO_FRAGMENT_NAME);
+
 
         return root;
     }

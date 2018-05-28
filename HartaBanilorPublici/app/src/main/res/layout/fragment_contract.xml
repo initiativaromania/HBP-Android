@@ -326,7 +326,7 @@
 
         <include
             android:id="@+id/companyInContract"
-            layout="@layout/contract_list_item"
+            layout="@layout/company_list_item"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"></include>
 
@@ -348,7 +348,7 @@
             />
         <include
             android:id="@+id/piInContract"
-            layout="@layout/contract_list_item"
+            layout="@layout/institution_list_item"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"></include>
 
@@ -369,7 +369,7 @@
             android:text="Cere justificare"
             android:layout_marginBottom="3dp"
             android:textColor="#FFFFFF"
-            android:elevation="10dp"
+
             android:background="@drawable/button_selector"/>
 
     </LinearLayout>

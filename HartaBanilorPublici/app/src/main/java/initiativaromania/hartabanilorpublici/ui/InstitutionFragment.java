@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +79,15 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                 ExpandableRelativeLayout expandableLayout1 = (ExpandableRelativeLayout) getView()
                         .findViewById(R.id.expandableLayout1);
                 expandableLayout1.toggle(); // toggle expand and collapse
+
+                ImageView arrowView = (ImageView)originalView.findViewById(R.id.arrow_instit);
+
+                if (expandableLayout1.isExpanded())
+                    arrowView.setImageDrawable(getResources().getDrawable(R.drawable.down,
+                            fragmentCopy.getActivity().getApplicationContext().getTheme()));
+                else
+                    arrowView.setImageDrawable(getResources().getDrawable(R.drawable.up,
+                            fragmentCopy.getActivity().getApplicationContext().getTheme()));
             }
         });
 

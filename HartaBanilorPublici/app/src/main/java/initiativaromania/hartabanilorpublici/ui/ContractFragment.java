@@ -478,9 +478,9 @@ public class ContractFragment extends Fragment {
     private void displayPIButton() {
         View piView = originalView.findViewById(R.id.piInContract);
 
-        TextView piName = (TextView) piView.findViewById(R.id.listTitle);
+        TextView piName = (TextView) piView.findViewById(R.id.institutionListName);
         piName.setText(contract.pi.name);
-        piName.setOnClickListener(new View.OnClickListener() {
+        piView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("Click on pi " + contract.pi.name);
@@ -511,9 +511,9 @@ public class ContractFragment extends Fragment {
     private void displayCompanyButton() {
         View piView = originalView.findViewById(R.id.companyInContract);
 
-        TextView companyName = (TextView) piView.findViewById(R.id.listTitle);
+        TextView companyName = (TextView) piView.findViewById(R.id.companyListName);
         companyName.setText(contract.company.name);
-        companyName.setOnClickListener(new View.OnClickListener() {
+        piView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

@@ -40,6 +40,7 @@
                     android:paddingRight="10dp"
                     android:paddingTop="10dp"
                     android:onClick="expandableButton1"
+                    android:orientation="horizontal"
                     android:id="@+id/layoutPIName"
                     android:paddingBottom="5dp">
 
@@ -48,7 +49,7 @@
                         android:id="@+id/imageView"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_weight="9"
+                        android:layout_weight="4"
                         app:srcCompat="@drawable/pi75" />
 
                     <TextView
@@ -60,6 +61,17 @@
                         android:textColor="#ff000000"
                         android:textSize="18dp"
                         android:text="" />
+
+                        <ImageView
+                            android:id="@+id/arrow_instit"
+                            android:layout_width="match_parent"
+                            android:layout_height="15dp"
+                            android:layout_weight="4"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/up"/>
+
                 </LinearLayout>
 
 

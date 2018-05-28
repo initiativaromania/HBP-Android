@@ -5,20 +5,27 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent" android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
 
         <!-- A CardView that contains a TextView -->
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            card_view:cardCornerRadius="4dp">
+            android:layout_marginBottom="@dimen/card_margin_bottom"
+            android:elevation="@dimen/card_elevation"
+            card_view:cardElevation="@dimen/card_c_elevation"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardUseCompatPadding="true"
+            android:dividerHeight="@dimen/dividerHeight"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:divider="@android:color/transparent"
+            card_view:cardCornerRadius="@dimen/cardCornerRadius">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,13 +71,19 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view1"
             android:layout_gravity="center"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            card_view:cardCornerRadius="4dp">
+            android:layout_marginBottom="@dimen/card_margin_bottom"
+            android:elevation="@dimen/card_elevation"
+            card_view:cardElevation="@dimen/card_c_elevation"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardUseCompatPadding="true"
+            android:dividerHeight="@dimen/dividerHeight"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:divider="@android:color/transparent"
+            card_view:cardCornerRadius="@dimen/cardCornerRadius">
 
             <TextView
                 android:layout_width="match_parent"
@@ -85,12 +98,19 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view2"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            card_view:cardCornerRadius="4dp">
+            android:layout_marginBottom="@dimen/card_margin_bottom"
+            android:elevation="@dimen/card_elevation"
+            card_view:cardElevation="@dimen/card_c_elevation"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardUseCompatPadding="true"
+            android:dividerHeight="@dimen/dividerHeight"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:divider="@android:color/transparent"
+            card_view:cardCornerRadius="@dimen/cardCornerRadius">
 
             <TextView
                 android:layout_width="match_parent"
@@ -105,12 +125,19 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view3"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            card_view:cardCornerRadius="4dp">
+            android:layout_marginBottom="@dimen/card_margin_bottom"
+            android:elevation="@dimen/card_elevation"
+            card_view:cardElevation="@dimen/card_c_elevation"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardUseCompatPadding="true"
+            android:dividerHeight="@dimen/dividerHeight"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:divider="@android:color/transparent"
+            card_view:cardCornerRadius="@dimen/cardCornerRadius">
 
             <TextView
                 android:layout_width="match_parent"
@@ -126,12 +153,19 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view4"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            card_view:cardCornerRadius="4dp">
+            android:layout_marginBottom="@dimen/card_margin_bottom"
+            android:elevation="@dimen/card_elevation"
+            card_view:cardElevation="@dimen/card_c_elevation"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardUseCompatPadding="true"
+            android:dividerHeight="@dimen/dividerHeight"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:divider="@android:color/transparent"
+            card_view:cardCornerRadius="@dimen/cardCornerRadius">
 
             <TextView
                 android:layout_width="match_parent"
@@ -147,12 +181,19 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view5"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            card_view:cardCornerRadius="4dp">
+            android:layout_marginBottom="@dimen/card_margin_bottom"
+            android:elevation="@dimen/card_elevation"
+            card_view:cardElevation="@dimen/card_c_elevation"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardUseCompatPadding="true"
+            android:dividerHeight="@dimen/dividerHeight"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:divider="@android:color/transparent"
+            card_view:cardCornerRadius="@dimen/cardCornerRadius">
 
             <TextView
                 android:id="@+id/info_links"

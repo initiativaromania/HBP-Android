@@ -5,4 +5,12 @@
     <dimen name="top_name_height">30dp</dimen>
     <dimen name="top_name_text_size">13sp</dimen>
     <dimen name="font_size">20dp</dimen>
+
+    <!-- Cardview  layout values -->
+    <dimen name="card_margin_bottom">0dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_c_elevation">3dp</dimen>
+    <dimen name="dividerHeight">0.0px</dimen>
+    <dimen name="cardCornerRadius">4dp</dimen>
+
 </resources>

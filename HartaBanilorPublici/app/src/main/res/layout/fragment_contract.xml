@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="#FFFFFF"
     android:layout_height="match_parent">
@@ -9,332 +10,310 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingTop="10dp">
 
 
-        <!-- Titlu contract -->
-        <TextView
-            android:id="@+id/titleContractView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="18dp"
-            android:textAlignment="center"
-            android:layout_gravity="center"
-            android:textColor="#111111"
-            android:textStyle="bold"
-            />
-
-
-        <!-- Padding -->
-        <TextView
-            android:id="@+id/padding"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/contract_padding"
-            android:layout_weight="1"
-            android:text=""
-            />
-
-        <!-- Numar contract line -->
         <LinearLayout
-            android:id="@+id/contractTable"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
-            <LinearLayout
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/nrContractName"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/card_margin_bottom"
+                android:elevation="@dimen/card_elevation"
+                card_view:cardElevation="@dimen/card_c_elevation"
+                card_view:cardPreventCornerOverlap="false"
+                card_view:cardUseCompatPadding="true"
+                android:dividerHeight="@dimen/dividerHeight"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                android:divider="@android:color/transparent"
+                card_view:cardCornerRadius="@dimen/cardCornerRadius">
+
+                <!-- Linear layout for everything inside the cardview -->
+                <LinearLayout
+                    android:id="@+id/contractTable"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:background="#eeeeee"
-                    android:text="Numar Contract"
-                    />
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:orientation="vertical">
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:background="#aaaaaa" />
+                    <!-- Titlu contract -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:onClick="expandableButton1"
+                        android:id="@+id/layoutPIName"
+                        android:paddingBottom="5dp">
 
-                <TextView
-                    android:id="@+id/nrContractContract"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:background="#eeeeee"
-                    android:text=""
-                    />
-            </LinearLayout>
+                        <ImageView
+                            android:id="@+id/imageContractView"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_weight="9"
+                            app:srcCompat="@drawable/description75" />
 
+                        <TextView
+                            android:id="@+id/titleContractView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textSize="18dp"
+                            android:textAlignment="center"
+                            android:layout_gravity="center"
+                            android:textColor="#000000" />
+                    </LinearLayout>
 
-            <!-- Valoare contract RON -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                    <!-- First row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/valContractRONName"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:text="Valoare RON"
-                    />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:background="#aaaaaa" />
+                            <TextView
+                                android:id="@+id/nrContractName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Număr Contract"
+                                />
 
-                <TextView
-                    android:id="@+id/valContractRONContract"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:text=""
-                    />
-            </LinearLayout>
+                            <TextView
+                                android:id="@+id/nrContractContract"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="14dp"
+                                android:text="" />
 
+                        </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
 
-            <!-- Valoare contract EURO -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/dataContractName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Data Contract"
+                                />
 
-                <TextView
-                    android:id="@+id/valContractEURName"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:background="#eeeeee"
-                    android:text="Valoare EUR"
-                    />
+                            <TextView
+                                android:id="@+id/dataContractContract"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="14dp"
+                                android:text=""
+                                />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:background="#aaaaaa" />
-
-                <TextView
-                    android:id="@+id/valContractEURContract"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:background="#eeeeee"
-                    android:text=""
-                    />
-            </LinearLayout>
-
+                        </LinearLayout>
+                    </LinearLayout>
 
 
-            <!-- Data contract -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                    <!-- Second row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/dataContractName"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:text="Data Contract"
-                    />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:background="#aaaaaa" />
-
-                <TextView
-                    android:id="@+id/dataContractContract"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:text=""
-                    />
-            </LinearLayout>
+                            <TextView
+                                android:id="@+id/valContractRONName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Valoare RON"
+                                />
 
 
+                            <TextView
+                                android:id="@+id/valContractRONContract"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="14dp"
+                                android:text=""
+                                />
 
-            <!-- Cod CPV -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/dataAnuntContractName"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:background="#eeeeee"
-                    android:text="Data Anunt Participare"
-                    />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:background="#aaaaaa" />
+                            <TextView
+                                android:id="@+id/valContractEURName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Valoare EUR"
+                                />
 
-                <TextView
-                    android:id="@+id/dataAnuntContract"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:background="#eeeeee"
-                    android:text=""
-                    />
-            </LinearLayout>
+                            <TextView
+                                android:id="@+id/valContractEURContract"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="14dp"
+                                android:text="" />
 
-
-            <!-- Cod CPV -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/codCPVContractName"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:text="Cod CPV"
-                    />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:background="#aaaaaa" />
-
-                <TextView
-                    android:id="@+id/codCPVContract"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:text=""
-                    />
-            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
 
 
-            <!-- Tip Procedura -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                    <!-- Third row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tipProceduraContractName"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:background="#eeeeee"
-                    android:text="Tip Procedura"
-                    />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:background="#aaaaaa" />
+                            <TextView
+                                android:id="@+id/dataAnuntContractName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Data Anunț Participare"
+                                />
 
-                <TextView
-                    android:id="@+id/tipProceduraContract"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:background="#eeeeee"
-                    android:text=""
-                    />
-            </LinearLayout>
+                            <TextView
+                                android:id="@+id/dataAnuntContract"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="14dp"
+                                android:text=""/>
+                        </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
 
-            <!-- Cod CPV -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tipIncheiereContractName"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:text="Tip Incheiere Contract"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:background="#aaaaaa" />
-
-                <TextView
-                    android:id="@+id/tipIncheiereContract"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:text=""
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    />
-            </LinearLayout>
+                            <TextView
+                                android:id="@+id/codCPVContractName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Cod CPV"
+                                />
 
 
+                            <TextView
+                                android:id="@+id/codCPVContract"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="14dp"
+                                android:text=""/>
+                        </LinearLayout>
+                    </LinearLayout>
 
+
+                    <!-- Fourth row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tipProceduraContractName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Tip Procedură"
+                                />
+
+
+                            <TextView
+                                android:id="@+id/tipProceduraContract"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="14dp"
+                                android:text=""
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tipIncheiereContractName"
+                                android:layout_width="match_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+                                android:text="Tip Încheiere Contract"/>
+
+
+                            <TextView
+                                android:id="@+id/tipIncheiereContract"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="14dp"
+                                android:text=""/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
-
-
-
-        <!-- Padding -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/contract_padding"
-            android:layout_weight="1"
-            android:text=""
-            />
-
 
 
         <!-- Companie -->
@@ -365,14 +344,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Institutie"
+            android:text="Instituție"
             />
         <include
             android:id="@+id/piInContract"
             layout="@layout/contract_list_item"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"></include>
-
 
         <!-- Padding -->
         <TextView
@@ -386,10 +364,13 @@
         <!-- Cere justificare -->
         <Button
             android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
             android:text="Cere justificare"
-            android:background="@drawable/rounded_corner"/>
+            android:layout_marginBottom="3dp"
+            android:textColor="#FFFFFF"
+            android:elevation="10dp"
+            android:background="@drawable/button_selector"/>
 
     </LinearLayout>
 

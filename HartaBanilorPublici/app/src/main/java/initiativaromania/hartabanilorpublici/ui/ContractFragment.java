@@ -47,6 +47,7 @@ public class ContractFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         originalView = inflater.inflate(R.layout.fragment_contract, container, false);
+
         fragmentCopy = this;
         this.inflater = inflater;
 
@@ -384,7 +385,7 @@ public class ContractFragment extends Fragment {
 
 
     /* Add a new row in the table */
-    private void addDynamicRow(String key, String value) {
+    private void addDynamicRow(String key1, String value1, String key2, String value2) {
 
         LinearLayout contractTable = (LinearLayout)originalView.findViewById(R.id.contractTable);
         if (contractTable == null)
@@ -396,23 +397,31 @@ public class ContractFragment extends Fragment {
 
         contractTable.addView(row);
 
-        TextView textT = ((TextView) row.findViewById(R.id.fieldTitle));
+        TextView textT = ((TextView) row.findViewById(R.id.fieldTitle1));
         if (textT == null)
             return;
 
-        textT.setText(key);
+        textT.setText(key1);
 
-        TextView textV = ((TextView) row.findViewById(R.id.fieldValue));
+        TextView textV = ((TextView) row.findViewById(R.id.fieldValue1));
         if (textV == null)
             return;
 
-        textV.setText(value);
+        textV.setText(value1);
+
+        textT = ((TextView) row.findViewById(R.id.fieldTitle2));
+        if (textT == null)
+            return;
+
+        textT.setText(key2);
+
+        textV = ((TextView) row.findViewById(R.id.fieldValue2));
+        if (textV == null)
+            return;
+
+        textV.setText(value2);
 
         this.rowNumber++;
-        if (this.rowNumber % 2 == 1) {
-            textT.setBackgroundColor(Color.parseColor("#eeeeee"));
-            textV.setBackgroundColor(Color.parseColor("#eeeeee"));
-        }
     }
 
 
@@ -448,20 +457,20 @@ public class ContractFragment extends Fragment {
         /* Tender includes AD information */
         displayAD();
 
-        addDynamicRow("Tip Contract", contract.tenderContractType);
-        addDynamicRow("Numar Anunt Participare", contract.participationNumber);
-        addDynamicRow("Data Anunt Participare", contract.participationDate);
-        addDynamicRow("Numar Anunt Atribuire", contract.announceOfferNumber);
-        addDynamicRow("Data Anunt Atribuire", contract.offerDate);
-        addDynamicRow("Tip Criterii Atribuire", contract.offerCriteria);
-        addDynamicRow("Numar Oferte Primite", contract.nrOffers);
+        addDynamicRow("Tip Contract", contract.tenderContractType, "", "");
+        addDynamicRow("Număr Anunț Participare", contract.participationNumber,
+                        "Data Anunț Participare", contract.participationDate);
+        addDynamicRow("Număr Anunț Atribuire", contract.announceOfferNumber,
+                        "Data Anunț Atribuire", contract.offerDate);
+        addDynamicRow("Tip Criterii Atribuire", contract.offerCriteria,
+                        "Număr Oferte Primite", contract.nrOffers);
         addDynamicRow("Subcontractat", contract.subcontract.equals("") ?
-                "-" : contract.subcontract);
-        addDynamicRow("Valoare Estimatata", contract.participationEstimValue +
+                "-" : contract.subcontract,"Valoare Estimatată",
+                contract.participationEstimValue +
                 " " + contract.participationCurrency);
 
-        addDynamicText("Depozite si garantii:", contract.deposit);
-        addDynamicText("Modalitati de finantare:", contract.finance);
+        addDynamicText("Depozite și garanții:", contract.deposit);
+        addDynamicText("Modalități de finanțare:", contract.finance);
     }
 
 

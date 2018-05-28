@@ -124,7 +124,6 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
                 contractItem.company.name : "");
         contractFragment.setArguments(bundle);
 
-
         /* Got the Contract Fragment */
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(parentID, contractFragment)

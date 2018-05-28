@@ -12,8 +12,8 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical"
         android:weightSum="1"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp">
 
         <ListView
             android:id="@+id/list_entities"

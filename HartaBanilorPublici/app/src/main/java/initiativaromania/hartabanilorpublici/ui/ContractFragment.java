@@ -1,6 +1,7 @@
 package initiativaromania.hartabanilorpublici.ui;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,8 @@ import initiativaromania.hartabanilorpublici.data.PublicInstitution;
 
 public class ContractFragment extends Fragment {
     private static int CONTRACT_TABLE_DEFAULT_ROW_NUMBER        = 8;
+    private static final String RED_FLAG_PREFERENCE             = "red_flag_preference";
+
 
     private View originalView;
     public Contract contract = null;
@@ -38,6 +42,8 @@ public class ContractFragment extends Fragment {
     private int rowNumber = CONTRACT_TABLE_DEFAULT_ROW_NUMBER;
     private String oldTitle;
     private int parentID;
+    private SharedPreferences redFlagPrefs;
+
 
     public void setParentID(int parentID) {
         this.parentID = parentID;
@@ -82,6 +88,9 @@ public class ContractFragment extends Fragment {
         if (contract.pi != null)
             System.out.println("PI " + contract.pi.id + " name " + contract.pi.name);
 
+        /* Setup red flag button */
+        setupRedFlag();
+
         /* Change the Activity title */
         updateActivityTitle();
 
@@ -89,6 +98,55 @@ public class ContractFragment extends Fragment {
         getServerContractInfo();
 
         return originalView;
+    }
+
+
+    /* Setup the Red flag button */
+    public void setupRedFlag() {
+        System.out.println("Setting up the Red Flag button");
+
+        redFlagPrefs = originalView.getContext().getSharedPreferences(RED_FLAG_PREFERENCE, 0);
+
+        Button button = (Button)originalView.findViewById(R.id.button_red_flag);
+        if (button == null)
+            return;
+
+        button.setText("Semnalează (" + contract.votes + ")");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* Check whether you have voted before */
+                int votedBefore = redFlagPrefs.getInt("Contract" + contract.id, -1);
+                System.out.println("Saved preference value for contract " + contract.id + " id " + votedBefore);
+
+                if (votedBefore == -1) {
+                    System.out.println("Never voted. Calling justify from button");
+                    //CommManager.justifyContract(contractContext, contract);
+                    receiveRedFlagAck();
+                } else
+                    Toast.makeText(originalView.getContext(), "Ai mai semnalizat acest contract contract. Mulțumim!",
+                            Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+    /* Receive server ACK that contract has been marked */
+    private void receiveRedFlagAck() {
+        contract.votes++;
+        Button button = (Button)originalView.findViewById(R.id.button_red_flag);
+        if (button == null)
+            return;
+
+        button.setText("Semnalează (" + contract.votes + ")");
+
+        /* Remember the fact that you voted for this contract */
+        SharedPreferences.Editor editor = redFlagPrefs.edit();
+        editor.putInt("Contract" + contract.id, 1);
+        editor.commit();
+
+        Toast.makeText(originalView.getContext(), "Contractul a fost semnalizat", Toast.LENGTH_LONG).show();
     }
 
 
@@ -248,6 +306,7 @@ public class ContractFragment extends Fragment {
             contract.CPVCode = contractSummary.getString(CommManager.JSON_AD_CPV_CODE);
             contract.institutionID = contractSummary.getInt(CommManager.JSON_AD_INSTITUTION_ID);
             contract.companyID = contractSummary.getInt(CommManager.JSON_AD_COMPANY_ID);
+            contract.votes = contractSummary.getInt(CommManager.JSON_CONTRACT_RED_FLAGS);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -290,6 +349,7 @@ public class ContractFragment extends Fragment {
             contract.finance = contractSummary.getString(CommManager.JSON_TENDER_FINANCE);
             contract.institutionID = contractSummary.getInt(CommManager.JSON_TENDER_INSTITUTION_ID);
             contract.companyID = contractSummary.getInt(CommManager.JSON_TENDER_COMPANY_ID);
+            contract.votes = contractSummary.getInt(CommManager.JSON_CONTRACT_RED_FLAGS);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -381,6 +441,11 @@ public class ContractFragment extends Fragment {
         if (text != null)
             text.setText(contract.finaliseContractType + "");
 
+        Button button = (Button)originalView.findViewById(R.id.button_red_flag);
+        if (button == null)
+            return;
+
+        button.setText("Semnalează (" + contract.votes + ")");
     }
 
 

@@ -7,8 +7,8 @@ android {
         applicationId "initiativaromania.hartabanilorpublici"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 3
-        versionName "1.0.3-Internal test"
+        versionCode 5
+        versionName "1.0.5-IT"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

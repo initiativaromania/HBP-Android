@@ -366,7 +366,8 @@
             android:layout_width="150dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
-            android:text="Cere justificare"
+            android:id="@+id/button_red_flag"
+            android:text="Semnalează"
             android:layout_marginBottom="3dp"
             android:textColor="#FFFFFF"
 

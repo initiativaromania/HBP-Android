@@ -40,6 +40,8 @@ public class CommManager {
     private static final String URL_GET_PI_BY_TENDER_COMPANY    = SERVER_IP + "InstitutionsByTenderCompany/";
     private static final String URL_GET_AD_COMPANY_CONTRACTS    = SERVER_IP + "ADCompanyContracts/";
     private static final String URL_GET_TENDER_COMPANY_TENDERS  = SERVER_IP + "TenderCompanyTenders/";
+    private static final String URL_RED_FLAG_AD                 = SERVER_IP + "JustifyAD/";
+    private static final String URL_RED_FLAG_TENDER             = SERVER_IP + "JustifyTender/";
 
     /* Search */
     private static final String URL_SEARCH_PUBLIC_INSTITUTION   = SERVER_IP + "SearchInstitution/";
@@ -105,6 +107,7 @@ public class CommManager {
     public static final String JSON_AD_CPV_CODE                 = "CPVCode";
     public static final String JSON_AD_INSTITUTION_ID           = "InstitutiePublicaID";
     public static final String JSON_AD_COMPANY_ID               = "CompanieId";
+    public static final String JSON_CONTRACT_RED_FLAGS          = "NumarJustificari";
 
     public static final String JSON_TENDER_CONTRACT_TYPE        = "TipContract";
     public static final String JSON_TENDER_PROCEDURE_TYPE       = "TipProcedura";
@@ -291,6 +294,20 @@ public class CommManager {
                 URL_GET_TENDER_COMPANY_TENDERS + companyID);
         request(commManagerResponse, URL_GET_TENDER_COMPANY_TENDERS + companyID);
     }
+
+    /* Send a red flag a direct acquisition */
+    public static void requestRedFlagAD(final CommManagerResponse commManagerResponse, int contractID) {
+        System.out.println("Send Red Flag AD request to URL " + URL_RED_FLAG_AD + contractID);
+        request(commManagerResponse, URL_RED_FLAG_AD + contractID);
+    }
+
+    /* Send a red flag a tender */
+    public static void requestRedFlagTender(final CommManagerResponse commManagerResponse, int contractID) {
+        System.out.println("Send Red Flag Tender request to URL " + URL_RED_FLAG_TENDER + contractID);
+        request(commManagerResponse, URL_RED_FLAG_TENDER + contractID);
+    }
+
+
 
 
 

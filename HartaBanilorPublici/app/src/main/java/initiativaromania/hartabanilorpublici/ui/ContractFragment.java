@@ -120,11 +120,29 @@ public class ContractFragment extends Fragment {
                 System.out.println("Saved preference value for contract " + contract.id + " id " + votedBefore);
 
                 if (votedBefore == -1) {
+
+                    CommManagerResponse redFlagResponse = new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveRedFlagAck(response);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            if (fragmentCopy != null)
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
+                        }
+                    };
+
                     System.out.println("Never voted. Calling justify from button");
-                    //CommManager.justifyContract(contractContext, contract);
-                    receiveRedFlagAck();
+                    if (contract.type == Contract.CONTRACT_TYPE_DIRECT_ACQUISITION) {
+                        CommManager.requestRedFlagAD(redFlagResponse, contract.id);
+                    } else {
+                        CommManager.requestRedFlagTender(redFlagResponse, contract.id);
+                    }
                 } else
-                    Toast.makeText(originalView.getContext(), "Ai mai semnalizat acest contract contract. Mulțumim!",
+                    Toast.makeText(originalView.getContext(), "Ai mai semnalat acest contract. Mulțumim!",
                             Toast.LENGTH_SHORT).show();
             }
         });
@@ -133,7 +151,7 @@ public class ContractFragment extends Fragment {
 
 
     /* Receive server ACK that contract has been marked */
-    private void receiveRedFlagAck() {
+    private void receiveRedFlagAck(JSONArray response) {
         contract.votes++;
         Button button = (Button)originalView.findViewById(R.id.button_red_flag);
         if (button == null)
@@ -146,7 +164,7 @@ public class ContractFragment extends Fragment {
         editor.putInt("Contract" + contract.id, 1);
         editor.commit();
 
-        Toast.makeText(originalView.getContext(), "Contractul a fost semnalizat", Toast.LENGTH_LONG).show();
+        Toast.makeText(originalView.getContext(), "Contractul a fost semnalat", Toast.LENGTH_LONG).show();
     }
 
 

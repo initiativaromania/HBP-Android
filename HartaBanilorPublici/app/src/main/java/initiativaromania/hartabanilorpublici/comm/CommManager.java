@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -15,6 +16,8 @@ import org.json.JSONArray;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.Normalizer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by claudiu on 9/16/17.
@@ -159,7 +162,7 @@ public class CommManager {
     }
 
 
-    /* Send server request */
+    /* Send server GET request */
     public static void request(final CommManagerResponse commManagerResponse, String URL) {
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
                 (Request.Method.GET, URL,
@@ -188,6 +191,40 @@ public class CommManager {
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add(jsObjRequest);
+    }
+
+    /* Send server POST request */
+    public static void post(final CommManagerResponse commManagerResponse, String URL) {
+        StringRequest postRequest = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("CommManager: Got response from the server " + response);
+                        if (commManagerResponse != null)
+                            commManagerResponse.processResponse(null);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("GOT ERRROR " + error + " " + error.toString());
+                        error.printStackTrace();
+                        if (commManagerResponse != null)
+                            commManagerResponse.onErrorOccurred("Nu s-a găsit niciun rezultat");
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+
+                return params;
+            }
+        };
+        queue.add(postRequest);
     }
 
     /* Send a request to the server for Public Institution Summary */
@@ -298,13 +335,13 @@ public class CommManager {
     /* Send a red flag a direct acquisition */
     public static void requestRedFlagAD(final CommManagerResponse commManagerResponse, int contractID) {
         System.out.println("Send Red Flag AD request to URL " + URL_RED_FLAG_AD + contractID);
-        request(commManagerResponse, URL_RED_FLAG_AD + contractID);
+        post(commManagerResponse, URL_RED_FLAG_AD + contractID);
     }
 
     /* Send a red flag a tender */
     public static void requestRedFlagTender(final CommManagerResponse commManagerResponse, int contractID) {
         System.out.println("Send Red Flag Tender request to URL " + URL_RED_FLAG_TENDER + contractID);
-        request(commManagerResponse, URL_RED_FLAG_TENDER + contractID);
+        post(commManagerResponse, URL_RED_FLAG_TENDER + contractID);
     }
 
 

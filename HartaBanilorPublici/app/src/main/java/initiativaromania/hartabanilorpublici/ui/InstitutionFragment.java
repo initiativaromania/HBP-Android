@@ -149,42 +149,37 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
     /* Get initial information for this institution */
     public void getInitInfo() {
 
-        System.out.println("InstitutionFragment: Get initial info");
+        System.out.println("InstitutionFragment: Get initial info, company type ");
 
         if (type == CONTRACT_LIST_FOR_COMPANY) {
+            CommManagerResponse commManagerResponse = new CommManagerResponse() {
+                @Override
+                public void processResponse(JSONArray response) {
+                    receiveCompanyInitInfo(response);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    if (fragmentCopy.getContext() != null)
+                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                Toast.LENGTH_SHORT).show();
+                }
+            };
+
             switch (company.type) {
+                case Company.COMPANY_TYPE_ALL:
+                    /* Send request to get the init data */
+                    CommManager.requestCompany(commManagerResponse, company.id);
+                    break;
+
                 case Company.COMPANY_TYPE_AD:
                     /* Send request to get the init data */
-                    CommManager.requestADCompany(new CommManagerResponse() {
-                        @Override
-                        public void processResponse(JSONArray response) {
-                            receiveCompanyInitInfo(response);
-                        }
-
-                        @Override
-                        public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null)
-                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                        Toast.LENGTH_SHORT).show();
-                        }
-                    }, company.id);
+                    CommManager.requestADCompany(commManagerResponse, company.id);
                     break;
 
                 case Company.COMPANY_TYPE_TENDER:
                     /* Send request to get the init data */
-                    CommManager.requestTenderCompany(new CommManagerResponse() {
-                        @Override
-                        public void processResponse(JSONArray response) {
-                            receiveCompanyInitInfo(response);
-                        }
-
-                        @Override
-                        public void onErrorOccurred(String errorMsg) {
-                            if (fragmentCopy.getContext() != null)
-                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                        Toast.LENGTH_SHORT).show();
-                        }
-                    }, company.id);
+                    CommManager.requestTenderCompany(commManagerResponse, company.id);
                     break;
 
                 default:
@@ -271,6 +266,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
         if (type == CONTRACT_LIST_FOR_COMPANY) {
             switch (company.type) {
                 case Company.COMPANY_TYPE_AD:
+                case Company.COMPANY_TYPE_ALL:
 
                     directAcqListFragment.displayProgressBar();
 
@@ -340,6 +336,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                     break;
 
                 case Company.COMPANY_TYPE_TENDER:
+                case Company.COMPANY_TYPE_ALL:
 
                     tendersListFragment.displayProgressBar();
 
@@ -389,7 +386,7 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
     }
 
 
-    /* Get server info for companies/instituions */
+    /* Get server info for companies/institutions */
     public void getServerInstitutionInfo() {
 
         System.out.println("InstitutionFragment: Get Server Info for Companies/Institutions");
@@ -400,7 +397,27 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                     .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
             piListFragment.displayProgressBar();
 
+
             switch (company.type) {
+                case Company.COMPANY_TYPE_ALL:
+                    /* Send request to get all the PIS of a Company */
+                    CommManager.requestPIsByCompany(new CommManagerResponse() {
+                        @Override
+                        public void processResponse(JSONArray response) {
+                            receiveCompanyPIs(response);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+                            if (fragmentCopy.getContext() != null && piListFragment != null) {
+                                piListFragment.hideProgressBar();
+                                Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, company.id);
+                    break;
+
                 case Company.COMPANY_TYPE_AD:
 
                     /* Send request to get all the public institutions of an AD Company */
@@ -451,28 +468,11 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
                     .pageAdapter.fragments.get(INSTITUTIONS_FRAGMENT_INDEX);
             companyListFragment.displayProgressBar();
 
-            /* Send request to get the institution AD companies */
-            CommManager.requestADCompaniesByPI(new CommManagerResponse() {
+            /* Send request to get all the companies of an institution */
+            CommManager.requestAllCompaniesByPI(new CommManagerResponse() {
                 @Override
                 public void processResponse(JSONArray response) {
-                    receivePICompanies(response, Company.COMPANY_TYPE_AD);
-                }
-
-                @Override
-                public void onErrorOccurred(String errorMsg) {
-                    if (fragmentCopy.getContext() != null && companyListFragment != null) {
-                        companyListFragment.hideProgressBar();
-                        Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }, pi.id);
-
-            /* Send request to get the institution Tender companies */
-            CommManager.requestTenderCompaniesByPI(new CommManagerResponse() {
-                @Override
-                public void processResponse(JSONArray response) {
-                    receivePICompanies(response, Company.COMPANY_TYPE_TENDER);
+                    receivePICompanies(response, Company.COMPANY_TYPE_ALL);
                 }
 
                 @Override
@@ -496,12 +496,13 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
             JSONObject companySummary = response.getJSONObject(0);
             company.address = companySummary.getString(CommManager.JSON_COMPANY_ADDRESS);
             company.CUI = companySummary.getString(CommManager.JSON_COMPANY_CUI);
-            if (company.type == Company.COMPANY_TYPE_AD) {
+            company.nrTenders = company.nrADs = "0";
+            if (company.type == Company.COMPANY_TYPE_AD ||
+                    company.type == Company.COMPANY_TYPE_ALL)
                 company.nrADs = companySummary.getString(CommManager.JSON_COMPANY_NR_CONTRACTS);
-                company.nrTenders = "0";
-            } else {
-                company.nrADs = "0";
-                company.nrTenders = companySummary.getString(CommManager.JSON_COMPANY_NR_CONTRACTS);
+            if (company.type == Company.COMPANY_TYPE_TENDER ||
+                    company.type == Company.COMPANY_TYPE_ALL) {
+                company.nrTenders = companySummary.getString(CommManager.JSON_COMPANY_NR_TENDERS);
             }
         } catch (JSONException e) {
             e.printStackTrace();

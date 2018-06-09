@@ -174,11 +174,11 @@ public class ContractFragment extends Fragment {
 
         switch (contract.type) {
             case Contract.CONTRACT_TYPE_DIRECT_ACQUISITION:
-                ((HomeActivity) getActivity()).setActionBarTitle("Achizitie Directa");
+                ((HomeActivity) getActivity()).setActionBarTitle("Achiziție Directă");
                 break;
 
             case Contract.CONTRACT_TYPE_TENDER:
-                ((HomeActivity) getActivity()).setActionBarTitle("Licitatie");
+                ((HomeActivity) getActivity()).setActionBarTitle("Licitație");
                 break;
 
             default:
@@ -263,45 +263,20 @@ public class ContractFragment extends Fragment {
             return;
 
         /* Get company info, we only need the name */
-        switch (contract.type) {
-            case Contract.CONTRACT_TYPE_DIRECT_ACQUISITION:
-                /* Send request to get AD Company */
-                CommManager.requestADCompany(new CommManagerResponse() {
-                    @Override
-                    public void processResponse(JSONArray response) {
-                        receiveCompany(response);
-                    }
+        /* Send request to get the Company */
+        CommManager.requestCompany(new CommManagerResponse() {
+            @Override
+            public void processResponse(JSONArray response) {
+                receiveCompany(response);
+            }
 
-                    @Override
-                    public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy != null)
-                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                    Toast.LENGTH_SHORT).show();
-                    }
-                }, contract.companyID);
-                break;
-
-            case Contract.CONTRACT_TYPE_TENDER:
-                /* Send request to get Tender Company */
-                CommManager.requestTenderCompany(new CommManagerResponse() {
-                    @Override
-                    public void processResponse(JSONArray response) {
-                        receiveCompany(response);
-                    }
-
-                    @Override
-                    public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy != null)
-                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                    Toast.LENGTH_SHORT).show();
-                    }
-                }, contract.companyID);
-                break;
-
-            default:
-                System.out.println("Unknown contract type for id " + contract.id);
-        }
-
+            @Override
+            public void onErrorOccurred(String errorMsg) {
+                if (fragmentCopy != null)
+                    Toast.makeText(fragmentCopy.getContext(), errorMsg,
+                            Toast.LENGTH_SHORT).show();
+            }
+        }, contract.companyID);
     }
 
 
@@ -408,10 +383,7 @@ public class ContractFragment extends Fragment {
             contract.company.name = companySummary.getString(CommManager.JSON_COMPANY_NAME);
             contract.company.address = companySummary.getString(CommManager.JSON_COMPANY_ADDRESS);
             contract.company.CUI = companySummary.getString(CommManager.JSON_COMPANY_CUI);
-            if (contract.type == Contract.CONTRACT_TYPE_DIRECT_ACQUISITION)
-                contract.company.type = Company.COMPANY_TYPE_AD;
-            else
-                contract.company.type = Company.COMPANY_TYPE_TENDER;
+            contract.company.type = Company.COMPANY_TYPE_ALL;
 
             displayCompanyButton();
 

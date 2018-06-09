@@ -40,6 +40,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private static final String SEARCH_NO_PI                        = "Nicio instituție publica";
     private static final String SEARCH_NO_AD_COMPANY                = "Nicio o companie cu achizitii directe";
     private static final String SEARCH_NO_TENDER_COMPANY            = "Nicio o companie cu licitatii";
+    private static final String SEARCH_NO_COMPANY                   = "Nicio o companie";
     private static final String SEARCH_NO_AD                        = "Nicio achizitie directa";
     private static final String SEARCH_NO_TENDER                    = "Nicio licitatie";
 
@@ -218,27 +219,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 companyListFragment.displayProgressBar();
 
                 /* Search AD Companies using the server */
-                CommManager.searchADCompany(new CommManagerResponse() {
+                CommManager.searchCompany(new CommManagerResponse() {
                     @Override
                     public void processResponse(JSONArray response) {
-                        receiveADCompanySearchResults(response);
-                    }
-
-                    @Override
-                    public void onErrorOccurred(String errorMsg) {
-                        if (fragmentCopy.getContext() != null && companyListFragment != null) {
-                            companyListFragment.hideProgressBar();
-                            Toast.makeText(fragmentCopy.getContext(), errorMsg,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, query);
-
-                /* Search Tender Companies using the server */
-                CommManager.searchTenderCompany(new CommManagerResponse() {
-                    @Override
-                    public void processResponse(JSONArray response) {
-                        receiveTenderCompanySearchResults(response);
+                        receiveAllCompanySearchResults(response);
                     }
 
                     @Override
@@ -385,6 +369,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             if (companyType == Company.COMPANY_TYPE_TENDER)
                 Toast.makeText(fragmentCopy.getContext(), SEARCH_NO_TENDER_COMPANY,
                         Toast.LENGTH_SHORT).show();
+            if (companyType == Company.COMPANY_TYPE_TENDER)
+                Toast.makeText(fragmentCopy.getContext(), SEARCH_NO_COMPANY,
+                        Toast.LENGTH_SHORT).show();
         }
 
         /* Show the info received from the server */
@@ -400,6 +387,16 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         System.out.println("Tender Company Search Result " + response);
 
         receiveCompanySearchResults(response, Company.COMPANY_TYPE_TENDER);
+    }
+
+
+    /* Receive Tender company search response from server */
+    private void receiveAllCompanySearchResults(JSONArray response) {
+
+        /* Tender Companies */
+        System.out.println("All Company Search Result " + response);
+
+        receiveCompanySearchResults(response, Company.COMPANY_TYPE_ALL);
     }
 
 

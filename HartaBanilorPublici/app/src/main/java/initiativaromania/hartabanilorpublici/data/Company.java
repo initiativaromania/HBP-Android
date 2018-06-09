@@ -13,6 +13,7 @@ public class Company implements Serializable {
 
     public static final int COMPANY_TYPE_AD           = 0;
     public static final int COMPANY_TYPE_TENDER       = 1;
+    public static final int COMPANY_TYPE_ALL          = 2;
 
     public int  type;
     public String name;

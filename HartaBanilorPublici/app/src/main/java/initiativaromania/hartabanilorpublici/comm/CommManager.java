@@ -35,12 +35,15 @@ public class CommManager {
     private static final String URL_GET_PI_TENDERS              = SERVER_IP + "InstitutionTenders/";
     private static final String URL_GET_AD                      = SERVER_IP + "Contract/";
     private static final String URL_GET_TENDER                  = SERVER_IP + "Tender/";
+    private static final String URL_GET_COMPANY                 = SERVER_IP + "Company/";
     private static final String URL_GET_AD_COMPANY              = SERVER_IP + "ADCompany/";
     private static final String URL_GET_TENDER_COMPANY          = SERVER_IP + "TenderCompany/";
     private static final String URL_GET_AD_COMPANIES_BY_PI      = SERVER_IP + "ADCompaniesByInstitution/";
     private static final String URL_GET_TENDER_COMPANIES_BY_PI  = SERVER_IP + "TenderCompaniesByInstitution/";
+    private static final String URL_GET_ALL_COMPANIES_BY_PI     = SERVER_IP + "AllCompaniesByInstitution/";
     private static final String URL_GET_PI_BY_AD_COMPANY        = SERVER_IP + "InstitutionsByADCompany/";
     private static final String URL_GET_PI_BY_TENDER_COMPANY    = SERVER_IP + "InstitutionsByTenderCompany/";
+    private static final String URL_GET_PI_BY_COMPANY           = SERVER_IP + "InstitutionsByCompany/";
     private static final String URL_GET_AD_COMPANY_CONTRACTS    = SERVER_IP + "ADCompanyContracts/";
     private static final String URL_GET_TENDER_COMPANY_TENDERS  = SERVER_IP + "TenderCompanyTenders/";
     private static final String URL_RED_FLAG_AD                 = SERVER_IP + "JustifyAD/";
@@ -48,6 +51,7 @@ public class CommManager {
 
     /* Search */
     private static final String URL_SEARCH_PUBLIC_INSTITUTION   = SERVER_IP + "SearchInstitution/";
+    private static final String URL_SEARCH_COMPANY              = SERVER_IP + "SearchCompany/";
     private static final String URL_SEARCH_AD_COMPANY           = SERVER_IP + "SearchADCompany/";
     private static final String URL_SEARCH_TENDER_COMPANY       = SERVER_IP + "SearchTenderCompany/";
     private static final String URL_SEARCH_AD                   = SERVER_IP + "SearchAD/";
@@ -142,6 +146,8 @@ public class CommManager {
     public static final String JSON_COMPANY_ADDRESS             = "Adresa";
     public static final String JSON_COMPANY_CUI                 = "CUI";
     public static final String JSON_COMPANY_NR_CONTRACTS        = "NrContracte";
+    public static final String JSON_COMPANY_NR_TENDERS          = "NrLicitatii";
+
 
     public static final String JSON_COMPANY_PI_NAME             = "Nume";
     public static final String JSON_COMPANY_PI_ID               = "Id";
@@ -269,6 +275,13 @@ public class CommManager {
     }
 
 
+    /* Send a request to the server for a Company */
+    public static void requestCompany(final CommManagerResponse commManagerResponse, int companyID) {
+        System.out.println("Send Company request to URL " + URL_GET_COMPANY + companyID);
+        request(commManagerResponse, URL_GET_COMPANY + companyID);
+    }
+
+
     /* Send a request to the server for an AD Company */
     public static void requestADCompany(final CommManagerResponse commManagerResponse, int companyID) {
         System.out.println("Send ADCompany request to URL " + URL_GET_AD_COMPANY + companyID);
@@ -300,6 +313,14 @@ public class CommManager {
         request(commManagerResponse, URL_GET_TENDER_COMPANIES_BY_PI + publicInstitutionID);
     }
 
+    /* Send a request to the server for all Companies in a PI */
+    public static void requestAllCompaniesByPI(final CommManagerResponse commManagerResponse,
+                                                  int publicInstitutionID) {
+        System.out.println("Send AllCompaniesByPI request to URL " +
+                URL_GET_ALL_COMPANIES_BY_PI + publicInstitutionID);
+        request(commManagerResponse, URL_GET_ALL_COMPANIES_BY_PI + publicInstitutionID);
+    }
+
     /* Send a request to the server for all Public Institutions in an AD Company */
     public static void requestPIsByADCompany(final CommManagerResponse commManagerResponse,
                                                   int companyID) {
@@ -314,6 +335,14 @@ public class CommManager {
         System.out.println("Send PISByTenderCompany request to URL " +
                 URL_GET_PI_BY_TENDER_COMPANY + companyID);
         request(commManagerResponse, URL_GET_PI_BY_TENDER_COMPANY + companyID);
+    }
+
+    /* Send a request to the server for all Public Institutions in a Company */
+    public static void requestPIsByCompany(final CommManagerResponse commManagerResponse,
+                                                 int companyID) {
+        System.out.println("Send PISByCompany request to URL " +
+                URL_GET_PI_BY_COMPANY + companyID);
+        request(commManagerResponse, URL_GET_PI_BY_COMPANY + companyID);
     }
 
     /* Send a request to the server for all the Contracts in an AD Company */
@@ -364,6 +393,21 @@ public class CommManager {
             e.printStackTrace();
         }
         System.out.println("Search Public Institutions with URL " + encodedURL);
+        request(commManagerResponse, encodedURL);
+    }
+
+    /* Send a request to the server to search for an AD company */
+    public static void searchCompany(final CommManagerResponse commManagerResponse, String company) {
+        String encodedURL = URL_SEARCH_COMPANY;
+        company = Normalizer.normalize(company, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+
+        try {
+            encodedURL += URLEncoder.encode(company, "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Search AD Companies with URL " + encodedURL);
         request(commManagerResponse, encodedURL);
     }
 

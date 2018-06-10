@@ -49,6 +49,17 @@ public class ContractListFragment extends LoadableListFragment {
             displayProgressBar();
 
         /* Initialize the list of contract items */
+        initList();
+
+        displayContracts();
+
+        return v;
+    }
+
+    public void initList() {
+        if (v == null)
+            return;
+
         orderDetailsList = new ArrayList<>();
         ListView orderList = (ListView) v.findViewById(R.id.list_entities);
         adapter = new ContractListAdapter(getActivity(), parentID,
@@ -57,10 +68,6 @@ public class ContractListFragment extends LoadableListFragment {
         orderList.setOnItemClickListener(adapter);
         if (listScrollListener != null)
             orderList.setOnScrollListener(listScrollListener);
-
-        displayContracts();
-
-        return v;
     }
 
 
@@ -68,6 +75,9 @@ public class ContractListFragment extends LoadableListFragment {
     public void displayContracts() {
         if (contracts == null)
             return;
+
+        if (orderDetailsList == null)
+            initList();
 
         System.out.println("Displaying contracts in fragment");
 

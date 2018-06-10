@@ -51,10 +51,10 @@ public class CompanyListAdapter extends BaseAdapter implements AdapterView.OnIte
         TextView companyCounter = (TextView) convertView.findViewById(R.id.companyCounter1);
         if (companies.get(position).type == Company.COMPANY_TYPE_AD &&
                 companies.get(position).nrAds != 0)
-            companyCounter.setText(companies.get(position).nrAds + " ADs");
+            companyCounter.setText(companies.get(position).nrAds + "");
         if (companies.get(position).type == Company.COMPANY_TYPE_TENDER &&
                 companies.get(position).nrTenders != 0)
-            companyCounter.setText(companies.get(position).nrTenders + " licitații");
+            companyCounter.setText(companies.get(position).nrTenders + "");
 
         convertView.setTag(companies.get(position));
 

@@ -405,11 +405,11 @@ public class ContractFragment extends Fragment {
 
         text = ((TextView) originalView.findViewById(R.id.valContractRONContract));
         if (text != null)
-            text.setText(contract.valueRON + "");
+            text.setText(String.format("%,.2f", contract.valueRON));
 
         text = ((TextView) originalView.findViewById(R.id.valContractEURContract));
         if (text != null)
-            text.setText(contract.valueEUR + "");
+            text.setText(String.format("%,.2f", contract.valueEUR));
 
         text = ((TextView) originalView.findViewById(R.id.dataContractContract));
         if (text != null)
@@ -519,7 +519,7 @@ public class ContractFragment extends Fragment {
                         "Data Anunț Atribuire", contract.offerDate);
         addDynamicRow("Tip Criterii Atribuire", contract.offerCriteria,
                         "Număr Oferte Primite", contract.nrOffers);
-        addDynamicRow("Subcontractat", contract.subcontract.equals("") ?
+        addDynamicRow("Subcontractat", (contract.subcontract == null) || (contract.subcontract.equals("")) ?
                 "-" : contract.subcontract,"Valoare Estimatată",
                 contract.participationEstimValue +
                 " " + contract.participationCurrency);

@@ -53,9 +53,9 @@ public class InstitutionListAdapter extends BaseAdapter implements AdapterView.O
         TextView piCounter2 = (TextView) convertView.findViewById(R.id.institutionCounter2);
 
         if (pis.get(position).nrADs != 0)
-            piCounter1.setText(pis.get(position).nrADs + " ADs");
+            piCounter1.setText(pis.get(position).nrADs + "");
         if (pis.get(position).nrTenders != 0)
-            piCounter2.setText(pis.get(position).nrTenders + " licitații");
+            piCounter2.setText(pis.get(position).nrTenders + "");
 
         convertView.setTag(pis.get(position));
 

@@ -15,11 +15,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import initiativaromania.hartabanilorpublici.R;
@@ -55,7 +57,7 @@ public class ContractListAdapter extends BaseAdapter implements AdapterView.OnIt
         contractName.setText((position + 1) +". " + contracts.get(position).title);
 
         TextView contractValue = (TextView) convertView.findViewById(R.id.listPrice);
-        contractValue.setText(contracts.get(position).price + " RON");
+        contractValue.setText(String.format("%,.2f", contracts.get(position).price) + " RON");
 
         TextView contractYear = (TextView) convertView.findViewById(R.id.listDate);
         SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");

@@ -738,6 +738,9 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
     /* PI name, acq, tenders */
     private void displayInitPIInfo() {
+        if (getActivity() == null)
+            return;
+
         oldTitle = ((HomeActivity) getActivity()).getActionBarTitle();
         ((HomeActivity) getActivity()).setActionBarTitle("Institutie Publica");
 
@@ -758,6 +761,9 @@ public class InstitutionFragment extends Fragment implements TabbedViewPageListe
 
     /* Company name, address */
     private void displayInitCompanyInfo() {
+        if (getActivity() == null)
+            return;
+
         oldTitle = ((HomeActivity) getActivity()).getActionBarTitle();
         ((HomeActivity) getActivity()).setActionBarTitle("Companie");
 

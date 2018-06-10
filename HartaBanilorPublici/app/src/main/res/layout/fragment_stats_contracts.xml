@@ -23,8 +23,8 @@
                 android:textSize="@dimen/top_name_text_size"
                 android:textStyle=""
                 android:text="Top 10 achiziții directe după valoare"
-                android:background="@color/colorLightGray"
-                android:textColor="@color/colorPrimaryDark"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"/>
 
@@ -49,8 +49,8 @@
                 android:textSize="@dimen/top_name_text_size"
                 android:textStyle=""
                 android:text="Top 10 licitații după valoare"
-                android:background="@color/colorLightGray"
-                android:textColor="@color/colorPrimaryDark"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"/>
 
@@ -66,33 +66,33 @@
                 android:paddingTop="10dp">
             </ListView>
 
-            <TextView
-                android:id="@+id/topContractsViewed"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/top_name_height"
-                android:gravity="center_vertical|left|start"
-                android:textAlignment="textStart"
-                android:textSize="@dimen/top_name_text_size"
-                android:textStyle=""
-                android:text="Top 10 cele mai vizualizate contracte"
-                android:background="@color/colorLightGray"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+            <!--<TextView-->
+                <!--android:id="@+id/topContractsViewed"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/top_name_height"-->
+                <!--android:gravity="center_vertical|left|start"-->
+                <!--android:textAlignment="textStart"-->
+                <!--android:textSize="@dimen/top_name_text_size"-->
+                <!--android:textStyle=""-->
+                <!--android:text="Top 10 cele mai vizualizate contracte"-->
+                <!--android:background="@color/colorLightGray"-->
+                <!--android:textColor="@color/colorPrimaryDark"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:paddingRight="10dp"/>-->
 
-            <TextView
-                android:id="@+id/topContractsFlagged"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/top_name_height"
-                android:gravity="center_vertical|left|start"
-                android:textAlignment="textStart"
-                android:textSize="@dimen/top_name_text_size"
-                android:textStyle=""
-                android:text="Top 10 cele mai semnalate contracte"
-                android:background="@color/colorLightGray"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+            <!--<TextView-->
+                <!--android:id="@+id/topContractsFlagged"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/top_name_height"-->
+                <!--android:gravity="center_vertical|left|start"-->
+                <!--android:textAlignment="textStart"-->
+                <!--android:textSize="@dimen/top_name_text_size"-->
+                <!--android:textStyle=""-->
+                <!--android:text="Top 10 cele mai semnalate contracte"-->
+                <!--android:background="@color/colorLightGray"-->
+                <!--android:textColor="@color/colorPrimaryDark"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:paddingRight="10dp"/>-->
 
 
 

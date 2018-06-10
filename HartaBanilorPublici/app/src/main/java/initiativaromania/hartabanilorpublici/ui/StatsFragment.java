@@ -286,7 +286,7 @@ public class StatsFragment extends Fragment implements TabbedViewPageListener{
                 JSONObject acq = response.getJSONObject(i);
 
                 PublicInstitution a = new PublicInstitution();
-                a.id = acq.getInt(CommManager.JSON_SEARCH_INSTITUTION_ID);
+                a.id = acq.getInt(CommManager.JSON_INSTITUTION_ID);
                 a.name = acq.getString(CommManager.JSON_COMPANY_NAME);
                 a.directAcqs = acq.getInt(CommManager.JSON_PI_NR_AD);
 
@@ -313,7 +313,7 @@ public class StatsFragment extends Fragment implements TabbedViewPageListener{
                 JSONObject acq = response.getJSONObject(i);
 
                 PublicInstitution a = new PublicInstitution();
-                a.id = acq.getInt(CommManager.JSON_SEARCH_INSTITUTION_ID);
+                a.id = acq.getInt(CommManager.JSON_INSTITUTION_ID);
                 a.name = acq.getString(CommManager.JSON_COMPANY_NAME);
                 a.tenders = acq.getInt(CommManager.JSON_PI_NR_TENDERS);
 

@@ -40,6 +40,11 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
     public TabLayout tabLayout;
     private ArrayList<TabbedViewPageListener> pageListeners = new ArrayList<TabbedViewPageListener>();
 
+    /* These objects are used by the listScrollListener to figure out from where to retrieve
+    more data in the pagination process */
+    public SearchFragment searchFragment;
+    public InstitutionFragment institutionFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,8 +115,8 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
             /* Create the tab fragments for an institution (company or pi) */
             case InstitutionFragment.CONTRACT_LIST_FOR_COMPANY:
             case InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION:
-                fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout));
-                fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout));
+                fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout, null));
+                fList.add(ContractListFragment.newInstance(R.id.fragment_institution_layout, null));
 
                 if (fragmentType == InstitutionFragment.CONTRACT_LIST_FOR_PUBLIC_INSTITUTION)
                     fList.add(CompanyListFragment.newInstance(R.id.fragment_institution_layout));
@@ -123,8 +128,39 @@ public class TabbedViewPageFragment extends Fragment implements ViewPager.OnPage
             case InstitutionFragment.CONTRACT_LIST_FOR_SEARCH:
                 fList.add(InstitutionListFragment.newInstance(R.id.fragment_search_layout));
                 fList.add(CompanyListFragment.newInstance(R.id.fragment_search_layout));
-                fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout));
-                fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout));
+                fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout, new ListScrollListener() {
+                    @Override
+                    public boolean onLoadMore(int page, int totalItemsCount) {
+                        System.out.println("Need  more ADs");
+                        if (searchFragment == null)
+                            return false;
+
+                        if (searchFragment.adCurrPage * SearchFragment.SEARCH_RESULT_PER_PAGE >=
+                                searchFragment.adTotalResults)
+                            return false;
+
+                        searchFragment.adCurrPage++;
+                        searchFragment.search(SearchFragment.DIRECT_ACQ_FRAGMENT_INDEX,
+                                searchFragment.currentQuerry);
+                        return true;
+                    }
+                }));
+                fList.add(ContractListFragment.newInstance(R.id.fragment_search_layout, new ListScrollListener() {
+                    @Override
+                    public boolean onLoadMore(int page, int totalItemsCount) {
+                        System.out.println("Need  more Tenders");
+                        if (searchFragment == null)
+                            return false;
+
+                        if (searchFragment.tenderCurrPage * SearchFragment.SEARCH_RESULT_PER_PAGE >=
+                                searchFragment.tenderTotalResults)
+                            return false;
+
+                        searchFragment.tenderCurrPage++;
+                        searchFragment.search(SearchFragment.TENDER_FRAGMENT_INDEX, searchFragment.currentQuerry);
+                        return true;
+                    }
+                }));
                 break;
 
             /* Create the tab fragments for the stats view */

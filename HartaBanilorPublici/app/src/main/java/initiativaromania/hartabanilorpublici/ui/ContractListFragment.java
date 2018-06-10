@@ -24,13 +24,18 @@ public class ContractListFragment extends LoadableListFragment {
     private View v;
     public LinkedList<Contract> contracts;
     public int parentID;
+    public ListScrollListener listScrollListener;
+    private List<ContractListItem> orderDetailsList;
+    private ContractListAdapter adapter;
 
-    public static ContractListFragment newInstance(int parentID) {
+    public static ContractListFragment newInstance(int parentID, ListScrollListener listScrollListener) {
         ContractListFragment f = new ContractListFragment();
         Bundle bdl = new Bundle(1);
         bdl.putString(EXTRA_MESSAGE, "ContractListFragment");
         f.setArguments(bdl);
+        f.listScrollListener = listScrollListener;
         f.parentID = parentID;
+
         return f;
     }
 
@@ -42,6 +47,16 @@ public class ContractListFragment extends LoadableListFragment {
         initProgressBar(v);
         if (startLoading)
             displayProgressBar();
+
+        /* Initialize the list of contract items */
+        orderDetailsList = new ArrayList<>();
+        ListView orderList = (ListView) v.findViewById(R.id.list_entities);
+        adapter = new ContractListAdapter(getActivity(), parentID,
+                orderDetailsList);
+        orderList.setAdapter(adapter);
+        orderList.setOnItemClickListener(adapter);
+        if (listScrollListener != null)
+            orderList.setOnScrollListener(listScrollListener);
 
         displayContracts();
 
@@ -55,7 +70,8 @@ public class ContractListFragment extends LoadableListFragment {
             return;
 
         System.out.println("Displaying contracts in fragment");
-        List<ContractListItem> orderDetailsList = new ArrayList<>();
+
+        orderDetailsList.clear();
 
         for (final Contract contract : contracts) {
             orderDetailsList.add(new ContractListItem() {{
@@ -69,12 +85,7 @@ public class ContractListFragment extends LoadableListFragment {
             }});
         }
 
-
-        ListView orderList = (ListView) v.findViewById(R.id.list_entities);
-        ContractListAdapter adapter = new ContractListAdapter(getActivity(), parentID,
-                orderDetailsList);
-        orderList.setAdapter(adapter);
-        orderList.setOnItemClickListener(adapter);
+        adapter.notifyDataSetChanged();
 
         /* Make sure you get no loading progress bar */
         startLoading = false;

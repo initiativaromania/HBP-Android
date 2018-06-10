@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.Volley;
 
 import initiativaromania.hartabanilorpublici.R;
 import initiativaromania.hartabanilorpublici.comm.CommManager;
+import initiativaromania.hartabanilorpublici.comm.CommManagerObjectResponse;
 import initiativaromania.hartabanilorpublici.comm.CommManagerResponse;
 import initiativaromania.hartabanilorpublici.data.Company;
 import initiativaromania.hartabanilorpublici.data.Contract;
@@ -43,6 +45,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private static final String SEARCH_NO_COMPANY                   = "Nicio o companie";
     private static final String SEARCH_NO_AD                        = "Nicio achizitie directa";
     private static final String SEARCH_NO_TENDER                    = "Nicio licitatie";
+
+    public static final int SEARCH_RESULT_PER_PAGE                  = 20;
 
     public static final int SEARCH_NAVIGATION_ID                    = 1;
 
@@ -69,6 +73,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private LinkedList<Company> companies = new LinkedList<Company>();
     private LinkedList<PublicInstitution> pis = new LinkedList<PublicInstitution>();
 
+    public int adCurrPage = 1;
+    public int adTotalResults;
+    public int tenderCurrPage = 1;
+    public int tenderTotalResults;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,6 +89,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         /* Build the tabbed View Pager */
         viewPageFragment = (TabbedViewPageFragment)
                 getChildFragmentManager().findFragmentById(R.id.search_results_fragment);
+        viewPageFragment.searchFragment = this;
         viewPageFragment.setViewPager(InstitutionFragment.CONTRACT_LIST_FOR_SEARCH);
         viewPageFragment.registerPageListener(this);
 
@@ -122,6 +132,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             return false;
 
         currentQuerry = query;
+        adCurrPage = tenderCurrPage = 1;
         searchFragments = new Object[4];
         search(viewPageFragment.pagePosition, query);
 
@@ -190,9 +201,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 piListFragment.displayProgressBar();
 
                 /* Search the public institution using the server */
-                CommManager.searchPublicInstitution(new CommManagerResponse() {
+                CommManager.searchPublicInstitution(new CommManagerObjectResponse() {
                     @Override
-                    public void processResponse(JSONArray response) {
+                    public void processResponse(JSONObject response) {
                         receivePISearchResults(response);
                     }
 
@@ -219,9 +230,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 companyListFragment.displayProgressBar();
 
                 /* Search AD Companies using the server */
-                CommManager.searchCompany(new CommManagerResponse() {
+                CommManager.searchCompany(new CommManagerObjectResponse() {
                     @Override
-                    public void processResponse(JSONArray response) {
+                    public void processResponse(JSONObject response) {
                         receiveAllCompanySearchResults(response);
                     }
 
@@ -241,17 +252,19 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 /* Direct Acquisitions */
 
                 /* Clear previous search results */
-                clearSearchADs();
+                if (adCurrPage == 1)
+                    clearSearchADs();
 
                 directAcqListFragment = (ContractListFragment) viewPageFragment
                         .pageAdapter.fragments.get(DIRECT_ACQ_FRAGMENT_INDEX);
                 searchFragments[position] = directAcqListFragment;
+
                 directAcqListFragment.displayProgressBar();
 
                 /* Search the direct acquisitions using the server */
-                CommManager.searchAD(new CommManagerResponse() {
+                CommManager.searchAD(new CommManagerObjectResponse() {
                     @Override
-                    public void processResponse(JSONArray response) {
+                    public void processResponse(JSONObject response) {
                         receiveADSearchResults(response);
                     }
 
@@ -263,7 +276,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
-                }, query);
+                }, query, adCurrPage);
 
                 break;
 
@@ -271,7 +284,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 /* Tenders */
 
                 /* Clear previous search results */
-                clearSearchTenders();
+                if (tenderCurrPage == 1)
+                    clearSearchTenders();
 
                 tendersListFragment = (ContractListFragment) viewPageFragment
                         .pageAdapter.fragments.get(TENDER_FRAGMENT_INDEX);
@@ -279,9 +293,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 tendersListFragment.displayProgressBar();
 
                 /* Search the tenders using the server */
-                CommManager.searchTender(new CommManagerResponse() {
+                CommManager.searchTender(new CommManagerObjectResponse() {
                     @Override
-                    public void processResponse(JSONArray response) {
+                    public void processResponse(JSONObject response) {
                         receiveTenderSearchResults(response);
                     }
 
@@ -293,7 +307,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
-                }, query);
+                }, query, tenderCurrPage);
 
 
                 break;
@@ -306,20 +320,22 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
     /* Receive PI search response from server */
-    private void receivePISearchResults(JSONArray response) {
+    private void receivePISearchResults(JSONObject response) {
         /* Public Institutions */
         System.out.println("PI Search Result " + response);
 
         try {
-            for (int i = 0; i < response.length(); i++) {
-                JSONObject piObj = response.getJSONObject(i);
+            JSONArray piArray = response.getJSONArray("items");
+
+            for (int i = 0; i < piArray.length(); i++) {
+                JSONObject piObj = piArray.getJSONObject(i);
                 if (piObj == null)
                     continue;
 
                 PublicInstitution pi = new PublicInstitution();
-                pi.id = Integer.parseInt(piObj.getString(CommManager.JSON_SEARCH_INSTITUTION_ID));
-                pi.name = piObj.getString(CommManager.JSON_COMPANY_PI_NAME);
-                pi.CUI = piObj.getString(CommManager.JSON_COMPANY_CUI);
+                pi.id = Integer.parseInt(piObj.getString(CommManager.JSON_SEARCH_ID));
+                pi.name = piObj.getString(CommManager.JSON_SEARCH_NAME);
+                pi.CUI = piObj.getString(CommManager.JSON_SEARCH_CUI);
 
                 pis.add(pi);
             }
@@ -340,17 +356,19 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
     /* Generic function to receive and list company search results */
-    private void receiveCompanySearchResults(JSONArray response, int companyType) {
+    private void receiveCompanySearchResults(JSONObject response, int companyType) {
 
         try {
-            for (int i = 0; i < response.length(); i++) {
-                JSONObject cObj = response.getJSONObject(i);
+            JSONArray cArray = response.getJSONArray("items");
+
+            for (int i = 0; i < cArray.length(); i++) {
+                JSONObject cObj = cArray.getJSONObject(i);
                 if (cObj == null)
                     continue;
 
                 Company company = new Company();
-                company.id = Integer.parseInt(cObj.getString(CommManager.JSON_COMPANY_ID));
-                company.name = cObj.getString(CommManager.JSON_COMPANY_NAME);
+                company.id = Integer.parseInt(cObj.getString(CommManager.JSON_SEARCH_ID));
+                company.name = cObj.getString(CommManager.JSON_SEARCH_NAME);
                 company.type = companyType;
 
                 companies.add(company);
@@ -381,7 +399,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
     /* Receive Tender company search response from server */
-    private void receiveTenderCompanySearchResults(JSONArray response) {
+    private void receiveTenderCompanySearchResults(JSONObject response) {
 
         /* Tender Companies */
         System.out.println("Tender Company Search Result " + response);
@@ -391,7 +409,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
     /* Receive Tender company search response from server */
-    private void receiveAllCompanySearchResults(JSONArray response) {
+    private void receiveAllCompanySearchResults(JSONObject response) {
 
         /* Tender Companies */
         System.out.println("All Company Search Result " + response);
@@ -401,7 +419,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
     /* Receive Ad Company search response from server */
-    private void receiveADCompanySearchResults(JSONArray response) {
+    private void receiveADCompanySearchResults(JSONObject response) {
 
         /* AD Companies */
         System.out.println("AD Company Search Result " + response);
@@ -411,24 +429,28 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
     /* Receive AD Contract search response from server */
-    private void receiveADSearchResults(JSONArray response) {
+    private void receiveADSearchResults(JSONObject response) {
         System.out.println("AD Contract Search Result " + response);
 
         try {
-            for (int i = 0; i < response.length(); i++) {
-                JSONObject conObj = response.getJSONObject(i);
+            JSONArray conArray = response.getJSONArray("items");
+
+            for (int i = 0; i < conArray.length(); i++) {
+                JSONObject conObj = conArray.getJSONObject(i);
                 if (conObj == null)
                     continue;
 
                 Contract con = new Contract();
                 con.type     = Contract.CONTRACT_TYPE_DIRECT_ACQUISITION;
-                con.id       = Integer.parseInt(conObj.getString(CommManager.JSON_ACQ_ID));
-                con.title    = conObj.getString(CommManager.JSON_CONTRACT_TITLE);
-                con.valueRON = Double.parseDouble(conObj.getString(CommManager.JSON_CONTRACT_VALUE_RON));
-                con.date     = conObj.getString(CommManager.JSON_AD_DATE);
+                con.id       = Integer.parseInt(conObj.getString(CommManager.JSON_SEARCH_ID));
+                con.title    = conObj.getString(CommManager.JSON_SEARCH_TITLE);
+                con.valueRON = Double.parseDouble(conObj.getString(CommManager.JSON_SEARCH_PRICE_RON));
+                con.date     = conObj.getString(CommManager.JSON_SEARCH_DATE);
 
                 ads.add(con);
             }
+
+            adTotalResults   = Integer.parseInt(response.getString(CommManager.JSON_SEARCH_COUNT));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -446,24 +468,28 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
     /* Receive PI search response from server */
-    private void receiveTenderSearchResults(JSONArray response) {
+    private void receiveTenderSearchResults(JSONObject response) {
         System.out.println("Tender Contract Search Result " + response);
 
         try {
-            for (int i = 0; i < response.length(); i++) {
-                JSONObject conObj = response.getJSONObject(i);
+            JSONArray conArray = response.getJSONArray("items");
+
+            for (int i = 0; i < conArray.length(); i++) {
+                JSONObject conObj = conArray.getJSONObject(i);
                 if (conObj == null)
                     continue;
 
                 Contract con = new Contract();
                 con.type     = Contract.CONTRACT_TYPE_TENDER;
-                con.id       = Integer.parseInt(conObj.getString(CommManager.JSON_TENDER_ID_SEARCH));
-                con.title    = conObj.getString(CommManager.JSON_CONTRACT_TITLE);
-                con.valueRON = Double.parseDouble(conObj.getString(CommManager.JSON_CONTRACT_VALUE_RON));
-                con.date     = conObj.getString(CommManager.JSON_TENDER_DATE);
+                con.id       = Integer.parseInt(conObj.getString(CommManager.JSON_SEARCH_ID));
+                con.title    = conObj.getString(CommManager.JSON_SEARCH_TITLE);
+                con.valueRON = Double.parseDouble(conObj.getString(CommManager.JSON_SEARCH_PRICE_RON));
+                con.date     = conObj.getString(CommManager.JSON_SEARCH_DATE);
 
                 tenders.add(con);
             }
+
+            tenderTotalResults = Integer.parseInt(response.getString(CommManager.JSON_SEARCH_COUNT));
         } catch (JSONException e) {
             e.printStackTrace();
         }

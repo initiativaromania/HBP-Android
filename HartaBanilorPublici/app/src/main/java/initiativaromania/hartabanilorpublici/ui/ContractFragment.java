@@ -79,7 +79,7 @@ public class ContractFragment extends Fragment {
         if (compID != 0) {
             contract.company = new Company();
             contract.company.id = compID;
-            contract.company.name = bundle.getString(CommManager.BUNDLE_CONTRACT_PI_NAME);
+            contract.company.name = bundle.getString(CommManager.BUNDLE_CONTRACT_COMP_NAME);
             displayCompanyButton();
         }
 

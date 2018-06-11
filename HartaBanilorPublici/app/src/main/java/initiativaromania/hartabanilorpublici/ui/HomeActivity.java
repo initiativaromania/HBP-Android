@@ -167,9 +167,8 @@ public class HomeActivity extends AppCompatActivity
 
         String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager
                 .getBackStackEntryCount() - 1).getName();
-        Fragment currentFragment = fragmentManager.findFragmentByTag(fragmentTag);
 
-        return currentFragment;
+        return fragmentManager.findFragmentByTag(fragmentTag);
     }
 
     private Fragment getPreviousFragment() {
@@ -177,9 +176,8 @@ public class HomeActivity extends AppCompatActivity
 
         String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager
                 .getBackStackEntryCount() - 2).getName();
-        Fragment currentFragment = fragmentManager.findFragmentByTag(fragmentTag);
 
-        return currentFragment;
+        return fragmentManager.findFragmentByTag(fragmentTag);
     }
 
     @Override
@@ -194,13 +192,18 @@ public class HomeActivity extends AppCompatActivity
             System.exit(0);
 
         prevFragment = getPreviousFragment();
+        if (prevFragment == null) {
+            super.onBackPressed();
+            return;
+        }
 
         for (i = 0; i < tabbedFragments.size(); i++) {
             if (tabbedFragments.get(i) == prevFragment)
                 break;
         }
 
-        navigation.getMenu().getItem(i).setCheckable(true).setChecked(true);
+        if (navigation.getMenu() != null && i < navigation.getMenu().size())
+            navigation.getMenu().getItem(i).setCheckable(true).setChecked(true);
 
         super.onBackPressed();
     }

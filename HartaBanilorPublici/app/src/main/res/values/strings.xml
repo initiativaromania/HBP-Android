@@ -15,20 +15,20 @@
     \t<b>13.731</b> instituții publice\n
     \t<b>72.897</b> companii\n
     \t<b>8.839.409</b> achiziții publice din care:\n
-        \t\t<b>7.946.406</b> achiziții directe\n
-        \t\t<b>893.003</b> licitații</string>
+        \t\t\t<b>7.946.406</b> achiziții directe\n
+        \t\t\t<b>893.003</b> licitații</string>
 
     <string name="info_tile3"><b>HBP</b> folosește ca surse de date: www.data.gov.ro, SEAP,
         Ministerul Finanțelor si Google Maps API. <b>HBP</b> nu colectează date despre utilizatorii aplicației.
     </string>
 
     <string name="info_tile4"><b>Știați că</b>: potrivit datelor de pe www.data.gov.ro, orașul Cluj-Napoca apare
-        scris în 20 de feluri, afectând astfel orice încercare de a estima în mod corect cheltuielile publice?
+        scris în mai multe feluri, afectând astfel orice încercare de a estima în mod corect cheltuielile publice?
         De aceea, am corectat erorile de scriere pentru toate intrările, am automatizat corectarea lor,
         astfel încât să vă prezentăm situația cheltuielilor publice cu acuratețe.
     </string>
 
-    <string name="info_tile5">Pentru statistici mai avansate, vizitează versiunea web: www.hbp.ro
+    <string name="info_tile5">Pentru statistici mai avansate, vizitează versiunea web: www.hartabanilorpublici.ro
 
     </string>
 </resources>
